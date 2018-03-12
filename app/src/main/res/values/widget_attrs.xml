@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SubmitButton">
+        <attr name="s_color_default" format="color"/>
+        <attr name="s_color_pressed" format="color"/>
+        <attr name="s_color_enable" format="color"/>
+        <attr name="s_radius" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="RadioButton">
+        <attr name="r_color_default" format="color"/>
+        <attr name="r_color_checked" format="color"/>
+        <attr name="r_radius" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="KFlowLayout">
+        <attr name="flow_min_select" format="integer"/>
+        <attr name="flow_max_select" format="integer"/>
+        <attr name="flow_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

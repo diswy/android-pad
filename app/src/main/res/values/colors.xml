@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0dc984</color>
+    <color name="colorPrimaryDark">#0aaf73</color>
+    <color name="colorAccent">#FF4081</color>
+    
+    <color name="colorActive">#0dc984</color>
+    <color name="colorInactive">#cccccc</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="color_line">#989898</color>
+    <color name="color_f0">#f0f0f0</color>
+
+    <color name="status_new">#0dc984</color>
+    <color name="status_run">#ff605f</color>
+    <color name="status_complete">#f5ac52</color>
+    <color name="status_read">#858af7</color>
+
+    <color name="toast_success">#38e7a7</color>
+    <color name="toast_error">#ed7575</color>
+    <color name="toast_normal">#353A3E</color>
+</resources>

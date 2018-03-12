@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlbumPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/album_bgcolor</item>
+        <item name="colorPrimaryDark">@color/album_bgcolor</item>
+        <item name="colorAccent">@color/album_recyclerdir_bg</item>
+    </style>
+</resources>
