@@ -4,7 +4,6 @@ import android.graphics.SurfaceTexture
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.View
-import com.netease.neliveplayer.sdk.NELivePlayer
 
 /**
  * 描述
@@ -29,7 +28,6 @@ interface ExRenderView {
         val surfaceHolder: SurfaceHolder?
         val surfaceTexture: SurfaceTexture?
         fun openSurface(): Surface?
-        fun bindToMediaPlayer(mp: NELivePlayer)
     }
 
     interface IRenderCallback {

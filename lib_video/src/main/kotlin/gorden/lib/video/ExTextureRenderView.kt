@@ -7,7 +7,6 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.TextureView
 import android.view.View
-import com.netease.neliveplayer.sdk.NELivePlayer
 import kotlin.collections.HashMap
 
 
@@ -118,10 +117,6 @@ class ExTextureRenderView(context: Context?, attrs: AttributeSet?, defStyleAttr:
                 return null
             }
             return Surface(mSurfaceTexture)
-        }
-
-        override fun bindToMediaPlayer(mp: NELivePlayer) {
-            mp.setSurface(openSurface())
         }
     }
 }

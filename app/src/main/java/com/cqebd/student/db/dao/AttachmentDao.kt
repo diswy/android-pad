@@ -18,5 +18,5 @@ interface AttachmentDao {
     fun insertAttachment(attachment: Attachment)
 
     @Query("SELECT * from ex_attachment WHERE id = :id")
-    fun queryAttachment(id:String):Attachment?
+    fun queryAttachment(id:String):LiveData<Attachment>?
 }
