@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:background="@color/color_f0">
+
+    <RelativeLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/img_snapshoot"
+            android:layout_width="105dp"
+            android:layout_height="70dp"
+            />
+
+        <com.cqebd.student.widget.SubmitButton
+            android:id="@+id/text_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/img_snapshoot"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:text="直播中"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            app:s_radius="0dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="10sp"
+            />
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_snapshoot"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="小升初直播课前测试课程"
+            android:textColor="#333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/text_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/text_name"
+            android:layout_below="@id/text_name"
+            android:layout_marginTop="4dp"
+            android:text="年级:六年级"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/text_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开课时间:2017-4-30 09:30:00"
+            android:textSize="10sp"
+            android:layout_below="@+id/text_grade"
+            android:layout_marginTop="3dp"
+            android:layout_alignLeft="@id/text_name"
+             />
+
+        <TextView
+            android:id="@+id/text_teacher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/text_name"
+            android:layout_below="@id/text_start"
+            android:layout_marginTop="3dp"
+            android:text="主讲老师:王老师"
+            android:textSize="10sp" />
+    </RelativeLayout>
+</LinearLayout>

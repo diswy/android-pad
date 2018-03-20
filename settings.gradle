@@ -1,1 +1,1 @@
-include ':app', ':lib_anko', ':lib_album'
+include ':app', ':lib_anko', ':lib_album', ':lib_video'

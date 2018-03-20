@@ -27,12 +27,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    androidExtensions{
+        experimental = true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_anko')
     implementation project(':lib_album')
+    implementation project(':lib_video')
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.support.design

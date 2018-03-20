@@ -4,12 +4,42 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+        <ImageButton style="@style/btnBack" />
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:text="课程表"
+            android:textColor="@color/colorWhite"
+            />
+    </RelativeLayout>
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_arrowColor="@color/colorPrimary"
-        app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="@color/colorPrimary"
         app:mcv_tileHeight="30dp"
+        app:mcv_showOtherDates="all"
+        app:mcv_arrowColor="@color/colorPrimary"
+        app:mcv_selectionColor="@color/colorPrimary"
         />
+    <View style="@style/horizontalDivider"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"/>
+        <com.cqebd.student.widget.PageLoadView
+            android:id="@+id/pageLoadView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
 </LinearLayout>

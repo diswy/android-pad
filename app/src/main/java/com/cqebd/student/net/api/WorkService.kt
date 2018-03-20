@@ -3,6 +3,7 @@ package com.cqebd.student.net.api
 import android.arch.lifecycle.LiveData
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.tools.loginId
+import com.cqebd.student.vo.entity.ExaminationPaperInfo
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.vo.entity.WorkInfo
 import com.google.gson.JsonObject
@@ -14,7 +15,7 @@ import retrofit2.http.*
  */
 interface WorkService {
     companion object {
-        val BASE_WEB_URL = "http://service.student.cqebd.cn/"
+        const val BASE_WEB_URL = "http://service.student.cqebd.cn/"
     }
     /**
      * 用户登录
@@ -41,5 +42,13 @@ interface WorkService {
     @GET("api/Account/GetFlower")
     fun getFlower(@Query("studentid") id: Long=loginId):LiveData<ApiResponse<JsonObject>>
 
+    /**
+     * 开始答题
+     */
+    @GET("api/Students/StartWork")
+    fun startWork(@Query("StudentQuestionsTasksID") taskId:Long):LiveData<ApiResponse<JsonObject>>
+
+    @GET("api/Students/GetExaminationPapersByID")
+    fun getExaminationPaper(@Query("id") paperId:Long,@Query("tasksid") tasksid:Long):LiveData<ApiResponse<List<ExaminationPaperInfo>>>
 
 }

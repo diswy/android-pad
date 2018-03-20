@@ -1,10 +1,13 @@
 package com.cqebd.student.vo.entity
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * 作业列表信息
  */
+@Parcelize
 data class WorkInfo(
         @SerializedName("StudentQuestionsTasksID")
         val TaskId:Long,
@@ -14,17 +17,22 @@ data class WorkInfo(
         val PushId:Long,
         @SerializedName("ExaminationPapersTypeId")
         val TypeId:Int,
+        @SerializedName("PapersTypeName")
         val TypeName:String,
         val Status:Int,
+        val IsTasks:Boolean,
         val Name:String,
         @SerializedName("SubjectTypeId")
         val SubjectId:Int,
         @SerializedName("SubjectTypeName")
         val SubjectName:String,
-        @SerializedName("CanStartDateTime")
-        val StartTime:String,
-        @SerializedName("CanEndDateTime")
-        val EndTime:String,
+        val CanStartDateTime:String,
+        var StartTime:String?,
+        val CanEndDateTime:String,
+        val EndTime:String?,
         @SerializedName("Count")
-        val QuestionCount:Int
-)
+        val QuestionCount:Int,
+        val Duration:Int,
+        @SerializedName("ExaminationPapersAttachment")
+        val attachments:List<Attachment>?
+) : Parcelable

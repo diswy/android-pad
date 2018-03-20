@@ -1,0 +1,19 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="gorden.lib.video" >
+    <!-- 允许程序获取网络相关信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 允许程序获取Wifi网络状态信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 允许程序获得设备信息 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<application>-->
+        <!--<receiver-->
+            <!--android:name="gorden.lib.video.NELivePlayerReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.netease.neliveplayer.demo.ACTION.RECEIVE_NELP_RELEASE_SUCCESS_NOTIFICATION" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+    <!--</application>-->
+</manifest>

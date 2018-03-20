@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.net.NetClient
+import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
 import com.cqebd.student.tools.formatTimeMDHM
@@ -22,9 +23,9 @@ import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.teacher.vo.Status
 import gorden.lib.anko.static.logError
+import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.item_work.view.*
-
 
 /**
  * 首页
@@ -120,11 +121,20 @@ class HomeFragment : BaseFragment() {
                     }
 
                     text_status.text = FilterData.jobStatus.find { it.status == item.Status }?.Name
+                    setOnClickListener {
+                        if (item.Status<=0){
+                            val urlFormat = "HomeWork/ExaminationPapers?id=%s&taskid=%s"
+                            logError(item)
+                            startActivity<JobPreviewActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.PapersId,item.TaskId)),
+                                    "info" to item)
+                        }else{
+                            val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
+                            startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                        }
+                    }
                 }
             }
-
         }
-
 
         pager_ad.setImagesUrl(arrayListOf("http://img3.imgtn.bdimg.com/it/u=133586149,2711567276&fm=11&gp=0.jpg"
                 , "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=699537926,455842408&fm=11&gp=0.jpg"
@@ -135,25 +145,18 @@ class HomeFragment : BaseFragment() {
     override fun bindEvents() {
         lin_share_work.setOnClickListener {
             Snackbar.make(lin_share_work, "作业分享", Snackbar.LENGTH_SHORT).show()
-            NetClient.workService().accountLogin("xsebd01", "123456")
-                    .observe(this, Observer {
-                        it?.body?.let {
-                            logError(it)
-                            it.save()
-                        }
-                    })
         }
         lin_class_schedule.setOnClickListener {
-            Snackbar.make(lin_share_work, "课程表", Snackbar.LENGTH_SHORT).show()
+            //课程表
+            startActivity<ClassScheduleActivity>()
         }
         lin_wrong_book.setOnClickListener {
+            startActivity<VideoActivity>()
             Snackbar.make(lin_share_work, "错题本", Snackbar.LENGTH_SHORT).show()
         }
         lin_my_subscription.setOnClickListener {
             Snackbar.make(lin_share_work, "我的订阅", Snackbar.LENGTH_SHORT).show()
         }
-
-
 
         frame_subject.setOnClickListener {
             filterViewModel.filterSubject(frame_subject)

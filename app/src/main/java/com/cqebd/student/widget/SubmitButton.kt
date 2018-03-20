@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.TextView
 import com.cqebd.student.R
-import com.cqebd.student.tools.colorForRes
 
 /**
  * 提交按钮

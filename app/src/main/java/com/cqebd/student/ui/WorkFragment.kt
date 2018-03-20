@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
 import com.cqebd.student.tools.formatTimeMDHM
@@ -19,6 +20,7 @@ import com.cqebd.student.viewmodel.WorkListViewModel
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.teacher.vo.Status
+import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.fragment_work.*
 import kotlinx.android.synthetic.main.item_work.view.*
 
@@ -133,6 +135,16 @@ class WorkFragment : BaseFragment() {
                     }
 
                     text_status.text = FilterData.jobStatus.find { it.status==item.Status}?.Name
+                    setOnClickListener {
+                        if (item.Status<=0){
+                            val urlFormat = "HomeWork/ExaminationPapers?id=%s&taskid=%s"
+                            startActivity<JobPreviewActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.PapersId,item.TaskId)),
+                                    "info" to item)
+                        }else{
+                            val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
+                            startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                        }
+                    }
                 }
             }
 
