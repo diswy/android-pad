@@ -18,4 +18,51 @@
     <color name="toast_success">#38e7a7</color>
     <color name="toast_error">#ed7575</color>
     <color name="toast_normal">#353A3E</color>
+
+
+    //temp
+
+    <color name="btn_green">#2ed058</color>
+    <color name="btn_green_press">#12a738</color>
+    <color name="text_color_gray">#999999</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_p">#F0F0F0</color>
+    <color name="gray">#AFAFAF</color>
+    <color name="red">#ff1717</color>
+    <color name="user_class_gray">#CCCCCC</color>
+    <color name="vertical_divider">#C7C7C7</color>
+    <color name="logout_red">#ff5f5f</color>
+    <color name="logout_red_p">#d75050</color>
+    <color name="state_red">#ff605f</color>
+    <color name="state_blue">#858af7</color>
+
+    <color name="menu_item_text">#323232</color>
+    <color name="text_color_dark_gray">#666666</color>
+
+    <color name="answer_view_bg">#f1f1f1</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="list_view_spit">#cfcfcf</color>
+
+    <!-- 三级颜色 -->
+    <color name="default_lev3">#575a60</color>
+
+    <color name="pagebackground">#eeeeee</color>
+
+    <!-- 二级颜色 -->
+    <color name="default_lev2">#2e2f2f</color>
+    <color name="titletextcolor">#6e6e6e</color>
+    <color name="home_state_green">#3BCF67</color>
+    <color name="color_split_line">#cccccc</color>
+    <color name="color_text_title">#333333</color>
+    <color name="color_text_default">#666666</color>
+    <color name="color_second_subject">#44c617</color>
+
+    <array name="refresh_color">
+        <item>#F2A829</item>
+        <item>#FF4081</item>
+        <item>#0b6b1c</item>
+        <item>#151c66</item>
+    </array>
 </resources>

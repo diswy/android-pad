@@ -1,10 +1,13 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'org.greenrobot.greendao'
+
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
+
 
 android {
     compileSdkVersion build_versions.target_sdk
@@ -16,7 +19,14 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary= true
+        multiDexEnabled true
+
     }
+
+    greendao {
+        schemaVersion 1    // 当前数据库结构的版本
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,6 +47,7 @@ dependencies {
     implementation project(':lib_anko')
     implementation project(':lib_album')
     implementation project(':lib_video')
+    implementation project(':Album')
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.support.design
@@ -58,6 +69,10 @@ dependencies {
     implementation deps.retrofit.rxjava2
     implementation deps.retrofit.logging
 
+    implementation 'org.greenrobot:greendao:3.2.0'
+    implementation 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     compile 'gorden.refresh:refresh-kotlin:1.32'
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
@@ -65,4 +80,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.android.support:multidex:1.0.3'
 }

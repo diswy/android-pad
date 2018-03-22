@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
+import gorden.lib.anko.static.logError
 import kotlinx.android.synthetic.main.activity_video.*
 
 /**
@@ -27,13 +28,14 @@ class VideoActivity : BaseActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        videoView.pause()
+
+
+    override fun onStop() {
+        super.onStop()
+        videoView.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        videoView.release()
     }
 }

@@ -1,0 +1,13 @@
+<resources>
+    <string name="album_str_all_image">所有图片</string>
+    <string name="album_str_preview">预览</string>
+    <string name="album_str_select">选择</string>
+    <string name="album_str_title">选择图片</string>
+    <string name="album_str_complete">完成%s</string>
+    <string name="album_str_camera">拍摄照片</string>
+    <string name="album_str_camera_hint">拍摄照片需要相机权限</string>
+
+    <string name="crop__pick_error">无效的图片</string>
+    <string name="crop__wait">请等待…</string>
+    <string name="crop__saving">正在保存照片…</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/ll_pics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.cqebd.student.widget.AvatarImageView
+                    android:id="@+id/img_pic"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="40dp" />
+                <ImageView
+                    android:id="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="gone"
+                    android:layout_gravity="right"
+                    />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/icon_camera"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/icon_camera"/>
+
+        </LinearLayout>
+
+        <com.cqebd.student.widget.EditText
+            android:id="@+id/edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:layout_toLeftOf="@+id/ll_pics"
+            android:lines="5"
+            android:scrollbars="none"
+            android:overScrollMode="always"
+            android:gravity="top|left"
+            android:textColor="@color/text_color_dark_gray"
+            android:background="@color/transparent"/>
+
+    </RelativeLayout>
+</RelativeLayout>

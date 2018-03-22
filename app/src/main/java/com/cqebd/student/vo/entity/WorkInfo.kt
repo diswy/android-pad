@@ -19,7 +19,7 @@ data class WorkInfo(
         val TypeId:Int,
         @SerializedName("PapersTypeName")
         val TypeName:String,
-        val Status:Int,
+        var Status:Int,
         val IsTasks:Boolean,
         val Name:String,
         @SerializedName("SubjectTypeId")
@@ -32,7 +32,7 @@ data class WorkInfo(
         val EndTime:String?,
         @SerializedName("Count")
         val QuestionCount:Int,
-        val Duration:Int,
+        var Duration:Int,
         @SerializedName("ExaminationPapersAttachment")
         val attachments:List<Attachment>?
 ) : Parcelable

@@ -301,10 +301,6 @@ class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout
 
         val mediaType: String
 
-        val isHardware: Boolean
-
-        val isInBackground: Boolean
-
         fun start()
 
         fun pause()

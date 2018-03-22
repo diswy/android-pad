@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/text_jsq"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:text="计 算 器"
+        android:background="#41afad"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+    <!--<View style="@style/verticalDivider"/>-->
+    <TextView
+        android:id="@+id/text_cgz"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:text="草 稿 纸"
+        android:background="#2ed058"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+</LinearLayout>

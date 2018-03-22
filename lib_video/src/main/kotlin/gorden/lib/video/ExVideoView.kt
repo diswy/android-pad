@@ -15,11 +15,14 @@ import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.anko.static.dp
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -33,7 +36,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     //current display mode SCREEN_WINDOW or SCREEN_FULL
     private var screenMode: Int = SCREEN_WINDOW
     private lateinit var renderView: ExRenderView
-    private lateinit var player: SimpleExoPlayer
     private lateinit var mediaTitle: ExMediaTitle
     private lateinit var mediaController: ExMediaController
     private lateinit var loadingView: ProgressBar
@@ -46,10 +48,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     private lateinit var audioManager: AudioManager
     private lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var componentListener: ComponentListener
-    private lateinit var controlDispatcher: ControlDispatcher
 
-    private var isPlayError: Boolean = false
-    private var mDuration: Int = 0
+    //当前播放位置,用于恢复播放进度
+    private var contentPosition: Long = 0
+    private var contentDuration:Long = 0
+    private var mPlayer: SimpleExoPlayer? = null
+
+    /*----------------------open parameter-------------------------*/
 
     /**
      * 是否可以调节进度
@@ -57,13 +62,15 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     var canSeek: Boolean = true
     /**
      * 是否保存播放进度
+     * @saveProgress.first 是否保存
+     * @saveProgress.second 用于存储的Key
      */
-    var saveProgress: Boolean = true
-    private lateinit var saveKey: String
+    var saveProgress:Pair<Boolean,String?> = false to null
+
 
     constructor(context: Context?) : super(context) {
         initVideoView(context)
-        player.videoComponent
+        saveProgress.first
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
@@ -88,6 +95,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         addView(videoContent, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
         renderView = ExTextureRenderView(context)
+        renderView.setAspectRatio(ExRenderView.AspectRatio.FIT)
         (videoContent as FrameLayout).addView(renderView.getView(), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER))
 
         mediaTitle = ExMediaTitle(this)
@@ -104,28 +112,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         (videoContent as FrameLayout).addView(loadingView, LayoutParams(40.dp, 40.dp, Gravity.CENTER))
 
 
-        player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
-        renderView.addRenderCallback(object : ExRenderView.IRenderCallback {
-            override fun onSurfaceCreated(holder: ExRenderView.ISurfaceHolder, width: Int, height: Int) {
-                player.setVideoSurface(holder.openSurface())
-            }
-
-            override fun onSurfaceChanged(holder: ExRenderView.ISurfaceHolder, width: Int, height: Int) {
-            }
-
-            override fun onSurfaceDestroyed(holder: ExRenderView.ISurfaceHolder) {
-                player.clearVideoSurface()
-            }
-        })
-
-        renderView.setAspectRatio(ExRenderView.AspectRatio.FIT)
         componentListener = ComponentListener()
-        player.audioAttributes = AudioAttributes.DEFAULT
-        player.addListener(componentListener)
-        player.addVideoListener(componentListener)
-
         mediaDataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, context?.applicationInfo?.name), DefaultBandwidthMeter())
-        controlDispatcher = DefaultControlDispatcher()
 
         videoContent.setOnClickListener {
             if (mediaController.isShowing()) {
@@ -136,7 +124,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         }
         mediaController.setMediaPlayer(this)
         mediaController.show()
-        requestFocus()
         audioManager = context?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     }
 
@@ -145,15 +132,14 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * @param path 视频播放地址
      * @param thumb 视频加载前显示图片
      */
-    fun setVideoPath(path: String, title: String, thumb: Int? = null, saveKey: String = path) {
-        setVideoPath(Uri.parse(path), title, thumb, saveKey)
+    fun setVideoPath(path: String, title: String, thumb: Int? = null) {
+        setVideoPath(Uri.parse(path), title, thumb)
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    fun setVideoPath(uri: Uri, title: String, thumb: Int? = null, saveKey: String = uri.path) {
+    fun setVideoPath(uri: Uri, title: String, thumb: Int? = null) {
         mUri = uri
         mThumb = thumb
-        this.saveKey = saveKey
         definitions = null
         currentDefinition = null
         openVideo()
@@ -172,21 +158,27 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     }
 
 
-    private fun openVideo(positionMs: Long? = null, clearState: Boolean = true) {
+    private fun openVideo(play: Boolean = true) {
+        release()
+        if (onInterceptPlayingListener?.invoke()==true||mUri==null) return
+
+        mPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+        mPlayer?.setVideoTextureView(renderView.getView())
+        mPlayer?.audioAttributes = AudioAttributes.DEFAULT
+        mPlayer?.addListener(componentListener)
+        mPlayer?.addVideoListener(componentListener)
         val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
-        player.prepare(mediaSource, true, true)
-        if (positionMs != null) {
-            player.seekTo(positionMs)
-        }else if (saveProgress){
-            val progress = loadProgress()
-            if (progress>0){
-                player.seekTo(progress)
-            }
+
+        if (contentPosition>0){
+            mPlayer?.seekTo(contentPosition)
+        }else if (saveProgress.first){
+            mPlayer?.seekTo(loadProgress())
         }
-        if (clearState) {
-            isPlayError = false
-            player.playWhenReady = true
-            mediaController.isEnabled = true
+        mPlayer?.prepare(mediaSource,false,false)
+        mediaController.isEnabled = true
+
+        if (play){
+            mPlayer?.playWhenReady = true
             requestAudioFocus()
         }
     }
@@ -204,27 +196,39 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         }
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            if (playbackState == Player.STATE_READY) {
-                isPlayError = false
-            }
-            if (playbackState == Player.STATE_BUFFERING) {
-                loadingView.visibility = View.VISIBLE
-            } else {
-                loadingView.visibility = View.GONE
-            }
-            if (playWhenReady){
+            if (playWhenReady) {
                 (context as? Activity)?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            }else{
+            } else {
                 (context as? Activity)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
-            saveProgress(player.currentPosition)
+
+            when(playbackState){
+                Player.STATE_READY->{
+                    loadingView.visibility = View.GONE
+                    contentDuration = mPlayer?.duration?:0
+                }
+                Player.STATE_BUFFERING->{
+                    loadingView.visibility = View.VISIBLE
+                }
+                Player.STATE_ENDED->{
+                    loadingView.visibility = View.GONE
+                    onCompletionListener?.invoke()
+                    saveProgress(0)
+                }
+                Player.STATE_IDLE->{
+                    loadingView.visibility = View.GONE
+                }
+            }
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
-            isPlayError = true
-            openVideo(player.currentPosition, false)
+            Toast.makeText(context,"视频播放错误",Toast.LENGTH_SHORT).show()
+            release(false)
         }
 
+        override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+            super.onTracksChanged(trackGroups, trackSelections)
+        }
     }
 
     /**
@@ -252,11 +256,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         return mediaController.dispatchKeyEvent(event)
     }
 
-    fun release() {
-        player.release()
-        mediaController.release()
-    }
-
     /**
      * 开启全屏模式
      */
@@ -282,6 +281,34 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     }
 
     /**
+     * 释放ExoPlayer
+     */
+    private fun release(clearPosition:Boolean = true) {
+        mPlayer?.let {
+            if (clearPosition){
+                contentPosition = 0
+                contentDuration = 0
+            }
+            it.release()
+            mPlayer = null
+            mediaController.release()
+        }
+    }
+
+    /**
+     * Activity or Fragment onStop release(true)
+     */
+    fun onStop(){
+        mPlayer?.let {
+            contentPosition = it.currentPosition
+            saveProgress(contentPosition)
+            it.release()
+            mPlayer = null
+            mediaController.release()
+        }
+    }
+
+    /**
      * 退出全屏模式
      */
     internal fun exitFullScreen() {
@@ -303,9 +330,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     /**
      * 保存播放进度
      */
-    private fun saveProgress(progress:Long) {
-        if (saveProgress&&progress>0){
-            mPreferences.edit().putLong(saveKey,progress).apply()
+    private fun saveProgress(progress: Long) {
+        if (saveProgress.first){
+            if (progress>0){
+                mPreferences.edit().putLong(saveProgress.second, progress).apply()
+            }else{
+                mPreferences.edit().remove(saveProgress.second).apply()
+            }
         }
     }
 
@@ -313,43 +344,42 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * 获取播放进度
      */
     private fun loadProgress(): Long {
-        return mPreferences.getLong(saveKey,-1)
+        return mPreferences.getLong(saveProgress.second, -1)
     }
 
     override val duration: Int
-        get() {
-            return if (isPlayError) {
-                mDuration
-            } else {
-                mDuration = player.duration.toInt()
-                mDuration
-            }
-        }
+        get() = contentDuration.toInt()
     override val currentPosition: Int
-        get() = player.currentPosition.toInt()
+        get() {
+            mPlayer?.let {
+                contentPosition = it.contentPosition
+            }
+            return contentPosition.toInt()
+        }
     override val isPlaying: Boolean
-        get() = player.playbackState != Player.STATE_ENDED
-                && player.playbackState != Player.STATE_IDLE
-                && player.playWhenReady
+        get() = mPlayer?.playbackState != Player.STATE_ENDED
+                && mPlayer?.playbackState != Player.STATE_IDLE
+                && mPlayer?.playWhenReady==true
     override val bufferPercentage: Int
-        get() = player.bufferedPercentage
+        get() = mPlayer?.bufferedPercentage?:0
+
     override val mediaType: String
         get() = ""
-    override val isHardware: Boolean
-        get() = true
-    override val isInBackground: Boolean
-        get() = true
 
     override fun start() {
-        controlDispatcher.dispatchSetPlayWhenReady(player, true)
+        if (mPlayer==null){
+            openVideo(true)
+        }else{
+            mPlayer?.playWhenReady = true
+        }
     }
 
     override fun pause() {
-        controlDispatcher.dispatchSetPlayWhenReady(player, false)
+        mPlayer?.playWhenReady = false
     }
 
     override fun seekTo(pos: Long) {
-        controlDispatcher.dispatchSeekTo(player, player.currentWindowIndex, pos)
+        mPlayer?.seekTo(pos)
     }
 
     override fun canPause(): Boolean {
@@ -373,5 +403,24 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         private const val SCREEN_WINDOW = 0
         private const val FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         private const val PORTRAIT_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    /*-----------------------  open api  --------------------------------*/
+
+    private var onCompletionListener: (() -> Unit)? = null
+    /**
+     * 播放完成监听
+     */
+    fun setOnCompletionListener(listener: () -> Unit) {
+        onCompletionListener = listener
+    }
+
+    private var onInterceptPlayingListener:(()->Boolean)?=null
+    /**
+     * 是否拦截播放，用于处理特殊情况
+     * @return true 拦截播放
+     */
+    fun setOnInterceptPlayingListener(listener: () -> Boolean){
+        onInterceptPlayingListener = listener
     }
 }

@@ -3,14 +3,15 @@ package gorden.lib.video
 import android.graphics.SurfaceTexture
 import android.view.Surface
 import android.view.SurfaceHolder
-import android.view.View
+import android.view.TextureView
+import com.google.android.exoplayer2.SimpleExoPlayer
 
 /**
  * 描述
  * Created by gorden on 2018/3/14.
  */
 interface ExRenderView {
-    fun getView(): View
+    fun getView(): TextureView
 
     fun setVideoSize(videoWidth: Int, videoHeight: Int)
     fun setVideoRotation(degree: Int)
@@ -28,6 +29,7 @@ interface ExRenderView {
         val surfaceHolder: SurfaceHolder?
         val surfaceTexture: SurfaceTexture?
         fun openSurface(): Surface?
+        fun bindToExoPlayer(player: SimpleExoPlayer?)
     }
 
     interface IRenderCallback {

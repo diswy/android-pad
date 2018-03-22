@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SelectorText">
+        <attr name="s_solid_color" format="color"/>
+        <attr name="s_solid_pressed_color" format="color"/>
+        <attr name="s_solid_checked_color" format="color"/>
+        <attr name="s_solid_enable_color" format="color"/>
+
+        <attr name="s_stroke_color" format="color"/>
+        <attr name="s_stroke_pressed_color" format="color"/>
+        <attr name="s_stroke_checked_color" format="color"/>
+        <attr name="s_stroke_enable_color" format="color"/>
+
+        <attr name="s_text_color" format="color"/>
+        <attr name="s_text_pressed_color" format="color"/>
+        <attr name="s_text_checked_color" format="color"/>
+        <attr name="s_text_enable_color" format="color"/>
+
+        <attr name="s_radius" format="dimension"/>
+        <attr name="s_tl_radius" format="dimension"/>
+        <attr name="s_tr_radius" format="dimension"/>
+        <attr name="s_bl_radius" format="dimension"/>
+        <attr name="s_br_radius" format="dimension"/>
+        <attr name="s_stroke_width" format="dimension"/>
+        <attr name="s_checkable" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="NiftyRefreshLayout">
+        <attr name="nifty_header" format="reference" />
+        <attr name="nifty_content" format="reference" />
+        <attr name="nifty_resistance" format="float" />
+        <attr name="nifty_ratio_of_header_height_to_refresh" format="float" />
+        <attr name="nifty_duration_to_close" format="integer" />
+        <attr name="nifty_duration_to_close_header" format="integer" />
+        <attr name="nifty_pull_to_fresh" format="boolean" />
+        <attr name="nifty_keep_header_when_refresh" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="LoadingView">
+        <attr name="dot_radiu" format="dimension"/>
+        <attr name="duration" format="integer"/>
+        <attr name="autoRunning" format="boolean"/>
+        <attr name="error" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.TextureView
-import android.view.View
+import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlin.collections.HashMap
 
 
@@ -27,7 +27,7 @@ class ExTextureRenderView(context: Context?, attrs: AttributeSet?, defStyleAttr:
         surfaceTextureListener = this
     }
 
-    override fun getView(): View {
+    override fun getView(): TextureView {
         return this
     }
 
@@ -104,7 +104,6 @@ class ExTextureRenderView(context: Context?, attrs: AttributeSet?, defStyleAttr:
         mRenderCallbackMap.forEach {
             it.key.onSurfaceDestroyed(InternalSurfaceHolder(this, mSurfaceTexture))
         }
-        //TODO false
         return true
     }
 
@@ -117,6 +116,10 @@ class ExTextureRenderView(context: Context?, attrs: AttributeSet?, defStyleAttr:
                 return null
             }
             return Surface(mSurfaceTexture)
+        }
+
+        override fun bindToExoPlayer(player: SimpleExoPlayer?) {
+            player?.setVideoSurface(openSurface())
         }
     }
 }

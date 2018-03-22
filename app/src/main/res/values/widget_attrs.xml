@@ -21,4 +21,13 @@
             <enum name="right" value="1" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="PagerIndicator">
+        <attr name="circle_radiu" format="dimension"/>
+        <attr name="circle_padding" format="dimension"/>
+        <attr name="select_color" format="color"/>
+        <attr name="unselect_color" format="color"/>
+        <attr name="select_drawable" format="integer"/>
+        <attr name="unselect_drawable" format="integer"/>
+    </declare-styleable>
 </resources>

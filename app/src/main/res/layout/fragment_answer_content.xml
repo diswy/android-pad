@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <gorden.widget.selector.SelectorButton
+        android:id="@+id/btn_media"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="视频"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:layout_gravity="right|center_vertical"
+        app:s_radius="25dp"
+        app:s_solid_color="#99FF4081"
+        />
+    <include
+        layout="@layout/online_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:progressDrawable="@drawable/web_po_seekbar" />
+</FrameLayout>

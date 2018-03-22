@@ -12,6 +12,7 @@ import android.view.ViewGroup
  * Created by gorden on 2017/11/6.
  */
 abstract class BaseFragment : Fragment() {
+    var lifeListener: ViewLifeListener? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return setContentView(inflater, container, savedInstanceState)
     }
@@ -19,6 +20,11 @@ abstract class BaseFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initialize(savedInstanceState)
         bindEvents()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifeListener?.onInitialized()
     }
 
     /**
@@ -35,4 +41,8 @@ abstract class BaseFragment : Fragment() {
      * 事件绑定
      */
     open fun bindEvents() {}
+
+    interface ViewLifeListener {
+        fun onInitialized()
+    }
 }

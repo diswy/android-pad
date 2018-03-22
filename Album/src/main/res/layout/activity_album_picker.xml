@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <me.xiaopan.sketch.SketchImageView
+        android:id="@+id/image_main_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/album_bgcolor"
+        />
+    <FrameLayout
+        android:id="@+id/frame_content"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

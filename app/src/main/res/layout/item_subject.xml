@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gorden.widget.selector.SelectorButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="34dp"
+    android:layout_height="34dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:s_stroke_width="1dp"
+    android:layout_gravity="center"
+    app:s_stroke_color="@color/default_lev3"
+    app:s_solid_color="@color/white"
+    app:s_radius="17dp"
+    android:text="1"
+    android:layout_margin="10dp"
+    android:textSize="20sp"
+    >
+
+</gorden.widget.selector.SelectorButton>

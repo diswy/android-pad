@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxEms="10"
+            android:text="点点作业"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:onClick="backTop"
+            android:src="@drawable/ic_back" />
+        <ImageButton
+            android:id="@+id/btn_more"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_more"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/lin_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:layout_margin="5dp"
+        android:background="#662ed058"
+        >
+        <ImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_play1"
+            android:background="@color/transparent"
+            />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        <TextView
+            android:id="@+id/text_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:text="00:00/23:00"/>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pagerContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom">
+
+            <com.cqebd.student.widget.AnswerCardView1
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:behavior_hideable="true"
+                android:background="@color/white_p"
+                app:behavior_peekHeight="300dp"
+                app:layout_insetEdge="bottom"
+                app:layout_behavior="@string/bottom_sheet_behavior" />
+
+            <ImageView
+                android:id="@+id/handlebg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/cardView"
+                app:layout_anchorGravity="center_horizontal|top"
+                app:layout_dodgeInsetEdges="bottom"
+                android:src="@drawable/icon_answer_handle_close"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerItem"
+                android:layout_width="match_parent"
+                app:behavior_hideable="true"
+                android:background="#f0f0f0"
+                android:layout_height="300dp"
+                app:layout_behavior="@string/bottom_sheet_behavior"/>
+        </android.support.design.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/text_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="当前不能答题,请先观看视频"
+            android:background="#33ff0000"
+            android:padding="3dp"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            />
+    </FrameLayout>
+    <View style="@style/horizontalDivider"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/view_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/answer_btn_padding"
+            android:paddingTop="@dimen/answer_btn_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/icon_answer_finish"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="交卷"
+                android:textColor="@color/text_color_gray" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/view_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/answer_btn_padding"
+            android:paddingTop="@dimen/answer_btn_padding">
+
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/icon_answer_time"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@color/text_color_gray" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/view_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/answer_btn_padding"
+            android:paddingTop="@dimen/answer_btn_padding">
+
+            <TextView
+                android:id="@+id/text_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/icon_answer_location"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="0/0"
+                android:textColor="@color/text_color_gray" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

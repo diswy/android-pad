@@ -8,4 +8,5 @@ data class ExaminationPaperInfo(val Id:Int,
                                 val Name:String,
                                 val SubjectTypeName:String,
                                 val SubjectTypeId:Int,
-                                val Count:Int)
+                                val Count:Int,
+                                val QuestionGruop:List<QuestionGroupInfo> = ArrayList())

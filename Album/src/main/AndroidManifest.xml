@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="gorden.album">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application android:allowBackup="true"
+        android:largeHeap="true"
+        android:supportsRtl="true">
+        <activity android:name=".AlbumPickerActivity" android:screenOrientation="portrait" android:theme="@style/ALbumPickerStyle"/>
+        <activity android:name=".crop.CropImageActivity" android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

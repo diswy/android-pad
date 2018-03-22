@@ -4,28 +4,42 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.support.v4.app.ActivityCompat
+import android.content.Intent
+import android.os.Parcelable
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import com.cqebd.student.MainActivity
+import com.cqebd.student.app.App
+import com.cqebd.student.constant.Constant
 import com.cqebd.student.db.ExDataBase
 import com.cqebd.student.db.dao.AttachmentDao
+import com.cqebd.student.http.NetApi
+import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.tools.toastError
+import com.cqebd.student.ui.AnswerActivity
+import com.cqebd.student.ui.AttachmentActivity
 import com.cqebd.student.ui.VideoActivity
+import com.cqebd.student.vo.entity.BaseBean
+import com.cqebd.student.vo.entity.QuestionGroupInfo
+import com.cqebd.student.vo.entity.QuestionInfo
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.student.widget.LoadingDialog
+import gorden.lib.anko.static.logError
 import gorden.lib.anko.static.startActivity
+import gorden.rxbus.RxBus
+import io.reactivex.internal.operators.flowable.FlowableSingle
+import io.reactivex.schedulers.Schedulers
+import java.util.ArrayList
 
 /**
  * 描述
  * Created by gorden on 2018/3/20.
  */
 class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
+    private val attachmentDao by lazy { App.getDaoSession().attachmentDao }
     private var previewPromptFormat = "此为计时%s分钟限时答题，中途不能退出 ，是否答题"
     private val loadingDialog by lazy { LoadingDialog() }
-    private val attachmentDao: AttachmentDao by lazy { ExDataBase.getInstance().attachmentDao() }
 
     /**
      * 开始答题
@@ -34,11 +48,12 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
     fun startAnswer(activity: AppCompatActivity,skipAttachment:Boolean = false){
         if (info.attachments!=null&& info.attachments.isNotEmpty()&&!skipAttachment){
             info.attachments.forEach {
-                val attachment = attachmentDao.queryAttachment(info.PapersId.toString().plus(loginId))
-                val count = attachment?.watchCount ?: 0
+                val attachment = attachmentDao.queryBuilder().where(AttachmentDao.Properties.Id.eq(it.examinationPapersId.toString().plus(loginId))).build().unique()
+                val count = attachment?.watchCount?:0
+
                 if (it.canWatchTimes==0||count<it.canWatchTimes){
-                    activity.startActivity<VideoActivity>("papers" to true,
-                            "taskInfo" to info)
+                    activity.startActivity<AttachmentActivity>("papers" to true,
+                            "taskInfo" to info,"attachment" to info.attachments)
                     return
                 }
             }
@@ -55,7 +70,7 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
         }else{
             AlertDialog.Builder(activity).setMessage("答题时间已结束,将为你自动交卷")
                     .setPositiveButton("知道了",null)
-                    .setOnDismissListener { endWork(activity) }
+                    .setOnDismissListener { endWork() }
                     .show()
         }
 
@@ -72,7 +87,11 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
                         .observe(activity, Observer {
                             if (it?.isSuccessful()==true){
                                 loadingDialog.dismiss()
-//                                activity.startActivity<MainActivity>("submitMode" to submitMode)
+                                val intent = Intent(activity,AnswerActivity::class.java)
+                                intent.putExtra("submitMode",submitMode)
+                                putWorkData(intent, it.body!![0].QuestionGruop, info)
+                                activity.startActivity(intent)
+                                RxBus.get().send(Constant.BUS_WORKTASK_CHANGE)
                             }else{
                                 loadingDialog.dismiss()
                                 toastError(it?.errorMessage)
@@ -86,8 +105,29 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
         })
 
     }
-    fun endWork(activity: Activity){
+    private fun endWork(){
+        com.cqebd.student.http.NetClient.createApi(NetApi::class.java).endWork(info.TaskId.toInt())
+                .enqueue(object :NetCallBack<BaseBean>(){
+                    override fun onSucceed(response: BaseBean?) {
+                        RxBus.get().send(Constant.BUS_WORKTASK_CHANGE)
+                        RxBus.get().send(Constant.BUS_FINISH_PREVIEW)
+                    }
 
+                    override fun onFailure() {
+                    }
+        })
+    }
+
+    fun putWorkData(data: Intent,
+                    questionGroupInfos: List<QuestionGroupInfo>,
+                    taskInfo: WorkInfo): Intent {
+        val infos = ArrayList<QuestionInfo>()
+        for (groupInfo in questionGroupInfos) {
+            infos.addAll(groupInfo.getQuestion())
+        }
+        data.putExtra(Constant.TASK_INFO, taskInfo)
+        data.putParcelableArrayListExtra(Constant.QUESTION_INFO, infos as ArrayList<out Parcelable>)
+        return data
     }
 
     class Factory(private val info: WorkInfo) : ViewModelProvider.Factory {
