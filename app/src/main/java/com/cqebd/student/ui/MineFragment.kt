@@ -75,6 +75,10 @@ class MineFragment : BaseFragment() {
         img_avatar.setOnClickListener {
             Album.create().single().start(this)
         }
+        item_about.setOnClickListener {
+            startActivity<AboutActivity>()
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

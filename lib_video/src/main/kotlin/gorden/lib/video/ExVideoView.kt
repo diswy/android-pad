@@ -6,10 +6,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Color
-import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.net.Uri
-import android.os.Build
 import android.util.AttributeSet
 import android.view.*
 import android.widget.FrameLayout
@@ -17,12 +15,13 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.anko.static.dp
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -66,6 +65,12 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * @saveProgress.second 用于存储的Key
      */
     var saveProgress:Pair<Boolean,String?> = false to null
+    set(value) {
+        if (field.first){
+            saveProgress(mPlayer?.contentPosition?:0)
+        }
+        field = value
+    }
 
 
     constructor(context: Context?) : super(context) {
@@ -178,6 +183,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         mediaController.isEnabled = true
 
         if (play){
+            logError("准备播放")
             mPlayer?.playWhenReady = true
             requestAudioFocus()
         }
@@ -196,6 +202,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         }
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            logError("playWhenReady  $playWhenReady")
             if (playWhenReady) {
                 (context as? Activity)?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
@@ -214,6 +221,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
                     loadingView.visibility = View.GONE
                     onCompletionListener?.invoke()
                     saveProgress(0)
+                    release(true)
+                    mediaController.show(0)
                 }
                 Player.STATE_IDLE->{
                     loadingView.visibility = View.GONE
@@ -225,30 +234,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
             Toast.makeText(context,"视频播放错误",Toast.LENGTH_SHORT).show()
             release(false)
         }
-
-        override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
-            super.onTracksChanged(trackGroups, trackSelections)
-        }
     }
 
     /**
      * 获取音频焦点
      */
     private fun requestAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            audioManager.requestAudioFocus(AudioFocusRequest.Builder(AudioManager.STREAM_MUSIC).setFocusGain(AudioManager.AUDIOFOCUS_GAIN)
-                    .setOnAudioFocusChangeListener {
-                        if (it == AudioManager.AUDIOFOCUS_LOSS) {
-                            pause()
-                        }
-                    }
-                    .build())
-        } else {
-            audioManager.requestAudioFocus({
-                if (it == AudioManager.AUDIOFOCUS_LOSS)
-                    pause()
-            }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
-        }
+        audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -306,6 +298,18 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
             mPlayer = null
             mediaController.release()
         }
+    }
+
+    /**
+     * 用户按返回键时调用该方法
+     * @return true videoView消耗掉该返回事件，用于退出全屏
+     */
+    fun onBackPressed():Boolean{
+        if (screenMode== SCREEN_FULL){
+            exitFullScreen()
+            return true
+        }
+        return false
     }
 
     /**

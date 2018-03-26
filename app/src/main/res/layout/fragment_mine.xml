@@ -158,6 +158,7 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/item_about"
             android:gravity="center"
             android:layout_height="80dp"
             app:layout_columnWeight="1"

@@ -35,6 +35,12 @@ class VideoActivity : BaseActivity() {
         videoView.onStop()
     }
 
+    override fun onBackPressed() {
+        if (videoView.onBackPressed())
+            return
+        super.onBackPressed()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
     }

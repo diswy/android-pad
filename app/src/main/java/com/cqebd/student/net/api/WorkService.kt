@@ -6,6 +6,7 @@ import com.cqebd.student.tools.loginId
 import com.cqebd.student.vo.entity.ExaminationPaperInfo
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.vo.entity.WorkInfo
+import com.cqebd.student.vo.entity.WrongQuestion
 import com.google.gson.JsonObject
 import retrofit2.http.*
 
@@ -35,6 +36,17 @@ interface WorkService {
             @Field("status") status: Int?,
             @Field("pageindex") pageIndex: Int,
             @Field("pagesieze") pageSize: Int):LiveData<ApiResponse<List<WorkInfo>>>
+
+    /**
+     * 获取错题本列表
+     */
+    @POST("api/Students/ErrorQuestionsList")
+    @FormUrlEncoded
+    fun getWrongQuestionList(
+            @Field("userid") loginId: Long,
+            @Field("SubjectTypeID") SubjectTypeID: Int?,
+            @Field("ExaminationPapersTypeID") ExaminationPapersTypeID: Int?,
+            @Field("status") status: Int?): LiveData<ApiResponse<List<WrongQuestion>>>
 
     /**
      * 获取红花数量

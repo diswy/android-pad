@@ -11,7 +11,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
@@ -151,7 +150,7 @@ class HomeFragment : BaseFragment() {
             startActivity<ClassScheduleActivity>()
         }
         lin_wrong_book.setOnClickListener {
-            startActivity<VideoActivity>()
+            startActivity<WrongQuestionActivity>()
             Snackbar.make(lin_share_work, "错题本", Snackbar.LENGTH_SHORT).show()
         }
         lin_my_subscription.setOnClickListener {
