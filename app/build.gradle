@@ -18,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary= true
+        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
     }
@@ -37,7 +37,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    androidExtensions{
+    androidExtensions {
         experimental = true
     }
 }
@@ -55,6 +55,7 @@ dependencies {
     implementation deps.support.gridlayout
     implementation deps.support.vector_drawable
     implementation deps.lifecycle.extensions
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     kapt deps.lifecycle.compiler
     implementation deps.room.runtime
     kapt deps.room.compiler

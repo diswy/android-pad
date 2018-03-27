@@ -9,18 +9,18 @@ import android.graphics.Color
 import android.media.AudioManager
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.anko.static.dp
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
@@ -50,7 +50,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
     //当前播放位置,用于恢复播放进度
     private var contentPosition: Long = 0
-    private var contentDuration:Long = 0
+    private var contentDuration: Long = 0
     private var mPlayer: SimpleExoPlayer? = null
 
     /*----------------------open parameter-------------------------*/
@@ -64,13 +64,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * @saveProgress.first 是否保存
      * @saveProgress.second 用于存储的Key
      */
-    var saveProgress:Pair<Boolean,String?> = false to null
-    set(value) {
-        if (field.first){
-            saveProgress(mPlayer?.contentPosition?:0)
+    var saveProgress: Pair<Boolean, String?> = false to null
+        set(value) {
+            if (field.first) {
+                saveProgress(mPlayer?.contentPosition ?: 0)
+            }
+            field = value
         }
-        field = value
-    }
 
 
     constructor(context: Context?) : super(context) {
@@ -165,24 +165,24 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
     private fun openVideo(play: Boolean = true) {
         release()
-        if (onInterceptPlayingListener?.invoke()==true||mUri==null) return
+        if (onInterceptPlayingListener?.invoke() == true || mUri == null) return
 
         mPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
         mPlayer?.setVideoTextureView(renderView.getView())
         mPlayer?.audioAttributes = AudioAttributes.DEFAULT
         mPlayer?.addListener(componentListener)
         mPlayer?.addVideoListener(componentListener)
-        val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
+        val mediaSource = buildMediaSource(mUri!!)
 
-        if (contentPosition>0){
+        if (contentPosition > 0) {
             mPlayer?.seekTo(contentPosition)
-        }else if (saveProgress.first){
+        } else if (saveProgress.first) {
             mPlayer?.seekTo(loadProgress())
         }
-        mPlayer?.prepare(mediaSource,false,false)
+        mPlayer?.prepare(mediaSource, false, false)
         mediaController.isEnabled = true
 
-        if (play){
+        if (play) {
             logError("准备播放")
             mPlayer?.playWhenReady = true
             requestAudioFocus()
@@ -209,29 +209,29 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
                 (context as? Activity)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
 
-            when(playbackState){
-                Player.STATE_READY->{
+            when (playbackState) {
+                Player.STATE_READY -> {
                     loadingView.visibility = View.GONE
-                    contentDuration = mPlayer?.duration?:0
+                    contentDuration = mPlayer?.duration ?: 0
                 }
-                Player.STATE_BUFFERING->{
+                Player.STATE_BUFFERING -> {
                     loadingView.visibility = View.VISIBLE
                 }
-                Player.STATE_ENDED->{
+                Player.STATE_ENDED -> {
                     loadingView.visibility = View.GONE
                     onCompletionListener?.invoke()
                     saveProgress(0)
                     release(true)
                     mediaController.show(0)
                 }
-                Player.STATE_IDLE->{
+                Player.STATE_IDLE -> {
                     loadingView.visibility = View.GONE
                 }
             }
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
-            Toast.makeText(context,"视频播放错误",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "视频播放错误", Toast.LENGTH_SHORT).show()
             release(false)
         }
     }
@@ -275,9 +275,9 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     /**
      * 释放ExoPlayer
      */
-    private fun release(clearPosition:Boolean = true) {
+    private fun release(clearPosition: Boolean = true) {
         mPlayer?.let {
-            if (clearPosition){
+            if (clearPosition) {
                 contentPosition = 0
                 contentDuration = 0
             }
@@ -290,7 +290,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     /**
      * Activity or Fragment onStop release(true)
      */
-    fun onStop(){
+    fun onStop() {
         mPlayer?.let {
             contentPosition = it.currentPosition
             saveProgress(contentPosition)
@@ -304,8 +304,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * 用户按返回键时调用该方法
      * @return true videoView消耗掉该返回事件，用于退出全屏
      */
-    fun onBackPressed():Boolean{
-        if (screenMode== SCREEN_FULL){
+    fun onBackPressed(): Boolean {
+        if (screenMode == SCREEN_FULL) {
             exitFullScreen()
             return true
         }
@@ -335,10 +335,10 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * 保存播放进度
      */
     private fun saveProgress(progress: Long) {
-        if (saveProgress.first){
-            if (progress>0){
+        if (saveProgress.first) {
+            if (progress > 0) {
                 mPreferences.edit().putLong(saveProgress.second, progress).apply()
-            }else{
+            } else {
                 mPreferences.edit().remove(saveProgress.second).apply()
             }
         }
@@ -363,17 +363,17 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     override val isPlaying: Boolean
         get() = mPlayer?.playbackState != Player.STATE_ENDED
                 && mPlayer?.playbackState != Player.STATE_IDLE
-                && mPlayer?.playWhenReady==true
+                && mPlayer?.playWhenReady == true
     override val bufferPercentage: Int
-        get() = mPlayer?.bufferedPercentage?:0
+        get() = mPlayer?.bufferedPercentage ?: 0
 
     override val mediaType: String
         get() = ""
 
     override fun start() {
-        if (mPlayer==null){
+        if (mPlayer == null) {
             openVideo(true)
-        }else{
+        } else {
             mPlayer?.playWhenReady = true
         }
     }
@@ -419,12 +419,24 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         onCompletionListener = listener
     }
 
-    private var onInterceptPlayingListener:(()->Boolean)?=null
+    private var onInterceptPlayingListener: (() -> Boolean)? = null
     /**
      * 是否拦截播放，用于处理特殊情况
      * @return true 拦截播放
      */
-    fun setOnInterceptPlayingListener(listener: () -> Boolean){
+    fun setOnInterceptPlayingListener(listener: () -> Boolean) {
         onInterceptPlayingListener = listener
+    }
+
+    /**
+     * 添加HLS流的支持
+     */
+    private fun buildMediaSource(uri: Uri): MediaSource {
+        @C.ContentType
+        val type:Int = Util.inferContentType(uri)
+        return when(type){
+            C.TYPE_HLS -> HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
+            else -> ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
+        }
     }
 }

@@ -151,10 +151,9 @@ class HomeFragment : BaseFragment() {
         }
         lin_wrong_book.setOnClickListener {
             startActivity<WrongQuestionActivity>()
-            Snackbar.make(lin_share_work, "错题本", Snackbar.LENGTH_SHORT).show()
         }
         lin_my_subscription.setOnClickListener {
-            Snackbar.make(lin_share_work, "我的订阅", Snackbar.LENGTH_SHORT).show()
+            startActivity<SubscribeActivity>()
         }
 
         frame_subject.setOnClickListener {

@@ -16,6 +16,7 @@ import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.VideoListViewModel
 import com.cqebd.student.vo.entity.VideoInfo
 import com.cqebd.teacher.vo.Status
+import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.item_video.view.*
 
@@ -80,6 +81,9 @@ class VideoFragment : BaseFragment() {
             }
         }
         adapter.bindToRecyclerView(recyclerView)
+        adapter.setOnItemClickListener { _, _, position ->
+            startActivity<VideoDetailsActivity>("data" to adapter.getItem(position))
+        }
         getCourseList()
     }
 

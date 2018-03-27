@@ -18,7 +18,7 @@ import java.text.ParseException
  * Common class used by API responses.
  * Created by gorden on 2017/11/8.
  */
-class ApiResponse<T> {
+open class ApiResponse<T> {
 
     var code: Int
     var body: T? = null

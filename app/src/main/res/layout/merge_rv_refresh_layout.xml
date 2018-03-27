@@ -1,0 +1,29 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cqebd.student.ui.fragment.CourseListFragment">
+
+    <gorden.refresh.KRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cqebd.student.widget.refresh.RefreshHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager" />
+    </gorden.refresh.KRefreshLayout>
+
+    <com.cqebd.student.widget.PageLoadView
+        android:id="@+id/pageLoadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</merge>
