@@ -52,7 +52,7 @@ class AttachmentActivity : BaseActivity() {
 
             val info = StringBuilder()
             for (attachment in attachmentList) {
-                XLog.e("id  =   " + attachment.id + "   " + attachment.examinationPapersId)
+//                XLog.e("id  =   " + attachment.id + "   " + attachment.examinationPapersId)
                 info.append(attachment.remarks)
             }
             text_info.text = info.toString()

@@ -5,13 +5,11 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
@@ -19,7 +17,6 @@ import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.formatTimeYMD
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoActivity
-import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.viewmodel.PeriodListViewModel
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.teacher.vo.Status
@@ -28,18 +25,16 @@ import kotlinx.android.synthetic.main.item_course.view.*
 import kotlinx.android.synthetic.main.merge_rv_refresh_layout.*
 
 
-class CourseListFragment : BaseFragment() {
+class RecommendFragment : BaseFragment() {
     private lateinit var periodListViewModel: PeriodListViewModel
     private lateinit var adapter: BaseQuickAdapter<PeriodInfo, BaseViewHolder>
     private var periodInfo: List<PeriodInfo>? = null
-    private var courseId: Long = 0
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_course_list, container, false)
+        return inflater?.inflate(R.layout.fragment_recommend, container, false)
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        courseId = arguments!!.getLong("id")
 
         periodListViewModel = ViewModelProviders.of(this).get(PeriodListViewModel::class.java)
 
@@ -93,30 +88,30 @@ class CourseListFragment : BaseFragment() {
             }
         }
 
-        getPeriodList(courseId)
+
+        getPeriodListRecommend()
     }
 
     override fun bindEvents() {
         refreshLayout.setKRefreshListener {
-            getPeriodList(courseId)
+            getPeriodListRecommend()
         }
     }
 
-    private fun getPeriodList(id: Long) {
-        periodListViewModel.getPeriodList(id).observe(this, Observer {
+
+    private fun getPeriodListRecommend() {
+        periodListViewModel.getPeriodListRecommend().observe(this, Observer {
             when (it?.status) {
                 Status.SUCCESS -> {
                     refreshLayout.refreshComplete(true)
                     pageLoadView.hide()
                     periodInfo = it.data
-                    periodInfo?.let {
-                        periodListViewModel.setData(it)
-                    }
+                    periodListViewModel.setRecommendData(periodInfo!!)
                 }
                 Status.ERROR -> {
                     refreshLayout.refreshComplete(false)
                     pageLoadView.error({
-                        getPeriodList(id)
+                        getPeriodListRecommend()
                     })
                 }
                 Status.LOADING -> pageLoadView.load()

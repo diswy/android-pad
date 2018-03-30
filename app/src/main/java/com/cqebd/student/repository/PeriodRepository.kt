@@ -19,4 +19,14 @@ class PeriodRepository {
             }
         }.asLiveData
     }
+
+    fun getPeriodListRecommend():LiveData<Resource<List<PeriodInfo>>>{
+        return object : NetworkResource<List<PeriodInfo>>() {
+            override fun createCall(): LiveData<ApiResponse<List<PeriodInfo>>> {
+                return NetClient.videoService().getPeriodListRecommend(10,2)
+            }
+        }.asLiveData
+    }
+
+
 }

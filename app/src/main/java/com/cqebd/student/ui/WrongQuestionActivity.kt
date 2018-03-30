@@ -15,6 +15,7 @@ import com.cqebd.student.tools.*
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.vo.entity.WrongQuestion
 import com.cqebd.teacher.vo.Status
+import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_wrong_question.*
 import kotlinx.android.synthetic.main.item_wrong_question.view.*
 
@@ -25,6 +26,10 @@ import kotlinx.android.synthetic.main.item_wrong_question.view.*
 class WrongQuestionActivity : BaseActivity() {
     private lateinit var filterViewModel: FilterViewModel
     private val pageProcess = PageProcess.build<WrongQuestion> { it.StudentQuestionsTasksID}
+    private lateinit var adapter: BaseQuickAdapter<WrongQuestion, BaseViewHolder>
+
+
+
     override fun setContentView() {
         setContentView(R.layout.activity_wrong_question)
     }
@@ -47,7 +52,7 @@ class WrongQuestionActivity : BaseActivity() {
         })
         getWrongQuestionList()
 
-        recyclerView.adapter = object : BaseQuickAdapter<WrongQuestion, BaseViewHolder>(R.layout.item_wrong_question, pageProcess.data) {
+        adapter = object : BaseQuickAdapter<WrongQuestion, BaseViewHolder>(R.layout.item_wrong_question, pageProcess.data) {
             val subjectBg = arrayOf(R.drawable.bg_subject1, R.drawable.bg_subject2, R.drawable.bg_subject3, R.drawable.bg_subject4)
             override fun convert(helper: BaseViewHolder?, item: WrongQuestion) {
                 helper?.itemView?.apply {
@@ -59,6 +64,12 @@ class WrongQuestionActivity : BaseActivity() {
                     text_subject.setBackgroundResource(subjectBg[helper.layoutPosition % 4])
                 }
             }
+        }
+        recyclerView.adapter = adapter
+
+        adapter.setOnItemClickListener { adapter, view, position ->
+            val itemData = adapter.data[position] as WrongQuestion
+            startActivity<WrongQuestionDetailsActivity>("taskId" to itemData.StudentQuestionsTasksID,"title" to itemData.Name)
         }
     }
 

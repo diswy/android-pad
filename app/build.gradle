@@ -74,12 +74,12 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-    compile 'gorden.refresh:refresh-kotlin:1.32'
-    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    implementation 'gorden.refresh:refresh-kotlin:1.32'
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    implementation 'com.orhanobut:logger:2.2.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:multidex:1.0.3'
 }

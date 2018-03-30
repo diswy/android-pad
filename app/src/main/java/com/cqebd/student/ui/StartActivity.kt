@@ -28,8 +28,10 @@ class StartActivity : BaseActivity() {
         RxCounter.tick(1).doOnComplete {
             if (isLogin()){
                 startActivity<MainActivity>()
+                finish()
             }else{
                 startActivity<LoginActivity>()
+                finish()
             }
         }.subscribe()
     }

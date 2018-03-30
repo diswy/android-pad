@@ -8,8 +8,6 @@ import com.cqebd.student.vo.entity.CourseInfo
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.PeriodResponse
 import com.cqebd.student.vo.entity.VideoInfo
-import com.google.gson.JsonObject
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -23,21 +21,41 @@ interface VideoService {
      */
     @FormUrlEncoded
     @POST("api/CoursePeriod/GetCourseList")
-    fun getCourseList(@Field("Type") type: Int = 2, @Field("studentid") userId: Long = loginId): LiveData<ApiResponse<List<VideoInfo>>>
+    fun getCourseList(
+            @Field("Type") type: Int = 2,
+            @Field("studentid") userId: Long = loginId)
+            : LiveData<ApiResponse<List<VideoInfo>>>
 
     /**
      * 获取课程表
      */
     @FormUrlEncoded
     @POST("api/CoursePeriod/GetPeriodList")
-    fun getPeriodListMonth(@Field("Month") date: String, @Field("studentid") userId: Long = loginId): LiveData<ApiResponse<List<CourseInfo>>>
+    fun getPeriodListMonth(
+            @Field("Month") date: String,
+            @Field("studentid") userId: Long = loginId)
+            : LiveData<ApiResponse<List<CourseInfo>>>
 
     /**
      * 获取最近课程列表
      */
     @FormUrlEncoded
     @POST("api/CoursePeriod/GetPeriodList")
-    fun getPeriodList(@Field("CourseId") id: Long, @Field("studentid") userId: Long = loginId): LiveData<ApiResponse<List<PeriodInfo>>>
+    fun getPeriodList(
+            @Field("CourseId") id: Long,
+            @Field("studentid") userId: Long = loginId)
+            : LiveData<ApiResponse<List<PeriodInfo>>>
+
+    /**
+     * 获取推荐课程列表
+     */
+    @FormUrlEncoded
+    @POST("api/CoursePeriod/GetPeriodList")
+    fun getPeriodListRecommend(
+            @Field("Status") status: Int,
+            @Field("Type") type: Int,
+            @Field("studentid") userId: Long = loginId)
+            : LiveData<ApiResponse<List<PeriodInfo>>>
 
     /**
      * 课程订阅
@@ -45,18 +63,27 @@ interface VideoService {
      */
     @FormUrlEncoded
     @POST("api/SubscribeCourse/Add")
-    fun addSubscribe(@Field("CourseId") id: Long, @Field("Status") status: Int, @Field("StudentId") studentid: Long = loginId): Call<BaseResponse<String>>
+    fun addSubscribe(
+            @Field("CourseId") id: Long,
+            @Field("Status") status: Int,
+            @Field("StudentId") studentid: Long = loginId)
+            : Call<BaseResponse<String>>
 
     /**
      * 获取订阅列表
      */
     @GET("api/SubscribeCourse/SubscribeCourseList")
-    fun getSubscribeList(@Query("studentid") studentid: Long = loginId): LiveData<ApiResponse<List<CourseInfo>>>
+    fun getSubscribeList(
+            @Query("studentid") studentid: Long = loginId)
+            : LiveData<ApiResponse<List<VideoInfo>>>
 
     /**
      * 获取课时详情
      */
     @GET("api/CoursePeriod/GetPeriodByID")
-    fun getPeriodByID(@Query("id") id: Int, @Query("studentid") studentid: Long = loginId): Call<BaseResponse<PeriodResponse>>
+    fun getPeriodByID(
+            @Query("id") id: Int,
+            @Query("studentid") studentid: Long = loginId)
+            : Call<BaseResponse<PeriodResponse>>
 
 }

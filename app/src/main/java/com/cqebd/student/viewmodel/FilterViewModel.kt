@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.window_filter.view.*
 
 /**
  * 筛选ViewModel
+ * ps:遗留代码，此Model操作View，不推荐，最好是分开处理
  */
 class FilterViewModel : ViewModel() {
     //科目
@@ -31,6 +32,12 @@ class FilterViewModel : ViewModel() {
     var dateTime: MutableLiveData<FilterData> = MutableLiveData()
     //状态
     var subscribeStatus: MutableLiveData<FilterData> = MutableLiveData()
+    // 作业分享 年级
+    var shareHomeworkGrade: MutableLiveData<FilterData> = MutableLiveData()
+    // 作业分享 问题类型
+    var problemType: MutableLiveData<FilterData> = MutableLiveData()
+    // 作业分享 时间
+    var shareHomeworkDate: MutableLiveData<FilterData> = MutableLiveData()
 
     var yOff:Int = 0.5f.dp
 
@@ -85,6 +92,27 @@ class FilterViewModel : ViewModel() {
      */
     fun filterSubscribeStatus(view: View) {
         filter(view, subscribeStatus, FilterData.subscribeStatus)
+    }
+
+    /**
+     * 作业分享 年级筛选
+     */
+    fun filterShareHomeworkGrade(view: View) {
+        filter(view, shareHomeworkGrade, FilterData.gradeHomework)
+    }
+
+    /**
+     * 作业分享 题型筛选
+     */
+    fun filterProblemType(view: View) {
+        filter(view, problemType, FilterData.problemType)
+    }
+
+    /**
+     * 作业分享 时间筛选
+     */
+    fun filterShareHomeworkDate(view: View) {
+        filter(view, shareHomeworkDate, FilterData.dateFilter)
     }
 
     private fun filter(view: View, filterData: MutableLiveData<FilterData>, filterDataList: List<FilterData>) {

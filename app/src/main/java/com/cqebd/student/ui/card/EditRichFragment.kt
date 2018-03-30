@@ -33,6 +33,7 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.cqebd.student.app.BaseFragment
 import gorden.album.AlbumPicker
+import gorden.lib.anko.static.logError
 import gorden.util.XLog
 import gorden.widget.dialog.BottomMenuDialog
 import kotlinx.android.synthetic.main.item_answer_edit_pager.*
@@ -108,6 +109,7 @@ class EditRichFragment : BaseFragment() {
 
     fun build(type: AnswerType, studentanswer: StudentAnswer, localeImageMap: MutableMap<String, String>) {
         XLog.e("answer  " + studentanswer.Answer)
+        logError()
         studentAnswer = studentanswer
         ll_pics.visibility = View.VISIBLE
         this.type = type

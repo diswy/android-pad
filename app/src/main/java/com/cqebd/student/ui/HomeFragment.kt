@@ -143,7 +143,7 @@ class HomeFragment : BaseFragment() {
 
     override fun bindEvents() {
         lin_share_work.setOnClickListener {
-            Snackbar.make(lin_share_work, "作业分享", Snackbar.LENGTH_SHORT).show()
+            startActivity<ShareHomeworkActivity>()
         }
         lin_class_schedule.setOnClickListener {
             //课程表
@@ -157,13 +157,13 @@ class HomeFragment : BaseFragment() {
         }
 
         frame_subject.setOnClickListener {
-            filterViewModel.filterSubject(frame_subject)
+            filterViewModel.filterSubject(pop_window)
         }
         frame_job_type.setOnClickListener {
-            filterViewModel.filterJobType(frame_job_type)
+            filterViewModel.filterJobType(pop_window)
         }
         frame_job_status.setOnClickListener {
-            filterViewModel.filterJobStatus(frame_job_status)
+            filterViewModel.filterJobStatus(pop_window)
         }
 
         refreshLayout.setKRefreshListener {

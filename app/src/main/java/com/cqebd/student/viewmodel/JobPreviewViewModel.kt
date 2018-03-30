@@ -1,6 +1,5 @@
 package com.cqebd.student.viewmodel
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
@@ -10,7 +9,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import com.cqebd.student.app.App
 import com.cqebd.student.constant.Constant
-import com.cqebd.student.db.ExDataBase
 import com.cqebd.student.db.dao.AttachmentDao
 import com.cqebd.student.http.NetApi
 import com.cqebd.student.http.NetCallBack
@@ -19,18 +17,14 @@ import com.cqebd.student.tools.loginId
 import com.cqebd.student.tools.toastError
 import com.cqebd.student.ui.AnswerActivity
 import com.cqebd.student.ui.AttachmentActivity
-import com.cqebd.student.ui.VideoActivity
 import com.cqebd.student.vo.entity.BaseBean
 import com.cqebd.student.vo.entity.QuestionGroupInfo
 import com.cqebd.student.vo.entity.QuestionInfo
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.student.widget.LoadingDialog
-import gorden.lib.anko.static.logError
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
-import io.reactivex.internal.operators.flowable.FlowableSingle
-import io.reactivex.schedulers.Schedulers
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 描述

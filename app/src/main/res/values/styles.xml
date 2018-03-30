@@ -13,6 +13,11 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
+    <style name="Full" parent="AppTheme" >
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
     <style name="stroke_color_btn">
         <item name="android:layout_width">0dp</item>

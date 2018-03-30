@@ -11,10 +11,7 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import com.anko.static.dp
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -130,6 +127,10 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         mediaController.setMediaPlayer(this)
         mediaController.show()
         audioManager = context?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        mediaController.setShowListener{
+            showListener?.invoke(it)
+        }
     }
 
     /**
@@ -322,7 +323,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         (context as? Activity)?.requestedOrientation = PORTRAIT_ORIENTATION
         (videoContent.parent as ViewGroup).removeView(videoContent)
         addView(videoContent, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        videoContent.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+//        videoContent.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        videoContent.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         (context as? Activity)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
@@ -438,5 +440,14 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
             C.TYPE_HLS -> HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
             else -> ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
         }
+    }
+
+    /**
+     * 显示隐藏状态监听
+     */
+    private var showListener: ((Boolean) -> Unit)? = null
+
+    fun setShowListener(listener: (Boolean) -> Unit) {
+        showListener = listener
     }
 }

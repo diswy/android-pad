@@ -33,7 +33,7 @@
 	     			android:topRightRadius="2dp"
 	     			android:bottomRightRadius="2dp"      
 	    			android:bottomLeftRadius="2dp"/>
-                <solid android:color="#3f8bff" />
+                <solid android:color="@color/colorPrimary" />
             </shape>
         </clip>
     </item>

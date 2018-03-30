@@ -79,6 +79,10 @@ class MineFragment : BaseFragment() {
             startActivity<AboutActivity>()
         }
 
+        item_my_share.setOnClickListener {
+            startActivity<BeSharedActivity>()
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

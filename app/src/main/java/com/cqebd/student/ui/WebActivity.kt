@@ -5,6 +5,7 @@ import android.view.View
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
+import com.cqebd.student.js.VideoJs
 import com.cqebd.student.widget.WebView
 import kotlinx.android.synthetic.main.activity_webview.*
 
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_webview.*
  * Created by gorden on 2018/3/8.
  */
 class WebActivity : BaseActivity() {
-    private var webView:WebView?=null
+    private var webView: WebView? = null
     override fun setContentView() {
         setContentView(R.layout.activity_webview)
         webView = WebView(App.mContext)
@@ -21,8 +22,9 @@ class WebActivity : BaseActivity() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        initWebView()
         val url = intent.getStringExtra("url")
-        webView?.load(url,object :WebView.LoadCallback{
+        webView?.load(url, object : WebView.LoadCallback {
             override fun onLoad() {
                 pageLoadView.load()
             }
@@ -49,6 +51,15 @@ class WebActivity : BaseActivity() {
             }
 
         })
+    }
+
+    private fun initWebView() {
+        val setting = webView?.settings
+        setting?.let {
+            setting.javaScriptEnabled = true// 启用JS脚本
+        }
+        webView?.addJavascriptInterface(VideoJs(this), "video")
+
     }
 
 

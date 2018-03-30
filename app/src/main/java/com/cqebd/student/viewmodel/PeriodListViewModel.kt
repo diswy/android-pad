@@ -16,14 +16,23 @@ class PeriodListViewModel: ViewModel(){
     private val repository = PeriodRepository()
 
     var videoList = MutableLiveData<List<PeriodInfo>>()
+    var videoListRecommend = MutableLiveData<List<PeriodInfo>>()
 
 
     fun getPeriodList(id:Long): LiveData<Resource<List<PeriodInfo>>> {
         return repository.getPeriodList(id)
     }
 
+    fun getPeriodListRecommend(): LiveData<Resource<List<PeriodInfo>>> {
+        return repository.getPeriodListRecommend()
+    }
+
     fun setData(videoList : List<PeriodInfo>){
         this.videoList.value = videoList
+    }
+
+    fun setRecommendData(videoListRecommend : List<PeriodInfo>){
+        this.videoListRecommend.value = videoListRecommend
     }
 
 }

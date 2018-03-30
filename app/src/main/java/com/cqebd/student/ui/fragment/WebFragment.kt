@@ -13,6 +13,7 @@ import android.widget.ZoomButtonsController
 
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.js.VideoJs
 import gorden.util.XLog
 import kotlinx.android.synthetic.main.fragment_web.*
 
@@ -60,6 +61,7 @@ class WebFragment : BaseFragment() {
         settings.defaultTextEncodingName = "UTF-8"
         //最重要的方法，一定要设置，这就是出不来的主要原因
         settings.domStorageEnabled = true
+        webView?.addJavascriptInterface(VideoJs(activity), "video")
         /**
          * 用WebView显示图片，可使用这个参数 设置网页布局类型：
          * 1、LayoutAlgorithm.NARROW_COLUMNS ：适应内容大小
