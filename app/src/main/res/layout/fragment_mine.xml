@@ -62,7 +62,7 @@
     </LinearLayout>
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:columnCount="4">
         <LinearLayout
             android:id="@+id/item_flower_list"
@@ -180,4 +180,11 @@
                 />
         </LinearLayout>
     </android.support.v7.widget.GridLayout>
+
+    <Button
+        android:text="TEST"
+        android:id="@+id/btn_test_jump"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.net.api.WorkService
+import com.cqebd.student.test.TestNetEaseActivity
 import com.cqebd.student.tools.colorForRes
 import com.cqebd.student.tools.cropPath
 import com.cqebd.student.tools.loginId
@@ -83,6 +84,9 @@ class MineFragment : BaseFragment() {
             startActivity<BeSharedActivity>()
         }
 
+        btn_test_jump.setOnClickListener {
+            startActivity<TestNetEaseActivity>()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
