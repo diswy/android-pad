@@ -1,5 +1,6 @@
 package com.cqebd.student.test;
 
+import android.Manifest;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cqebd.student.R;
+import com.cqebd.student.netease.NetEaseCache;
+import com.cqebd.student.netease.ui.ChatRoomActivity;
 import com.netease.nimlib.sdk.AbortableFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.orhanobut.logger.Logger;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class TestNetEaseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,7 +54,26 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
             case R.id.test_btn_logout:
                 break;
             case R.id.test_btn_join:
-                TestChatRoomActivity.start(this,et_number.getText().toString(),false);
+//                TestChatRoomActivity.start(this,et_number.getText().toString(),false);
+
+                RxPermissions rxPermissions = new RxPermissions(this);
+                rxPermissions
+                        .request(
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                ChatRoomActivity.start(this,et_number.getText().toString(),false);
+                                // All requested permissions are granted
+                            } else {
+                                Toast.makeText(this,"您拒绝了权限，无法开启直播，下次请允许权限",Toast.LENGTH_SHORT).show();
+                                // At least one permission is denied
+                            }
+                        });
+
+
                 break;
         }
     }
@@ -65,6 +88,8 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
                 Logger.d(param.getAccount());
                 loginRequest = null;
                 tv_status.setText("登录状态：已登录，登录账号jiangjunjuel");
+
+                NetEaseCache.setAccount("jiangjunjuel");
 
             }
 

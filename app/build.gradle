@@ -78,11 +78,11 @@ dependencies {
     implementation deps.netease.base_im
     implementation deps.netease.nrtc
     implementation deps.netease.chatroom
-
+    implementation deps.netease.avchat
+    implementation deps.netease.rts
     implementation 'org.greenrobot:greendao:3.2.0'
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     implementation 'gorden.refresh:refresh-kotlin:1.32'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
@@ -91,4 +91,5 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:multidex:1.0.3'
+    implementation files('libs/fastjson-1.1.34.android.jar')
 }

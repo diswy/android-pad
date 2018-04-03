@@ -25,7 +25,7 @@ versions.paging = "1.0.0-alpha3"
 versions.constraint_layout = "1.0.2"
 versions.arch = "1.1.0"
 versions.room = "1.0.0"
-versions.netease = "4.4.0"
+versions.netease = "5.0.0"
 
 def support = [:]
 support.app_compat = "com.android.support:appcompat-v7:$versions.support"
@@ -96,6 +96,8 @@ def netease = [:]
 netease.base_im = "com.netease.nimlib:basesdk:$versions.netease"
 netease.nrtc = "com.netease.nimlib:nrtc:$versions.netease"
 netease.chatroom = "com.netease.nimlib:chatroom:$versions.netease"
+netease.avchat = "com.netease.nimlib:avchat:$versions.netease"
+netease.rts = "com.netease.nimlib:rts:$versions.netease"
 deps.netease = netease
 
 deps.paging = "android.arch.paging:runtime:$versions.paging"

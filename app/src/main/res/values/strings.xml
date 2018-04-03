@@ -16,4 +16,21 @@
     <string name="format_video_describe">主讲老师：%1$s\n课程节数:%2$d\n开课时间：%3$s\n结束时间：%4$s</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--网易云信-->
+    <string name="nim_status_unlogin">未登录</string>
+    <string name="net_broken">当前网络不可用</string>
+    <string name="kick_out_by_master">你已被主持人请出会议</string>
+    <string name="meeting_closed">主持人已经结束了会议</string>
+    <string name="speak_reject">你已被主持人取消发言</string>
+    <string name="chatroom_status_exception">聊天室连接状态异常</string>
+    <string name="server_broken">与服务器连接断开</string>
+    <string name="logout_confirm">确定离开房间吗？</string>
+    <string name="leave">离开</string>
+    <string name="cancel">取消</string>
+    <string name="finish">结束</string>
+    <string name="interaction">互动</string>
+
+
+
 </resources>

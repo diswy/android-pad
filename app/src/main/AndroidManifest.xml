@@ -135,7 +135,8 @@
         <activity android:name=".ui.BeSharedActivity" />
         <activity android:name=".ui.WrongQuestionDetailsActivity" />
         <activity android:name=".test.TestNetEaseActivity" />
-        <activity android:name=".test.TestChatRoomActivity"></activity>
+        <activity android:name=".test.TestChatRoomActivity" />
+        <activity android:name=".netease.ui.ChatRoomActivity"></activity>
     </application>
 
 </manifest>

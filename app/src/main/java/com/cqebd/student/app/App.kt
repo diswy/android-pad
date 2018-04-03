@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex
 import com.cqebd.student.R
 import com.cqebd.student.db.dao.DaoMaster
 import com.cqebd.student.db.dao.DaoSession
+import com.cqebd.student.netease.helper.ChatRoomHelper
 import com.cqebd.student.ui.StartActivity
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.SDKOptions
@@ -16,6 +17,7 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider
 import com.netease.nimlib.sdk.uinfo.model.UserInfo
+import com.netease.nimlib.sdk.util.NIMUtil
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.BuildConfig
 import com.orhanobut.logger.Logger
@@ -66,6 +68,10 @@ class App : Application() {
 
         // 网易云信
         NIMClient.init(this, null,null)
+
+        if(NIMUtil.isMainProcess(this)){
+            ChatRoomHelper.init()
+        }
     }
 
     override fun attachBaseContext(base: Context?) {
