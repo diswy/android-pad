@@ -66,6 +66,7 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
      * 子页面
      */
     private ChatRoomFragment fragment;
+    private ChatRoomRTSFragment rtsFragment;
 
     private AbortableFuture<EnterChatRoomResultData> enterRequest;
 
@@ -297,26 +298,26 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
     }
 
     private void initRTSFragment(final ChatRoomInfo roomInfo) {
-//        rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
-//        if (rtsFragment != null) {
-//            rtsFragment.initRTSView(roomInfo.getRoomId(), roomInfo);
-//        } else {
-//            getHandler().postDelayed(() -> initRTSFragment(roomInfo), 50);
-//        }
+        rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
+        if (rtsFragment != null) {
+            rtsFragment.initRTSView(roomInfo.getRoomId(), roomInfo);
+        } else {
+            getHandler().postDelayed(() -> initRTSFragment(roomInfo), 50);
+        }
     }
 
     private void updateRTSFragment() {
-//        rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
-//        if (rtsFragment != null) {
-//            rtsFragment.initView();
-//        } else {
-//            getHandler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    updateRTSFragment();
-//                }
-//            }, 50);
-//        }
+        rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
+        if (rtsFragment != null) {
+            rtsFragment.initView();
+        } else {
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateRTSFragment();
+                }
+            }, 50);
+        }
     }
 
     // 初始化多人白板
@@ -521,9 +522,9 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
 //            messageFragment.onActivityResult(requestCode, resultCode, data);
 //        }
 //
-//        if (rtsFragment != null) {
-//            rtsFragment.onActivityResult(requestCode, resultCode, data);
-//        }
+        if (rtsFragment != null) {
+            rtsFragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -578,12 +579,12 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
 //            onlinePeopleFragment.onAcceptConfirm();
 //        }
 //
-//        if (rtsFragment == null) {
-//            rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
-//        }
-//
-//        if (rtsFragment != null) {
-//            rtsFragment.onAcceptConfirm();
-//        }
+        if (rtsFragment == null) {
+            rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
+        }
+
+        if (rtsFragment != null) {
+            rtsFragment.onAcceptConfirm();
+        }
     }
 }

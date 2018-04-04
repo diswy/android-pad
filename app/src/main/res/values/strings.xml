@@ -31,6 +31,32 @@
     <string name="finish">结束</string>
     <string name="interaction">互动</string>
 
+    <!-- 白板 -->
+    <string name="clear_all">全部清空</string>
+    <string name="play_back">上一步</string>
+    <string name="callee_reject">对方拒绝了本次请求</string>
+    <string name="target_has_end_session">对方结束白板演示</string>
+    <string name="join_tip">加入互动后可在上方涂鸦</string>
+    <string name="rts_record">多人白板录制</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
 
+    <!-- 文档 -->
+    <string name="file_list">文档库</string>
+    <string name="use">使用</string>
+    <string name="delete">刪除</string>
+    <string name="downloading">下载中...</string>
+    <string name="retry">重试</string>
+    <string name="download_to_use">下载使用</string>
+    <string name="file_footer_tip">可在教育DEMO的PC端上传文档，在移动端下载使用</string>
+    <string name="confirm_to_delete">确认删除这个文件么？</string>
+    <string name="confirm_to_close_file_share">确定关闭文档，回到纯白板模式么？</string>
+    <string name="close_file_share">关闭文档</string>
+    <string name="file_loading">加载中...</string>
+    <string name="failed_to_retry">加载失败！点击重试</string>
+
+    <string name="chat_room_rts">白板</string>
+    <string name="chat_room_message">讨论</string>
+    <string name="chat_room_online_people">成员</string>
 
 </resources>

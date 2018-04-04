@@ -88,7 +88,7 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
                 Logger.d(param.getAccount());
                 loginRequest = null;
                 tv_status.setText("登录状态：已登录，登录账号jiangjunjuel");
-
+                NetEaseCache.setContext(TestNetEaseActivity.this);
                 NetEaseCache.setAccount("jiangjunjuel");
 
             }

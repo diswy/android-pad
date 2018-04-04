@@ -32,6 +32,8 @@ import com.cqebd.student.netease.modle.FullScreenType;
 import com.cqebd.student.netease.modle.MeetingConstant;
 import com.cqebd.student.netease.modle.MeetingOptCommand;
 import com.cqebd.student.netease.session.ModuleProxy;
+import com.cqebd.student.netease.ui.tab.ChatRoomTab;
+import com.cqebd.student.netease.ui.tab.ChatRoomTabFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
@@ -109,6 +111,13 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
     private ImageView fullScreenImage; // 显示全屏按钮
     private ImageView cancelFullScreenImage; //取消全屏显示按钮
 
+    /**
+     * Tab
+     */
+    private ChatRoomTabFragment rtsFragment;
+    private ChatRoomTabFragment messageFragment;
+    private ChatRoomTabFragment onlinePeopleFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_chat_room, container, false);
@@ -118,7 +127,7 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         findViews();
-//        setupPager();
+        setupPager();
         registerObservers(true);
 //        postDelayed(new Runnable() {
 //            @Override
@@ -192,17 +201,37 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
      */
 
     private void setupPager() {
+        try {
+            if (rtsFragment == null){
+                rtsFragment = ChatRoomTab.fromTabIndex(0).clazz.newInstance();
+                rtsFragment.attachTabData(ChatRoomTab.fromTabIndex(0));
+            }
+            if (messageFragment == null){
+                messageFragment = ChatRoomTab.fromTabIndex(1).clazz.newInstance();
+                messageFragment.attachTabData(ChatRoomTab.fromTabIndex(1));
+            }
+            if (onlinePeopleFragment == null){
+                onlinePeopleFragment = ChatRoomTab.fromTabIndex(2).clazz.newInstance();
+                onlinePeopleFragment.attachTabData(ChatRoomTab.fromTabIndex(2));
+            }
+
+        } catch (java.lang.InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
         tabs.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return null;
+                        return rtsFragment;
                     case 1:
-                        return null;
+                        return messageFragment;
                     case 2:
-                        return null;
+                        return onlinePeopleFragment;
                 }
                 return null;
             }
