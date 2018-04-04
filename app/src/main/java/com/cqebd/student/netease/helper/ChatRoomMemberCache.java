@@ -279,9 +279,9 @@ public class ChatRoomMemberCache {
             return;
         }
 
-       if (map.containsKey(account)) {
-           map.remove(account);
-       }
+        if (map.containsKey(account)) {
+            map.remove(account);
+        }
     }
 
     /**
@@ -337,7 +337,6 @@ public class ChatRoomMemberCache {
         }
         return members;
     }
-
 
 
     /********************************** 在线教育画布缓存 *******************************/
@@ -426,6 +425,7 @@ public class ChatRoomMemberCache {
 
     /**
      * 清除该房间所有举手状态
+     *
      * @param roomId 房间id
      */
     public void clearAllHandsUp(String roomId) {
@@ -633,8 +633,7 @@ public class ChatRoomMemberCache {
                 for (MeetingControlObserver observer : meetingControlObservers) {
                     observer.onReject(roomId);
                 }
-            } else
-            if (command == MeetingOptCommand.SPEAK_REQUEST.getValue()) {
+            } else if (command == MeetingOptCommand.SPEAK_REQUEST.getValue()) {
                 // 有人举手发言
                 for (MeetingControlObserver observer : meetingControlObservers) {
                     observer.onHandsUp(roomId, customNotification.getFromAccount());
@@ -650,12 +649,19 @@ public class ChatRoomMemberCache {
 
     public interface MeetingControlObserver {
         void onAccept(String roomID);
+
         void onReject(String roomID);
+
         void onPermissionResponse(String roomId, List<String> accounts);
+
         void onSaveMemberPermission(String roomID, List<String> accounts);
+
         void onSendMyPermission(String roomID, String toAccount);
+
         void onHandsUp(String roomID, String account);
+
         void onHandsDown(String roomID, String account);
+
         void onStatusNotify(String roomID, List<String> accounts);
     }
 

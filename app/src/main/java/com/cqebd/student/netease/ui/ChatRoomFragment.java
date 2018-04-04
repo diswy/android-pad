@@ -1,7 +1,6 @@
 package com.cqebd.student.netease.ui;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cqebd.student.R;
 import com.cqebd.student.netease.NetEaseCache;
@@ -38,7 +36,6 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
-import com.netease.nimlib.sdk.avchat.AVChatStateObserver;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole;
@@ -60,15 +57,12 @@ import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.rts.RTSCallback;
 import com.netease.nimlib.sdk.rts.RTSManager2;
 import com.orhanobut.logger.Logger;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import io.reactivex.functions.Consumer;
 
 public class ChatRoomFragment extends TFragment implements AVChatStateObserverLite, View.OnClickListener {
     private final String TAG = "ChatRoomFragment";
@@ -191,6 +185,47 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
             }
         });
         ChatRoomMemberCache.getInstance().clearRoomCache(roomId);
+    }
+
+    /**
+     * ********************************** 子页面 **********************************
+     */
+
+    private void setupPager() {
+        tabs.setupWithViewPager(viewPager);
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return null;
+                    case 1:
+                        return null;
+                    case 2:
+                        return null;
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "白板";
+                    case 1:
+                        return "讨论";
+                    case 2:
+                        return "成员";
+                }
+                return super.getPageTitle(position);
+            }
+        });
     }
 
     /**
@@ -540,12 +575,10 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Logger.d("-------->>>>>>>"+!ChatRoomMemberCache.getInstance().hasPermission(roomId, NetEaseCache.getAccount()));
+                        if (!ChatRoomMemberCache.getInstance().hasPermission(roomId, NetEaseCache.getAccount())) {
+                            return;
+                        }
 
-//                        if (!ChatRoomMemberCache.getInstance().hasPermission(roomId, NetEaseCache.getAccount())) {
-//                            return;
-//                        }
-                        Logger.d("-------->>>>>>>");
                         AVChatManager.getInstance().enableAudienceRole(false);
 
                         if (!checkedItems[0]) {
@@ -634,43 +667,6 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
             }
             onVideoOn(a);
         }
-    }
-
-    private void setupPager() {
-        tabs.setupWithViewPager(viewPager);
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case 0:
-                        return null;
-                    case 1:
-                        return null;
-                    case 2:
-                        return null;
-                }
-                return null;
-            }
-
-            @Override
-            public int getCount() {
-                return 3;
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch (position) {
-                    case 0:
-                        return "白板";
-                    case 1:
-                        return "讨论";
-                    case 2:
-                        return "成员";
-                }
-                return super.getPageTitle(position);
-            }
-        });
     }
 
     // 将有权限的成员添加到画布
