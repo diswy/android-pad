@@ -67,6 +67,7 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
      */
     private ChatRoomFragment fragment;
     private ChatRoomRTSFragment rtsFragment;
+    private OnlinePeopleFragment onlinePeopleFragment;
 
     private AbortableFuture<EnterChatRoomResultData> enterRequest;
 
@@ -560,25 +561,25 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
 
     @Override
     public void onReportSpeaker(Map<String, Integer> map) {
-//        if (onlinePeopleFragment == null) {
-//            onlinePeopleFragment = (OnlinePeopleFragment) getSupportFragmentManager().findFragmentById(R.id.online_people_fragment);
-//        }
-//
-//        if (onlinePeopleFragment != null) {
-//            onlinePeopleFragment.onReportSpeaker(map);
-//        }
+        if (onlinePeopleFragment == null) {
+            onlinePeopleFragment = (OnlinePeopleFragment) getSupportFragmentManager().findFragmentById(R.id.online_people_fragment);
+        }
+
+        if (onlinePeopleFragment != null) {
+            onlinePeopleFragment.onReportSpeaker(map);
+        }
     }
 
     @Override
     public void onAcceptConfirm() {
-//        if (onlinePeopleFragment == null) {
-//            onlinePeopleFragment = (OnlinePeopleFragment) getSupportFragmentManager().findFragmentById(R.id.online_people_fragment);
-//        }
-//
-//        if (onlinePeopleFragment != null) {
-//            onlinePeopleFragment.onAcceptConfirm();
-//        }
-//
+        if (onlinePeopleFragment == null) {
+            onlinePeopleFragment = (OnlinePeopleFragment) getSupportFragmentManager().findFragmentById(R.id.online_people_fragment);
+        }
+
+        if (onlinePeopleFragment != null) {
+            onlinePeopleFragment.onAcceptConfirm();
+        }
+
         if (rtsFragment == null) {
             rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
         }

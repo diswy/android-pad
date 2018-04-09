@@ -14,7 +14,11 @@ import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.fragment.RecommendFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.PeriodResponse
+import com.cqebd.student.vo.entity.VodPlay
+import com.orhanobut.logger.Logger
+import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_video.*
+import java.util.*
 
 /**
  * 描述
@@ -135,9 +139,14 @@ class VideoActivity : BaseActivity() {
                 .enqueue(object : NetCallBack<BaseResponse<PeriodResponse>>() {
                     override fun onSucceed(response: BaseResponse<PeriodResponse>?) {
 
-                        if (response?.data != null)
-                            videoView.setVideoPath(response.data.VodPlayList[0].Url, response.data.Name, R.drawable.ic_login_logo)
-                        else {
+                        if (response?.data != null) {
+                            val definitions = filterVideoUrl(response.data.VodPlayList)
+
+                            if (definitions != null && definitions.isNotEmpty())
+                                videoView.setVideoPath(definitions, 0, response.data.Name, R.drawable.ic_login_logo)
+                            else
+                                toast("视频未准备好~")
+                        } else {
                             toast("视频未准备好~")
                         }
                     }
@@ -146,7 +155,30 @@ class VideoActivity : BaseActivity() {
 
                     }
                 }
-
                 )
+    }
+
+
+    /**
+     * 取出视频文件中的m3u8文件
+     */
+    private fun filterVideoUrl(vodPlays: List<VodPlay>?): List<ExDefinition>? {
+        if (vodPlays == null || vodPlays.isEmpty()) {
+            return null
+        }
+        Collections.sort(vodPlays) { o1, o2 ->
+            o2.Definition - o1.Definition
+        }
+        val definitionList: MutableList<ExDefinition> = ArrayList()
+        for (vodPlay in vodPlays) {
+            if (vodPlay.Url.substring(vodPlay.Url.lastIndexOf(".")).contains("m3u8")) {
+                when {
+                    definitionList.size == 0 -> definitionList.add(ExDefinition(vodPlay.Definition, "标清", vodPlay.Url))
+                    definitionList.size == 1 -> definitionList.add(ExDefinition(vodPlay.Definition, "高清", vodPlay.Url))
+                    definitionList.size == 2 -> definitionList.add(ExDefinition(vodPlay.Definition, "原画", vodPlay.Url))
+                }
+            }
+        }
+        return definitionList
     }
 }

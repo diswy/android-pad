@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Message
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.SeekBar
+import android.widget.*
 import gorden.lib.anko.static.logInfo
+import kotlinx.android.synthetic.main.media_definition.view.*
 import kotlinx.android.synthetic.main.mediacontroller.view.*
 import java.util.*
 
@@ -19,7 +20,7 @@ import java.util.*
  * 描述
  * Created by gorden on 2018/3/14.
  */
-class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout(context), SeekBar.OnSeekBarChangeListener {
+class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayout(context), SeekBar.OnSeekBarChangeListener {
     private var mShowing: Boolean = false
     private var mDragging: Boolean = false
     private var mPaused: Boolean = false
@@ -28,6 +29,14 @@ class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout
     private var mDuration: Long = 0
     private val DEFAULT_TIME_OUT: Int = 3000//MediaController,显示 DEFAULT_TIMEOUT 时长后自动隐藏。
     private lateinit var mPlayer: MediaPlayerControl
+    private var definitionList: List<ExDefinition>? = null // 清晰度列表
+    private var definitionLayout: View
+    private lateinit var popWindow: PopupWindow
+    private lateinit var ll: LinearLayout
+
+    fun setDefinitionList(definitionList: List<ExDefinition>) {
+        this.definitionList = definitionList
+    }
 
     //handler message what
     private val FADE_OUT = 1
@@ -35,6 +44,12 @@ class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout
 
     init {
         LayoutInflater.from(context).inflate(R.layout.mediacontroller, this, true)
+        definitionLayout = LayoutInflater.from(context).inflate(R.layout.media_definition, null)
+        ll = definitionLayout.findViewById(R.id.definition_container)
+        popWindow = PopupWindow(definitionLayout,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT,
+                true)
 
         btn_start.setOnClickListener {
             doPauseResume()
@@ -48,6 +63,24 @@ class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout
                 btn_fullscreen.visibility = View.GONE
             }
             mPlayer.fullScreen(mIsFullScreen)
+        }
+        text_code.setOnClickListener {
+            val location = IntArray(2)// 控件位置
+            it.getLocationOnScreen(location)
+
+//            if (definitionList != null && definitionList!!.isNotEmpty()) {// safe init
+//                ll.removeAllViews()
+//                for (definition in definitionList!!) {
+//
+//                    val tv = TextView(context)
+//                    tv.text = definition.definitionName
+//                    ll.addView(tv)
+//                }
+//            }
+//
+//            popWindow.showAtLocation(it, Gravity.NO_GRAVITY, location[0], location[1] - 100)
+
+
         }
         seekBar.setOnSeekBarChangeListener(this)
     }
@@ -148,7 +181,7 @@ class ExMediaController(context: Context?,val title: ExMediaTitle) : FrameLayout
         }
     }
 
-    fun updateControllerBar(isFull:Boolean) {
+    fun updateControllerBar(isFull: Boolean) {
         mIsFullScreen = isFull
         if (isFull) {
             text_code.visibility = View.VISIBLE

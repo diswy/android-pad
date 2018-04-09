@@ -202,15 +202,15 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
 
     private void setupPager() {
         try {
-            if (rtsFragment == null){
+            if (rtsFragment == null) {
                 rtsFragment = ChatRoomTab.fromTabIndex(0).clazz.newInstance();
                 rtsFragment.attachTabData(ChatRoomTab.fromTabIndex(0));
             }
-            if (messageFragment == null){
+            if (messageFragment == null) {
                 messageFragment = ChatRoomTab.fromTabIndex(1).clazz.newInstance();
                 messageFragment.attachTabData(ChatRoomTab.fromTabIndex(1));
             }
-            if (onlinePeopleFragment == null){
+            if (onlinePeopleFragment == null) {
                 onlinePeopleFragment = ChatRoomTab.fromTabIndex(2).clazz.newInstance();
                 onlinePeopleFragment.attachTabData(ChatRoomTab.fromTabIndex(2));
             }
@@ -253,6 +253,30 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
                         return "成员";
                 }
                 return super.getPageTitle(position);
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        rtsFragment.onCurrent();
+                    case 1:
+                        messageFragment.onCurrent();
+                    case 2:
+                        onlinePeopleFragment.onCurrent();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }

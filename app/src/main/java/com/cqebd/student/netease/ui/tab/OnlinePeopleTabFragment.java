@@ -3,6 +3,7 @@ package com.cqebd.student.netease.ui.tab;
 
 import com.cqebd.student.R;
 import com.cqebd.student.netease.ui.OnlinePeopleFragment;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by hzxuwen on 2016/2/29.
@@ -19,7 +20,7 @@ public class OnlinePeopleTabFragment extends ChatRoomTabFragment {
     public void onCurrent() {
         super.onCurrent();
         if (fragment != null) {
-//            fragment.onCurrent();
+            fragment.onCurrent();
         }
     }
 

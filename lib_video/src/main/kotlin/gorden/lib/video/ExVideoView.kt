@@ -161,6 +161,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         setVideoPath(Uri.parse(definitions[current].definitionPath), title, thumb)
         this.definitions = definitions
         currentDefinition = definitions[current]
+        mediaController.setDefinitionList(definitions)
     }
 
 
