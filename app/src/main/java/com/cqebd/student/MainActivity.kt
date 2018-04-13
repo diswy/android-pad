@@ -7,6 +7,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.ui.*
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -17,7 +18,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-
         val titles = resources.getStringArray(R.array.title)
         navigation.addItem(BottomNavigationItem(R.drawable.ic_home, titles[0]))
                 .addItem(BottomNavigationItem(R.drawable.ic_video, titles[1]))

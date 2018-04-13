@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/login_bg">
 
     <ScrollView
@@ -83,28 +83,46 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_findpwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="重置密码"
-                android:textSize="14sp"
-                android:textColor="#999"
-                android:layout_gravity="right"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_find_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="5dp"
+                    android:text="找回账号"
+                    android:textColor="#999"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/text_find_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="5dp"
+                    android:text="重置密码"
+                    android:textColor="#999"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
 
             <com.cqebd.student.widget.SubmitButton
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"
                 android:text="登录"
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp"
-                android:layout_marginBottom="20dp"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
     </ScrollView>
 
@@ -120,10 +138,9 @@
         android:id="@+id/text_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="v1.0"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#666"
         android:layout_margin="5dp"
-        />
+        android:textColor="#666"
+        tools:text="v1.0" />
 </RelativeLayout>

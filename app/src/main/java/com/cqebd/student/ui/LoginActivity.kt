@@ -31,28 +31,36 @@ class LoginActivity : BaseActivity() {
 
     override fun bindEvents() {
         btn_login.setOnClickListener {
-            if (edit_username.text.isNullOrEmpty()){
+            if (edit_username.text.isNullOrEmpty()) {
                 toastError("请输入用户名")
                 return@setOnClickListener
             }
-            if (edit_pwd.text.isNullOrEmpty()){
+            if (edit_pwd.text.isNullOrEmpty()) {
                 toastError("请输入用户密码")
                 return@setOnClickListener
             }
 
             loadingDialog.progressMsg = "正在登录..."
             loadingDialog.show(supportFragmentManager)
-            NetClient.workService().accountLogin(edit_username.text.toString(),edit_pwd.text.toString())
+            NetClient.workService().accountLogin(edit_username.text.toString(), edit_pwd.text.toString())
                     .observe(this, Observer {
                         loadingDialog.dismiss()
-                        if (it?.isSuccessful()==true){
+                        if (it?.isSuccessful() == true) {
                             it.body?.save()
                             startActivity<MainActivity>()
                             finish()
-                        }else{
-                            toastError(it?.errorMessage?:"登录失败")
+                        } else {
+                            toastError(it?.errorMessage ?: "登录失败")
                         }
                     })
+        }
+
+        text_find_pwd.setOnClickListener {
+            startActivity<FindPasswordActivity>()
+        }
+
+        text_find_account.setOnClickListener {
+            startActivity<WebActivity>("url" to "http://student.cqebd.cn/Account/FindLoginName")
         }
     }
 }

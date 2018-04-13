@@ -47,3 +47,11 @@ val versionCode = packageInfo.versionCode
 val versionName = packageInfo.versionName
 
 val cropPath:Uri = Uri.parse(KPath.externalRootDir(App.mContext).plus(File.separator).plus("crop_temp.jpg"))
+
+fun safeString(string: String?): String {
+    return safeString(string, "")
+}
+
+fun safeString(string: String?, default: String): String {
+    return string ?: default
+}

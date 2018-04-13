@@ -110,5 +110,24 @@ interface WorkService {
             @Query("StudentQuestionsTasksID") StudentQuestionsTasksID: Int)
             : Call<BaseResponse<WrongQuestionDetails>>
 
+    /**
+     * 点点作业 获取验证码
+     */
+    @GET("api/Account/GetTelCode")
+    fun getPhoneCode(
+            @Query("loginName") loginName: String,
+            @Query("type") type: Int)
+            : Call<BaseResponse<Unit>>
+
+    /**
+     * 点点作业 修改密码
+     */
+    @POST("api/Account/UpdatePwdCode")
+    fun updatePwd(
+            @Query("LoginName") LoginName: String,
+            @Query("NewPwd") NewPwd: String,
+            @Query("Code") Code: String)
+            : Call<BaseResponse<Unit>>
+
 
 }

@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         tools:text="截止时间:12.05 14:23"
-        app:layout_constraintLeft_toLeftOf="@id/text_count"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_count"
         android:layout_marginTop="5dp"
         />
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         tools:text="布置时间:2017.12.05"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/text_count"
         app:layout_constraintTop_toBottomOf="@id/text_count"
         android:layout_marginTop="5dp"
         />

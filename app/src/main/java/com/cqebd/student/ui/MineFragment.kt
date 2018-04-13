@@ -22,6 +22,7 @@ import com.cqebd.student.tools.cropPath
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.tools.toastError
 import com.cqebd.student.viewmodel.MineViewModel
+import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.widget.LoadingDialog
 import com.cqebd.teacher.vo.Status
 import com.yalantis.ucrop.UCrop
@@ -84,9 +85,16 @@ class MineFragment : BaseFragment() {
             startActivity<BeSharedActivity>()
         }
 
+        item_exit.setOnClickListener {
+            activity?.finish()
+            UserAccount.clear()
+            startActivity<LoginActivity>()
+        }
+
         btn_test_jump.setOnClickListener {
             startActivity<TestNetEaseActivity>()
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

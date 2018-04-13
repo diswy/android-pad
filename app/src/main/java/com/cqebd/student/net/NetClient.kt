@@ -29,7 +29,6 @@ object NetClient {
                 .addInterceptor(GatewayInterceptor("23393048", "d0c983467d8ced6568e844c0b0a233ae"))
                 .addInterceptor(HttpLoggingInterceptor { message ->
                     logWarn(message, "http_log")
-                    Logger.json(message)
                 }.setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
     }

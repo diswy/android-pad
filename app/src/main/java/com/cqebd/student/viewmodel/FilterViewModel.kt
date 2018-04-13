@@ -124,6 +124,8 @@ class FilterViewModel : ViewModel() {
         }
         filterView.btn_clean.setOnClickListener {
             filterView.flow_filter.setSelectedList(null)
+            filterData.value = null
+            filterWindow.dismiss()
         }
 
         filterView.btn_confirm.setOnClickListener {
