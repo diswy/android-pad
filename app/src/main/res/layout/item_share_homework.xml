@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/shape_bg_white_border"
         android:padding="10dp">
 
         <gorden.widget.CircleImageView

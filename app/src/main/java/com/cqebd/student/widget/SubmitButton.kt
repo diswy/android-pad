@@ -15,8 +15,8 @@ import com.cqebd.student.R
  */
 class SubmitButton(context: Context?, attrs: AttributeSet?=null) : TextView(context, attrs) {
     private val COLOR_DEFAULT: Int = 0xFF0DC984.toInt()
-    private val COLOR_PRESSED: Int = 0XC00DC984.toInt()
-    private val COLOR_ENABLE: Int = 0X800DC984.toInt()
+    private val COLOR_PRESSED: Int = 0xFF0DC984.toInt()
+    private val COLOR_ENABLE: Int = 0X66000000
 
     var colorDefault: Int
     var colorPressed: Int

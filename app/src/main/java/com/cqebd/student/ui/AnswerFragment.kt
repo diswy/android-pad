@@ -156,8 +156,12 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
                 if (newProgress == 100) {
                     progressBar?.visibility = View.GONE
                     if (!isError) {
-                        webView!!.visibility = View.VISIBLE
-                        refreshLayout!!.isRefreshing = false
+                        webView?.let {
+                            it.visibility = View.VISIBLE
+                        }
+                        refreshLayout?.let {
+                            it.isRefreshing = false
+                        }
                     }
                 } else {
                     if (progressBar?.visibility != View.VISIBLE) {

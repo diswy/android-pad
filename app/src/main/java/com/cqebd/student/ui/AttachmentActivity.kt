@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.widget.GridLayout
@@ -55,7 +56,8 @@ class AttachmentActivity : BaseActivity() {
 //                XLog.e("id  =   " + attachment.id + "   " + attachment.examinationPapersId)
                 info.append(attachment.remarks)
             }
-            text_info.text = info.toString()
+//            text_info.text = info.toString()
+            text_info.text = Html.fromHtml(info.toString())
             taskInfo = intent.getParcelableExtra("taskInfo")
         }
 

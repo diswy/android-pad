@@ -1,6 +1,7 @@
 package com.cqebd.student.ui.fragment
 
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -14,6 +15,7 @@ import android.widget.ZoomButtonsController
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.js.VideoJs
+import com.orhanobut.logger.Logger
 import gorden.util.XLog
 import kotlinx.android.synthetic.main.fragment_web.*
 
@@ -43,9 +45,11 @@ class WebFragment : BaseFragment() {
             throw IllegalArgumentException("H5地址不能为空")
         }
         XLog.i(TAG,url)
+        Logger.d(url)
         mWebView.loadUrl(url)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
         mProgressBar.max = 100
         mWebView.canGoBack()

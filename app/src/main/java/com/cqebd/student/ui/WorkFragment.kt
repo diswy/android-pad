@@ -102,7 +102,7 @@ class WorkFragment : BaseFragment() {
                 }
             }
         })
-        workListViewModel.getWorkList()
+        workListViewModel.getWorkList(true)
 
         adapter = object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work,pageProcess.data){
             val subjectBg = arrayOf(R.drawable.bg_subject1,R.drawable.bg_subject2,R.drawable.bg_subject3,R.drawable.bg_subject4)

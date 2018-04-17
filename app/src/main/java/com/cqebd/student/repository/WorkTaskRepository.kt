@@ -17,11 +17,12 @@ class WorkTaskRepository {
     /**
      * 获取作业列表
      */
-    fun getWorkList(filterViewModel: FilterViewModel,index:Int): LiveData<Resource<List<WorkInfo>>> {
+    fun getWorkList(filterViewModel: FilterViewModel,index:Int,isDefaultStatus : Boolean = false): LiveData<Resource<List<WorkInfo>>> {
         return object : NetworkResource<List<WorkInfo>>(){
             override fun createCall(): LiveData<ApiResponse<List<WorkInfo>>> {
+                val default = if (isDefaultStatus) 10 else filterViewModel.jobStatus.value?.status
                 return NetClient.workService().getWorkList(loginId,filterViewModel.subject.value?.status,
-                        filterViewModel.jobType.value?.status,filterViewModel.jobStatus.value?.status,index,20)
+                        filterViewModel.jobType.value?.status,default,index,20)
             }
 
         }.asLiveData

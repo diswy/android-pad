@@ -12,7 +12,6 @@ import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.db.entity.ClassSchedule
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.tools.colorForRes
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.viewmodel.ClassScheduleViewModel
@@ -53,22 +52,20 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
                     text_teacher.text = "主讲老师:".plus(item.TeacherName)
                     GlideApp.with(App.mContext).asBitmap().load(item.Snapshoot).into(img_snapshoot)
 
-                    when(item.Status){
-                        0->{
+                    when (item.Status) {
+                        0 -> {
                             text_label.text = "未开始"
-                            text_label.setColors(Color.parseColor("#66000000"),Color.TRANSPARENT,Color.TRANSPARENT)
+                            text_label.isEnabled = false
                         }
-                        1->{
+                        1 -> {
                             text_label.text = "直播中"
-                            text_label.setColors(colorForRes(R.color.colorPrimary),Color.TRANSPARENT,Color.TRANSPARENT)
                         }
-                        2->{
+                        2 -> {
                             text_label.text = "直播结束"
-                            text_label.setColors(Color.parseColor("#66000000"),Color.TRANSPARENT,Color.TRANSPARENT)
+                            text_label.isEnabled = false
                         }
-                        3->{
+                        3 -> {
                             text_label.text = "回放"
-                            text_label.setColors(colorForRes(R.color.colorPrimary),Color.TRANSPARENT,Color.TRANSPARENT)
                         }
                     }
 
@@ -118,12 +115,22 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
                 pageLoadView.hide()
                 logError("count ${it.data?.courses?.size}  " + it.data?.courses)
                 calendarView.removeDecorators()
-                val dates = it.data?.courses?.map {
-                    CalendarDay.from(Date(formatTime(it.PlanStartDate)))
-                }
-                if (dates != null && dates.isNotEmpty()) {
+
+                it.data?.courses?.let {
+                    val dates = ArrayList<CalendarDay>()
+                    val afterDates = ArrayList<CalendarDay>()
+                    for (item in it) {
+                        val calendarDay = CalendarDay.from(Date(formatTime(item.PlanStartDate)))
+                        if (currentDate.before(calendarDay.calendar) || currentDate == calendarDay.calendar) {
+                            afterDates.add(calendarDay)
+                        } else {
+                            dates.add(calendarDay)
+                        }
+                    }
                     calendarView.addDecorator(LiveDecorator(dates))
+                    calendarView.addDecorator(AfterDecorator(afterDates))
                 }
+
 
                 courseList.clear()
                 it.data?.courses?.apply {
@@ -147,10 +154,10 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
         courseList.filter {
             CalendarDay.from(Date(formatTime(it.PlanStartDate))).calendar == selectedDate
         }.apply {
-            if (isEmpty()){
+            if (isEmpty()) {
                 pageLoadView.show = true
                 pageLoadView.dataEmpty()
-            }else{
+            } else {
                 pageLoadView.hide()
             }
             adapter.setNewData(this)
@@ -161,7 +168,7 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
      * CalendarView存在直播点播的装饰
      */
     class LiveDecorator(private val dates: List<CalendarDay>) : DayViewDecorator {
-        private var dotColor: Int = Color.RED
+        private var dotColor: Int = 0xFFCCCCCC.toInt()
         override fun shouldDecorate(day: CalendarDay?): Boolean {
             return dates.contains(day)
         }
@@ -171,4 +178,14 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
         }
     }
 
+    class AfterDecorator(private val dates: List<CalendarDay>) : DayViewDecorator {
+        private var dotColor: Int = Color.RED
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return dates.contains(day)
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(DotSpan(3.dp.toFloat(), dotColor))
+        }
+    }
 }

@@ -155,7 +155,7 @@ class AdViewPager(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : F
             })
 
             addView(TextView(context).apply {
-                text="2018年年度美女榜单"
+                text=""
                 setTextColor(Color.WHITE)
                 textSize = 18f
                 setPadding(10.dp,5.dp,0,5.dp)

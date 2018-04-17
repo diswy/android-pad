@@ -15,8 +15,8 @@ class WorkListViewModel(private val filterViewModel: FilterViewModel,private val
     private val repository = WorkTaskRepository()
     var workInfoList: MediatorLiveData<Resource<List<WorkInfo>>> = MediatorLiveData()
 
-    fun getWorkList(){
-        val call = repository.getWorkList(filterViewModel, pageProcess.pageIndex)
+    fun getWorkList(isDefaultStatus : Boolean = false){
+        val call = repository.getWorkList(filterViewModel, pageProcess.pageIndex,isDefaultStatus)
         workInfoList.addSource(call, {
             workInfoList.value = it
             if (it?.status == Status.SUCCESS||it?.status==Status.ERROR){

@@ -126,7 +126,7 @@ class ShareHomeworkActivity : BaseActivity() {
                                 Logger.d(imgPath)
                                 val imgAnswer = ImageView(context)
                                 GlideApp.with(context)
-                                        .load(item.Photo)
+                                        .load(imgPath)
                                         .centerInside()
                                         .into(imgAnswer)
                                 linear_container.addView(imgAnswer, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)

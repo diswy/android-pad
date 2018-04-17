@@ -64,19 +64,18 @@ class CourseListFragment : BaseFragment() {
                     when (item.Status) {
                         0 -> {
                             text_label.text = "未开始"
-                            text_label.setBackgroundColor(Color.parseColor("#66000000"))
+                            text_label.isEnabled = false
                         }
                         1 -> {
                             text_label.text = "直播中"
-                            text_label.setBackgroundColor(Color.parseColor("#ffbe4f"))
+
                         }
                         2 -> {
                             text_label.text = "直播结束"
-                            text_label.setBackgroundColor(Color.parseColor("#66000000"))
+                            text_label.isEnabled = false
                         }
                         3 -> {
                             text_label.text = "回放"
-                            text_label.setBackgroundColor(Color.parseColor("#ffbe4f"))
                         }
                     }
                 }
