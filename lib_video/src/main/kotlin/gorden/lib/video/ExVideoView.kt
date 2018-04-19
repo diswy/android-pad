@@ -61,6 +61,14 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * 是否可以暂停
      */
     var canPause: Boolean = true
+
+    fun setLiveMode(isLive : Boolean){
+        if (isLive){
+            canSeek = false
+            canPause = false
+            mediaController.setLiveMode(isLive)
+        }
+    }
     /**
      * 是否保存播放进度
      * @saveProgress.first 是否保存
@@ -248,6 +256,9 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
         override fun onPlayerError(error: ExoPlaybackException?) {
             Toast.makeText(context, "视频播放错误", Toast.LENGTH_SHORT).show()
+            error?.let {
+                Log.e("ExVideoView", it.message)
+            }
             release(false)
         }
     }

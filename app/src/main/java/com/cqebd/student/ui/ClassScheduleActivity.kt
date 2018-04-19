@@ -81,10 +81,10 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
         adapter.setOnItemClickListener { adapter, _, position ->
             val itemData = adapter.data[position] as CourseInfo
 
-            if (itemData.Status == 1 || itemData.Status == 3) {
-                startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
-            } else {
-                toast("视频未准备好哦~")
+            when {
+                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
+                itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+                else -> toast("视频未准备好哦~")
             }
         }
         //设置可查看前一年和后一年的课程表

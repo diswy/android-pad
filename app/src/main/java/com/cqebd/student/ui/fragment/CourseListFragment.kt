@@ -81,10 +81,10 @@ class CourseListFragment : BaseFragment() {
         adapter.setOnItemClickListener { adapter, _, position ->
             val itemData = adapter.data[position] as PeriodInfo
 
-            if (itemData.Status == 1 || itemData.Status == 3) {
-                startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
-            } else {
-                toast("视频未准备好哦~")
+            when {
+                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
+                itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+                else -> toast("视频未准备好哦~")
             }
         }
 

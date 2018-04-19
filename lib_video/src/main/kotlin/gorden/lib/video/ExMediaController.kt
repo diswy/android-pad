@@ -23,6 +23,7 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
     private var mPaused: Boolean = false
     private var mIsFullScreen = false
     private var mInstantSeeking = false //实时响应拖动
+    private var mIsLiveMode = false// 直播模式下不可拖动不显示进度
     private var mDuration: Long = 0
     private val DEFAULT_TIME_OUT: Int = 5000//MediaController,显示 DEFAULT_TIMEOUT 时长后自动隐藏。
     private lateinit var mPlayer: MediaPlayerControl
@@ -41,6 +42,13 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
 
     fun setCurrentDefinitionCode(code: Int) {
         this.mCurrentDefinitionCode = code
+    }
+
+    fun setLiveMode(isLiveMode: Boolean) {
+        this.mIsLiveMode = isLiveMode
+        textStart.text = "00:00"
+        textDuration.text = "--:--"
+        seekBar.progress = 0
     }
 
 
@@ -79,7 +87,7 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                     tv.gravity = Gravity.CENTER
                     tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dip(40f))
                     tv.setOnClickListener {
-                        if (definition.definitionCode != mCurrentDefinitionCode){
+                        if (definition.definitionCode != mCurrentDefinitionCode) {
                             mPlayer.switchDefinition(definition.definitionPath, mTitle)
                             text_code.text = definition.definitionName
                             mCurrentDefinitionCode = definition.definitionCode
@@ -246,14 +254,20 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
         val duration = mPlayer.duration
 
         val percent = mPlayer.bufferPercentage
-        seekBar.secondaryProgress = percent * 10
-        textStart.text = formatTime(position)
+        if (!mIsLiveMode){
+            seekBar.secondaryProgress = percent * 10
+            textStart.text = formatTime(position)
+        }
 
         if (duration > 0) {
             mDuration = duration.toLong()
             val pos = 1000L * position / duration
-            seekBar.progress = pos.toInt()
-            textDuration.text = formatTime(duration)
+            if (!mIsLiveMode) {
+                seekBar.progress = pos.toInt()
+                textDuration.text = formatTime(duration)
+            } else {
+                textDuration.text = "--:--"
+            }
         } else {
             textDuration.text = "--:--"
         }
@@ -309,10 +323,16 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
         val time = formatTime(newPosition.toInt())
         if (mInstantSeeking) {
             mHandler.removeCallbacks(lastRunnable)
-            lastRunnable = Runnable { mPlayer.seekTo(newPosition) }
+            lastRunnable = Runnable {
+                if (!mIsLiveMode) {
+                    mPlayer.seekTo(newPosition)
+                }
+            }
             mHandler.postDelayed(lastRunnable, 200)
         }
-        textStart.text = time
+        if (!mIsLiveMode) {
+            textStart.text = time
+        }
     }
 
     override fun onStopTrackingTouch(seekBar: SeekBar) {

@@ -4,7 +4,7 @@ package com.cqebd.student.vo.entity
  * 课程信息
  * Created by gorden on 2018/3/12.
  */
-data class CourseInfo(val Id:Long,
+data class CourseInfo(val Id:Int,
                       val CourseId:Long,
                       val Status:Int,
                       val Type:Int,

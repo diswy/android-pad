@@ -15,6 +15,7 @@ import com.cqebd.student.ui.fragment.RecommendFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.PeriodResponse
 import com.cqebd.student.vo.entity.VodPlay
+import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_video.*
@@ -39,7 +40,10 @@ class VideoActivity : BaseActivity() {
         setIntent(intent)
         status = intent!!.getIntExtra("status", 0)
         id = intent.getIntExtra("id", 0)
-        println("xiaofu: id = $id ; status = $status")
+        val isLiveMode= intent.getBooleanExtra("isLiveMode",false)
+        Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
+        videoView.setLiveMode(isLiveMode)
+
         initStatus()
         loadVideo()
     }
@@ -47,7 +51,9 @@ class VideoActivity : BaseActivity() {
     override fun initialize(savedInstanceState: Bundle?) {
         status = intent!!.getIntExtra("status", 0)
         id = intent.getIntExtra("id", 0)
-        println("xiaofu: id = $id ; status = $status")
+        val isLiveMode= intent.getBooleanExtra("isLiveMode",false)
+        Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
+        videoView.setLiveMode(isLiveMode)
 
         toolbar.setNavigationOnClickListener { finish() }
         toolbar_title.text = "点点直播"
@@ -141,6 +147,8 @@ class VideoActivity : BaseActivity() {
                     override fun onSucceed(response: BaseResponse<PeriodResponse>?) {
 
                         if (response?.data != null) {
+                            Logger.json(Gson().toJson(response.data.VodPlayList))
+
                             val definitions = filterVideoUrl(response.data.VodPlayList)
 
                             if (definitions != null && definitions.isNotEmpty())
