@@ -10,6 +10,7 @@ import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
+import com.cqebd.student.ui.fragment.AgentWebFragment
 import com.cqebd.student.ui.fragment.NestedWebFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.WrongQuestionDetails
@@ -56,7 +57,7 @@ class WrongQuestionDetailsActivity : BaseActivity(), ViewPager.OnPageChangeListe
     private fun initPager(list: List<WrongQuestionDetailsItem>) {
         viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
-                val fragment: Fragment = WebFragment()
+                val fragment: Fragment = AgentWebFragment()
                 val bundle = Bundle()
                 bundle.putString("url", String.format(mistakeUrl, list[position].querstionId, mTaskId))
                 fragment.arguments = bundle

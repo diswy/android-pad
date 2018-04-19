@@ -3,9 +3,9 @@ package com.cqebd.student.app
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.support.multidex.MultiDex
+import com.cqebd.student.BuildConfig
 import com.cqebd.student.R
 import com.cqebd.student.db.dao.DaoMaster
 import com.cqebd.student.db.dao.DaoSession
@@ -16,18 +16,12 @@ import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.msg.MsgService
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
-import com.netease.nimlib.sdk.uinfo.UserInfoProvider
-import com.netease.nimlib.sdk.uinfo.model.UserInfo
 import com.netease.nimlib.sdk.util.NIMUtil
 import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.BuildConfig
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import gorden.lib.anko.static.logInfo
 import gorden.lib.anko.static.logInit
 import gorden.util.XLog
-import me.xiaopan.sketch.util.SketchUtils.getAppCacheDir
 
 /**
  * 描述
@@ -54,14 +48,13 @@ class App : Application() {
         super.onCreate()
         mContext = this
 
-
+        println("BuildConfig.SHOW_LOG = ${BuildConfig.SHOW_LOG}")
         val formatStrategy = PrettyFormatStrategy.newBuilder()
                 .tag("diswy")
                 .build()
-        Logger.addLogAdapter(object :AndroidLogAdapter(formatStrategy){
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
-//                return BuildConfig.DEBUG
-                return true
+                return BuildConfig.SHOW_LOG
             }
         })
         // TODO:遗留代码，额外的日志打印
@@ -69,9 +62,9 @@ class App : Application() {
         XLog.init(false, "app_log")
 
         // 网易云信
-        NIMClient.init(this, null,null)
+        NIMClient.init(this, null, null)
 
-        if(NIMUtil.isMainProcess(this)){
+        if (NIMUtil.isMainProcess(this)) {
             // 注册自定义消息附件解析器
             NIMClient.getService(MsgService::class.java).registerCustomAttachmentParser(CustomAttachParser())
 
@@ -84,8 +77,8 @@ class App : Application() {
         MultiDex.install(this)
     }
 
-    private fun options():SDKOptions{
-         val options = SDKOptions()
+    private fun options(): SDKOptions {
+        val options = SDKOptions()
 
         // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
         val config = StatusBarNotificationConfig()

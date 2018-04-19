@@ -36,7 +36,7 @@ class WebFragment : BaseFragment() {
 
         if (arguments != null) {
             val url = arguments?.getString("url")
-            previewTask(url)
+                previewTask(url)
         }
     }
 

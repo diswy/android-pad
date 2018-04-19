@@ -29,6 +29,8 @@ dependencies {
     implementation deps.support.app_compat
     implementation deps.kotlin.stdlib
     implementation project(':lib_anko')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    api "org.jetbrains.anko:anko:0.10.4"
     api 'com.google.android.exoplayer:exoplayer:2.7.1'
 
 }

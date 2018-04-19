@@ -35,7 +35,7 @@ class VideoDetailsActivity : BaseActivity() {
 
         toolbar_title.text = data.Name
         tv_title.text = data.Name
-        tv_describe.text = getString(R.string.format_video_describe, data.TeacherName, data.PeriodCount, formatTimeYMDHM(data.StartDate), formatTimeYMDHM(data.EndDateTime))
+        tv_describe.text = getString(R.string.format_video_describe, data.TeacherName, data.PeriodCount, formatTimeYMD(data.StartDate), formatTimeYMD(data.EndDateTime))
         GlideApp.with(App.mContext).load(data.Snapshoot).centerInside().placeholder(R.drawable.ic_avatar).into(iv_snapshot)
         btn_subscribe.s_solid_color = if (data.IsFeedback)
             ContextCompat.getColor(this, R.color.color_line) else

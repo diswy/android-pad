@@ -3,23 +3,19 @@ package com.cqebd.student.ui.fragment
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Color
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.tools.formatTimeYMD
+import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoActivity
-import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.viewmodel.PeriodListViewModel
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.teacher.vo.Status
@@ -59,7 +55,7 @@ class CourseListFragment : BaseFragment() {
                     GlideApp.with(App.mContext).load(item.Snapshoot).centerInside().placeholder(R.drawable.ic_avatar).into(img_snapshoot)
                     text_name.text = item.Name
                     text_teacher.text = "主讲老师: ".plus(item.TeacherName)
-                    text_start.text = "开课时间：".plus(formatTimeYMD(item.PlanStartDate))
+                    text_start.text = "开课时间：".plus(formatTimeYMDHM(item.PlanStartDate))
                     text_grade.text = "年级: ".plus(item.GradeName)
                     when (item.Status) {
                         0 -> {

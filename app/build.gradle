@@ -34,8 +34,26 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("boolean", "SHOW_LOG", "false")
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            //自定义输出配置
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为cqebd_merge_android_v1.0.apk
+                        outputFileName = "cqebd_merge_android_v${defaultConfig.versionName}.apk"
+                    }
+                }
+            }
+        }
+
+        debug {
+            buildConfigField("boolean", "SHOW_LOG", "true")
+            minifyEnabled false
         }
     }
     compileOptions {
@@ -56,11 +74,11 @@ dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.support.design
+    implementation deps.support.v4
     implementation deps.support.constraint_layout
     implementation deps.support.gridlayout
     implementation deps.support.vector_drawable
     implementation deps.lifecycle.extensions
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     kapt deps.lifecycle.compiler
     implementation deps.room.runtime
     kapt deps.room.compiler
@@ -89,6 +107,7 @@ dependencies {
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     testImplementation 'junit:junit:4.12'
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.just.agentweb:agentweb:4.0.2' // (必选)
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:multidex:1.0.3'
     implementation files('libs/fastjson-1.1.34.android.jar')

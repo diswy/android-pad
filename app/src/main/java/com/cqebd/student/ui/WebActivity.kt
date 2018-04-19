@@ -7,6 +7,7 @@ import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.js.VideoJs
 import com.cqebd.student.widget.WebView
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_webview.*
 
 /**
@@ -24,6 +25,7 @@ class WebActivity : BaseActivity() {
     override fun initialize(savedInstanceState: Bundle?) {
         initWebView()
         val url = intent.getStringExtra("url")
+        Logger.d(url)
         webView?.load(url, object : WebView.LoadCallback {
             override fun onLoad() {
                 pageLoadView.load()
@@ -64,9 +66,9 @@ class WebActivity : BaseActivity() {
 
 
     override fun onDestroy() {
-        super.onDestroy()
         web_parent.removeAllViews()
         webView?.destroy()
         webView = null
+        super.onDestroy()
     }
 }

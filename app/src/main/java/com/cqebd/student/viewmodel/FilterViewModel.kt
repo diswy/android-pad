@@ -12,6 +12,7 @@ import com.anko.static.dp
 import com.cqebd.student.R
 import com.cqebd.student.adapter.FilterTagAdapter
 import com.cqebd.student.app.App
+import com.cqebd.student.tools.getDrawable
 import com.cqebd.student.vo.entity.FilterData
 import kotlinx.android.synthetic.main.window_filter.view.*
 
@@ -45,6 +46,7 @@ class FilterViewModel : ViewModel() {
     private val filterView: View = LayoutInflater.from(App.mContext).inflate(R.layout.window_filter, null)
     private val filterWindow: PopupWindow by lazy {
         PopupWindow(appWidth, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            setBackgroundDrawable(getDrawable())
             isOutsideTouchable = true
             isFocusable = true
             contentView = filterView

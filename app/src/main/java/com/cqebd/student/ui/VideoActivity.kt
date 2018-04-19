@@ -115,6 +115,7 @@ class VideoActivity : BaseActivity() {
     override fun onBackPressed() {
         if (videoView.onBackPressed())
             return
+        videoView.onStop()
         super.onBackPressed()
     }
 
@@ -173,9 +174,9 @@ class VideoActivity : BaseActivity() {
         for (vodPlay in vodPlays) {
             if (vodPlay.Url.substring(vodPlay.Url.lastIndexOf(".")).contains("m3u8")) {
                 when {
-                    definitionList.size == 0 -> definitionList.add(ExDefinition(vodPlay.Definition, "标清", vodPlay.Url))
+                    definitionList.size == 0 -> definitionList.add(ExDefinition(vodPlay.Definition, "原画", vodPlay.Url))
                     definitionList.size == 1 -> definitionList.add(ExDefinition(vodPlay.Definition, "高清", vodPlay.Url))
-                    definitionList.size == 2 -> definitionList.add(ExDefinition(vodPlay.Definition, "原画", vodPlay.Url))
+                    definitionList.size == 2 -> definitionList.add(ExDefinition(vodPlay.Definition, "标清", vodPlay.Url))
                 }
             }
         }

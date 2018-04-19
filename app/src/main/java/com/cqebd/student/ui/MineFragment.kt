@@ -65,13 +65,13 @@ class MineFragment : BaseFragment() {
         item_flower_list.setOnClickListener {
             val flowerFormat = "Report/ReportFlower?ID=$loginId"
             val url = WorkService.BASE_WEB_URL.plus(flowerFormat)
-            startActivity<WebActivity>("url" to url)
+            startActivity<AgentWebActivity>("url" to url)
         }
 
         item_like_list.setOnClickListener {
             val wonderFormat = "Report/ReportAppraisal?ID=$loginId"
             val url = WorkService.BASE_WEB_URL.plus(wonderFormat)
-            startActivity<WebActivity>("url" to url)
+            startActivity<AgentWebActivity>("url" to url)
         }
 
         img_avatar.setOnClickListener {

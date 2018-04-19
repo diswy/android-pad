@@ -56,6 +56,11 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * 是否可以调节进度
      */
     var canSeek: Boolean = true
+
+    /**
+     * 是否可以暂停
+     */
+    var canPause: Boolean = true
     /**
      * 是否保存播放进度
      * @saveProgress.first 是否保存
@@ -108,6 +113,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
         thumbImageView = ImageView(context)
         thumbImageView.visibility = View.GONE
+        thumbImageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         (videoContent as FrameLayout).addView(thumbImageView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
         loadingView = ProgressBar(context)
@@ -128,7 +134,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         mediaController.show()
         audioManager = context?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        mediaController.setShowListener{
+        mediaController.setShowListener {
             showListener?.invoke(it)
         }
     }
@@ -139,7 +145,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      * @param thumb 视频加载前显示图片
      */
     fun setVideoPath(path: String, title: String, thumb: Int? = null) {
+        if (path.endsWith(".mp3")) {
+            renderView.getView().visibility = View.GONE
+        }else{
+            renderView.getView().visibility = View.VISIBLE
+        }
         setVideoPath(Uri.parse(path), title, thumb)
+
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
@@ -148,11 +160,11 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         mThumb = thumb
         definitions = null
         currentDefinition = null
-        openVideo()
         if (thumb != null) {
             thumbImageView.visibility = View.VISIBLE
             thumbImageView.setImageResource(thumb)
         }
+        openVideo()
         mediaTitle.setTitle(title)
     }
 
@@ -162,6 +174,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         this.definitions = definitions
         currentDefinition = definitions[current]
         mediaController.setDefinitionList(definitions)
+        mediaController.setTitle(title)
+        mediaController.setCurrentDefinitionCode(definitions[current].definitionCode)
     }
 
 
@@ -390,7 +404,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     }
 
     override fun canPause(): Boolean {
-        return true
+        return canPause
     }
 
     override fun canSeek(): Boolean {
@@ -403,6 +417,10 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         } else {
             exitFullScreen()
         }
+    }
+
+    override fun switchDefinition(srcPath: String, title: String) {
+        setVideoPath(srcPath, title)
     }
 
     companion object {
@@ -436,8 +454,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      */
     private fun buildMediaSource(uri: Uri): MediaSource {
         @C.ContentType
-        val type:Int = Util.inferContentType(uri)
-        return when(type){
+        val type: Int = Util.inferContentType(uri)
+        return when (type) {
             C.TYPE_HLS -> HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
             else -> ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
         }

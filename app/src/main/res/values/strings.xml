@@ -13,7 +13,7 @@
         <item>我的</item>
     </string-array>
 
-    <string name="format_video_describe">主讲老师：%1$s\n课程节数:%2$d\n开课时间：%3$s\n结束时间：%4$s</string>
+    <string name="format_video_describe">主讲老师：%1$s\n课程节数：%2$d\n开课时间：%3$s\n结束时间：%4$s</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -19,6 +19,7 @@ import com.cqebd.student.tools.loginId
 import com.cqebd.student.viewmodel.JobPreviewViewModel
 import com.cqebd.student.vo.entity.Attachment
 import com.cqebd.student.vo.entity.WorkInfo
+import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.logError
 import gorden.rxbus.RxBus
 import gorden.util.XLog
@@ -111,6 +112,7 @@ class AttachmentActivity : BaseActivity() {
 
                     videoView.saveProgress = true to currentAttachment.id
                     videoView.setVideoPath(currentAttachment.url, currentAttachment.name, R.drawable.ic_login_logo)
+                    Logger.d(currentAttachment.url)
                 }
             }
         } else {

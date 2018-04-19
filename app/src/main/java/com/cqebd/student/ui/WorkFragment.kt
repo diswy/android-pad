@@ -111,10 +111,9 @@ class WorkFragment : BaseFragment() {
                     text_name.text = item.Name
                     text_subject.text = item.SubjectName.take(1)
                     text_count.text = "共%s题".format(item.QuestionCount)
-                    text_start_time.text = "布置时间: ".plus(formatTimeYMDHM(item.StartTime))
-                    text_end_time.text = "截止时间: ".plus(formatTimeMDHM(item.EndTime))
+                    text_start_time.text = "布置时间: ".plus(formatTimeYMDHM(item.publishTime))
+                    text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
                     text_subject.setBackgroundResource(subjectBg[helper.layoutPosition%4])
-
                     when(item.Status){
                         -1->{
                             text_status.text = "新作业"

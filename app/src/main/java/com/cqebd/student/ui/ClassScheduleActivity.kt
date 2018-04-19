@@ -14,15 +14,19 @@ import com.cqebd.student.db.entity.ClassSchedule
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
+import com.cqebd.student.tools.toast
 import com.cqebd.student.viewmodel.ClassScheduleViewModel
 import com.cqebd.student.vo.Resource
 import com.cqebd.student.vo.entity.CourseInfo
+import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.teacher.vo.Status
 import com.prolificinteractive.materialcalendarview.*
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import gorden.lib.anko.static.logError
+import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_class_schedule.*
 import kotlinx.android.synthetic.main.item_course.view.*
+import kotlinx.android.synthetic.main.merge_rv_refresh_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -73,6 +77,16 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
             }
         }
         recyclerView.adapter = adapter
+        refreshLayout.isEnabled = false
+        adapter.setOnItemClickListener { adapter, _, position ->
+            val itemData = adapter.data[position] as CourseInfo
+
+            if (itemData.Status == 1 || itemData.Status == 3) {
+                startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+            } else {
+                toast("视频未准备好哦~")
+            }
+        }
         //设置可查看前一年和后一年的课程表
         val min = Calendar.getInstance()
         min.set(min.get(Calendar.YEAR) - 1, Calendar.JANUARY, 1)
@@ -93,6 +107,9 @@ class ClassScheduleActivity : BaseActivity(), OnMonthChangedListener, OnDateSele
     override fun bindEvents() {
         calendarView.setOnMonthChangedListener(this)
         calendarView.setOnDateChangedListener(this)
+//        refreshLayout.setKRefreshListener {
+//            viewModel.getPeriodListMonth(selectedDate).observe(this, this)
+//        }
     }
 
     override fun onMonthChanged(widget: MaterialCalendarView?, date: CalendarDay?) {
