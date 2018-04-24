@@ -73,7 +73,6 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
             mPlayer.fullScreen(mIsFullScreen)
         }
         text_code.setOnClickListener {
-
             if (definition_layout.visibility == View.VISIBLE) {
                 definition_layout.visibility = View.GONE
                 return@setOnClickListener
@@ -98,6 +97,19 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                     definition_layout.addView(tv)
                 }
             }
+
+            if (definitionList == null){
+                definition_layout.removeAllViews()
+                val tv = TextView(context)
+                tv.text = "默认"
+                tv.gravity = Gravity.CENTER
+                tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dip(40f))
+                tv.setOnClickListener {
+                    hide()
+                }
+                definition_layout.addView(tv)
+            }
+
             definition_layout.visibility = View.VISIBLE
 
         }

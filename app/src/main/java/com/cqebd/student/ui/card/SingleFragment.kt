@@ -98,7 +98,7 @@ class SingleFragment : BaseFragment() {
             val lp = RadioGroup.LayoutParams(30.dp, 30.dp)
             lp.setMargins(radioMargin, 0, radioMargin, 0)
             radio_group.addView(radioButton, lp)
-            radioButton.setOnCheckedChangeListener { buttonView, isChecked ->
+            radioButton.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked && changeListener != null) {
                     if (this.studentAnswer == null) {
                         this.studentAnswer = StudentAnswer()

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0dc984</color>
-    <color name="colorPrimaryDark">#0aaf73</color>
+    <!--<color name="colorPrimary">#0dc984</color>-->
+    <color name="colorPrimary">#55c340</color>
+    <!--<color name="colorPrimaryDark">#0aaf73</color>-->
+    <color name="colorPrimaryDark">#55c340</color>
     <color name="colorAccent">#FF4081</color>
     
     <color name="colorActive">#0dc984</color>
@@ -74,4 +76,11 @@
         <item>#0b6b1c</item>
         <item>#151c66</item>
     </array>
+
+    <!--新UI-->
+    <color name="color_main">#55c340</color>
+    <color name="color_tab_title">#787c7e</color>
+    <color name="color_tab_subtitle">#75797b</color>
+
+
 </resources>

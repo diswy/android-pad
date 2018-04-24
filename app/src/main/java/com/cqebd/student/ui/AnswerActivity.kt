@@ -76,15 +76,15 @@ class AnswerActivity:BaseActivity(),IAnswer {
     private fun initMoreMenu() {
         val menuView = LayoutInflater.from(this).inflate(R.layout.menu_more, null)
         menuWindow = PopupWindow(menuView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        menuWindow.setFocusable(true)
-        menuWindow.setOutsideTouchable(true)
+        menuWindow.isFocusable = true
+        menuWindow.isOutsideTouchable = true
         menuWindow.setBackgroundDrawable(BitmapDrawable())
 
-        menuView.findViewById<View>(R.id.text_jsq).setOnClickListener { v ->
+        menuView.findViewById<View>(R.id.text_jsq).setOnClickListener {
             openJS()
             menuWindow.dismiss()
         }
-        menuView.findViewById<View>(R.id.text_cgz).setOnClickListener { v ->
+        menuView.findViewById<View>(R.id.text_cgz).setOnClickListener {
             startActivity<DraftPaperActivity>()
             menuWindow.dismiss()
         }

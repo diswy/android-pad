@@ -37,11 +37,7 @@ class FilterTagAdapter :FlowTagAdapter<String>{
         val stateListDrawable = StateListDrawable()
         stateListDrawable.addState(intArrayOf(android.R.attr.state_checked), checkedDrawable)
         stateListDrawable.addState(intArrayOf(0), defaultDrawable)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            tag.background = stateListDrawable
-        } else {
-            tag.setBackgroundDrawable(stateListDrawable)
-        }
+        tag.background = stateListDrawable
         val stateList = ColorStateList(arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf(0)),
                 intArrayOf(Color.WHITE, Color.parseColor("#666666")))
         tag.setTextColor(stateList)

@@ -56,4 +56,8 @@
         <item name="android:scrollbarThumbVertical">@drawable/nim_scrollbar_handle_holo_dark</item>
         <item name="android:scrollbarThumbHorizontal">@drawable/nim_scrollbar_handle_holo_dark</item>
     </style>
+    
+    <style name="MyTabLayoutTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

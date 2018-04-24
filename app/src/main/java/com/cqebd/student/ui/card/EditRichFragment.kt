@@ -57,9 +57,9 @@ class EditRichFragment : BaseFragment() {
 
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.item_answer_edit_pager,container,false)
+        return inflater?.inflate(R.layout.item_answer_edit_pager, container, false)
     }
-    
+
 
     fun build(answer: AnswerCardDetailInfo.DataBean.QuestionGroup.Answer, localeImageMap: MutableMap<String, String>) {
         val sa = StudentAnswer()
@@ -222,8 +222,8 @@ class EditRichFragment : BaseFragment() {
     override fun bindEvents() {
         icon_camera.setOnClickListener {
             BottomMenuDialog.BottomMenuBuilder()
-                    .addItem("拍照") { v -> AlbumPicker.builder().openCamera(this) }
-                    .addItem("相册中选择") { v -> AlbumPicker.builder().gridColumns(3).showGif(false).single().start(this) }
+                    .addItem("拍照") { AlbumPicker.builder().openCamera(this) }
+                    .addItem("相册中选择") { AlbumPicker.builder().gridColumns(3).showGif(false).single().start(this) }
                     .addItem("取消", null)
                     .build().show(fragmentManager)
         }

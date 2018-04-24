@@ -58,5 +58,6 @@
     <string name="chat_room_rts">白板</string>
     <string name="chat_room_message">讨论</string>
     <string name="chat_room_online_people">成员</string>
+    <string name="button">button</string>
 
 </resources>

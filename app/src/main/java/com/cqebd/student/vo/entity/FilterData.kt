@@ -1,5 +1,7 @@
 package com.cqebd.student.vo.entity
 
+import com.orhanobut.logger.Logger
+
 /**
  * 描述
  * Created by gorden on 2018/3/1.
@@ -42,15 +44,11 @@ data class FilterData(val status: Int, val Name: String) {
         //科目
         val subject: List<FilterData> by lazy {
             val subjectList = UserAccount.load()?.SubjectList
-            if (subjectList == null) {
-                listOf()
-            } else {
-                subjectList.filter {
-                    it.Status == 0
-                }.map {
-                    FilterData(it.Id, it.Name)
-                }
-            }
+            subjectList?.filter {
+                it.Status == 0
+            }?.map {
+                FilterData(it.Id, it.Name)
+            } ?: listOf()
         }
         //作业类型
         val jobType: List<FilterData> by lazy {
