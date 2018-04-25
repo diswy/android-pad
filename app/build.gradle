@@ -110,6 +110,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'com.just.agentweb:agentweb:4.0.2'
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     // (必选)
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:multidex:1.0.3'
