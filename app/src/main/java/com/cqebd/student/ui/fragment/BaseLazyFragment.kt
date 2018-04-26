@@ -8,20 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 
 
-
 /**
  * laze fragment.
  *
  */
 abstract class BaseLazyFragment : Fragment() {
-    private lateinit var mViewContent:View
+    private lateinit var mViewContent: View
     open var mIsVisible: Boolean = false
     open var mIsInit: Boolean = false// 是否初始化了界面
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
 
-        if(userVisibleHint && mIsInit) {
+        if (userVisibleHint && mIsInit) {
             mIsVisible = true
             onVisible()
         } else {
@@ -36,13 +35,14 @@ abstract class BaseLazyFragment : Fragment() {
         mViewContent.parent?.let {
             (it as ViewGroup).removeView(mViewContent)
         }
-
-        initView()
-        bindEvents()
-
         return mViewContent
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initView()
+        bindEvents()
+        lazyLoad()
+    }
 
     override fun onDestroyView() {
         mIsVisible = false
@@ -58,13 +58,13 @@ abstract class BaseLazyFragment : Fragment() {
 
     protected abstract fun onInvisible()
 
-    protected abstract fun getLayoutRes():Int
+    protected abstract fun getLayoutRes(): Int
 
-    open fun initView(){
+    open fun initView() {
         mIsInit = true
     }
 
-    open fun bindEvents(){
+    open fun bindEvents() {
 
     }
 

@@ -20,7 +20,7 @@ versions.rx_android = "2.0.1"
 versions.kotlin = "1.2.40"
 versions.dagger = "2.14.1"
 versions.junit = "4.12"
-versions.android_gradle_plugin = "3.0.1"
+versions.android_gradle_plugin = "3.1.2"
 versions.paging = "1.0.0-alpha3"
 versions.constraint_layout = "1.0.2"
 versions.arch = "1.1.0"
@@ -80,7 +80,7 @@ espresso.intents = "com.android.support.test.espresso:espresso-intents:$versions
 deps.espresso = espresso
 
 def kotlin = [:]
-kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 kotlin.test = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.noarg = "org.jetbrains.kotlin:kotlin-noarg:$versions.kotlin"
