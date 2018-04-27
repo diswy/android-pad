@@ -13,10 +13,12 @@ import android.view.animation.DecelerateInterpolator
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.event.STATUS_TYPE
 import com.cqebd.student.test.BlankFragment
 import com.cqebd.student.ui.work.HomeworkContentFragment
 import com.cqebd.student.ui.work.WrongQuestionFragment
 import com.cqebd.student.vo.entity.FilterData
+import gorden.rxbus.RxBus
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -25,7 +27,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.toast
 import kotlinx.android.synthetic.main.fragment_homework.*
 
 
@@ -34,13 +35,6 @@ import kotlinx.android.synthetic.main.fragment_homework.*
  */
 class HomeworkFragment : BaseFragment() {
     private val titles = listOf("作业", "错题", "分享", "收藏", "推荐")
-    private val subject: List<FilterData> by lazy {
-        val list = ArrayList<FilterData>()
-        list.add(FilterData(-1, "全部"))
-        list.addAll(FilterData.subject)
-        return@lazy list
-    }
-
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_homework, container, false)
@@ -103,19 +97,19 @@ class HomeworkFragment : BaseFragment() {
                 val titleView = ColorTransitionPagerTitleView(context)
                 titleView.normalColor = resources.getColor(R.color.color_tab_title)
                 titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = subject[index].Name
+                titleView.text = FilterData.jobStatus[index].Name
                 titleView.textSize = 14f
                 titleView.setOnClickListener {
-                    // TODO
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
+                    RxBus.get().send(STATUS_TYPE, FilterData(FilterData.jobStatus[index].status,FilterData.jobStatus[index].Name))
                 }
                 return titleView
             }
 
             override fun getCount(): Int {
-                return subject.size
+                return FilterData.jobStatus.size
             }
 
             override fun getIndicator(p0: Context?): IPagerIndicator {
@@ -140,14 +134,6 @@ class HomeworkFragment : BaseFragment() {
         btn_filter.setOnClickListener {
             mainActivity.switchDrawerLayout()
         }
-        mainActivity.setOnDrawerListener(object : MainActivity.OnDrawerListener {
-            override fun onClear() {
-            }
-
-            override fun onConfirm(id: Int) {
-                toast("id = $id")
-            }
-        })
     }
 }
 

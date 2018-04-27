@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.ui.*
 import com.cqebd.student.ui.root.HomeworkFragment
+import com.cqebd.student.vo.entity.FilterData
+import com.zhy.view.flowlayout.FlowLayout
+import com.zhy.view.flowlayout.TagAdapter
+import gorden.rxbus.RxBus
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
 
@@ -21,8 +27,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        // 禁用手势侧滑
-        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        RxBus.get().register(this)
+        initDrawerView()
 
         val titles = resources.getStringArray(R.array.title)
         navigation.addItem(BottomNavigationItem(R.drawable.ic_home, titles[0]))
@@ -43,13 +49,6 @@ class MainActivity : BaseActivity() {
                     main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 } else {
                     main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                }
-
-                if (position == 3) {
-                    text_title.visibility = View.GONE
-                } else {
-                    text_title.text = titles[position]
-                    text_title.visibility = View.VISIBLE
                 }
                 switchFragment(position)
             }
@@ -90,32 +89,52 @@ class MainActivity : BaseActivity() {
     }
 
     override fun bindEvents() {
-        btn_1.setOnClickListener {
-            mOnDrawerListener?.let {
-                it.onConfirm(1)
-                it.onClear()
-            }
-        }
     }
 
     /**
      * 侧滑菜单处理
      */
-    private var mOnDrawerListener: OnDrawerListener? = null
-
-    fun setOnDrawerListener(listener: OnDrawerListener){
-        this.mOnDrawerListener = listener
-    }
-
-    interface OnDrawerListener {
-        fun onConfirm(id: Int)
-        fun onClear()
-    }
-
     fun switchDrawerLayout() {
         if (main_drawer_layout.isDrawerOpen(Gravity.END))
             main_drawer_layout.closeDrawer(Gravity.END)
         else
             main_drawer_layout.openDrawer(Gravity.END)
+    }
+
+    private fun initDrawerView() {
+        val mInflater = LayoutInflater.from(this)
+        // 禁用手势侧滑
+        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        subject_layout.adapter = object : TagAdapter<FilterData>(FilterData.problemType) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+
+//        ###事件
+//
+//        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener()
+//        {
+//            @Override
+//            public boolean onTagClick(View view, int position, FlowLayout parent)
+//            {
+//                Toast.makeText(getActivity(), mVals[position], Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
+//
+//        点击标签时的回调。
+//
+//        mFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener()
+//        {
+//            @Override
+//            public void onSelected(Set<Integer> selectPosSet)
+//            {
+//                getActivity().setTitle("choose:" + selectPosSet.toString());
+//            }
+//        });
     }
 }

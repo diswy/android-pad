@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
+    android:paddingBottom="15dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="10dp">
+    android:paddingTop="15dp">
 
     <TextView
         android:id="@+id/text_subject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_subject1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/shape_subject_bg"
         android:gravity="center"
         android:textColor="@color/colorWhite"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="语" />

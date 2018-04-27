@@ -27,4 +27,9 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <com.cqebd.student.widget.PageLoadView
+        android:id="@+id/pageLoadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </merge>

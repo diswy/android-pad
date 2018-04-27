@@ -40,7 +40,7 @@ class FilterViewModel : ViewModel() {
     // 作业分享 时间
     var shareHomeworkDate: MutableLiveData<FilterData> = MutableLiveData()
 
-    var yOff:Int = 0.5f.dp
+    var yOff: Int = 0.5f.dp
 
     @SuppressLint("StaticFieldLeak", "InflateParams")
     private val filterView: View = LayoutInflater.from(App.mContext).inflate(R.layout.window_filter, null)
@@ -59,6 +59,10 @@ class FilterViewModel : ViewModel() {
      */
     fun filterJobStatus(view: View) {
         filter(view, jobStatus, FilterData.jobStatus)
+    }
+
+    fun filterJobStatus(status: FilterData) {
+        jobStatus.value = status
     }
 
     /**
@@ -80,6 +84,13 @@ class FilterViewModel : ViewModel() {
      */
     fun filterSubject(view: View) {
         filter(view, subject, FilterData.subject)
+    }
+
+    fun filterSubject(status: FilterData) {
+        if (status.status == -1)
+            subject.value = null
+        else
+            subject.value = status
     }
 
     /**

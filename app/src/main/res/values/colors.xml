@@ -78,7 +78,8 @@
     </array>
 
     <!--新UI-->
-    <color name="color_main">#55c340</color>
+    <color name="color_main">#009944</color>
+    <color name="color_subject_bg">#76c5fb</color>
     <color name="color_tab_title">#787c7e</color>
     <color name="color_tab_subtitle">#75797b</color>
 

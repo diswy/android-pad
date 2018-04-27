@@ -1,0 +1,113 @@
+package com.wuhangjia.firstlib.view;
+
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+
+import com.wuhangjia.firstlib.utils.MeasureUtils;
+
+/**
+ * Author:          小夫
+ * Date:            2017/11/2 15:23
+ * Description:     DialogFragment封装
+ * <p>
+ * 大人者，言不必信，行不必果，惟义所在
+ */
+
+public class FancyDialogFragment extends DialogFragment {
+
+    private static final float DEFAULT_DIM = 0.2f;
+
+
+    @LayoutRes
+    private int mLayoutRes;
+    private boolean canCancelOutside = true;
+    private boolean isBottom;
+    private int width = -1;
+    private Context context;
+
+    private ViewListener mViewListener;
+
+    public interface ViewListener {
+        void bindView(View v);
+    }
+
+    public static FancyDialogFragment create() {
+        return new FancyDialogFragment();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+
+        if (isBottom) {// 底部显示
+            params.gravity = Gravity.BOTTOM;
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        } else {
+            params.dimAmount = DEFAULT_DIM;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            if (width != -1)
+                params.width = width;
+            else
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        }
+
+        window.setAttributes(params);
+        // 这里用透明颜色替换掉系统自带背景
+        int color = ContextCompat.getColor(getActivity(), android.R.color.transparent);
+        window.setBackgroundDrawable(new ColorDrawable(color));
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(canCancelOutside);
+
+        View v = inflater.inflate(mLayoutRes, container, false);
+        if (mViewListener != null)
+            mViewListener.bindView(v);
+        return v;
+    }
+
+    public FancyDialogFragment setLayoutRes(@LayoutRes int layoutRes) {
+        mLayoutRes = layoutRes;
+        return this;
+    }
+
+    public FancyDialogFragment setViewListener(ViewListener listener) {
+        mViewListener = listener;
+        return this;
+    }
+
+    public FancyDialogFragment setCanCancelOutside(Boolean bool) {
+        this.canCancelOutside = bool;
+        return this;
+    }
+
+    public FancyDialogFragment setBottomShow(Boolean bool) {
+        this.isBottom = bool;
+        return this;
+    }
+
+    public FancyDialogFragment setWidth(Context context, int widthDp) {
+        width = (int) MeasureUtils.dp2px(context, widthDp);
+        return this;
+    }
+}

@@ -11,6 +11,7 @@ data class FilterData(val status: Int, val Name: String) {
     companion object {
         //作业状态,default = null
         val jobStatus = listOf(
+                FilterData(10,"默认"),
                 FilterData(-1, "新作业"),
                 FilterData(0, "答题中"),
                 FilterData(1, "已完成"),
