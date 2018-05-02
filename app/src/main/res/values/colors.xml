@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--<color name="colorPrimary">#0dc984</color>-->
-    <color name="colorPrimary">#55c340</color>
+    <!--<color name="colorPrimary">#55c340</color>-->
+    <color name="colorPrimary">#009944</color>
     <!--<color name="colorPrimaryDark">#0aaf73</color>-->
-    <color name="colorPrimaryDark">#55c340</color>
+    <!--<color name="colorPrimaryDark">#55c340</color>-->
+    <color name="colorPrimaryDark">#009944</color>
     <color name="colorAccent">#FF4081</color>
     
     <color name="colorActive">#0dc984</color>
@@ -82,6 +84,17 @@
     <color name="color_subject_bg">#76c5fb</color>
     <color name="color_tab_title">#787c7e</color>
     <color name="color_tab_subtitle">#75797b</color>
+
+    <color name="color_262c30">#262c30</color>
+
+    <color name="color_title">#283038</color>
+    <color name="color_subtitle_dark">#2d3336</color>
+    <color name="color_subtitle_grey">#747879</color>
+    <color name="color_title_green">#02cd5d</color>
+    <color name="color_subtitle_green">#007634</color>
+    <color name="color_work_list">#007634</color>
+
+
 
 
 </resources>

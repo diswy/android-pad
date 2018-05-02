@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
+import com.cqebd.student.event.*
 import com.cqebd.student.ui.*
 import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.vo.entity.FilterData
@@ -31,11 +32,13 @@ class MainActivity : BaseActivity() {
         initDrawerView()
 
         val titles = resources.getStringArray(R.array.title)
-        navigation.addItem(BottomNavigationItem(R.drawable.ic_home, titles[0]))
-                .addItem(BottomNavigationItem(R.drawable.ic_video, titles[1]))
-                .addItem(BottomNavigationItem(R.drawable.ic_work, titles[2]))
-                .addItem(BottomNavigationItem(R.drawable.ic_mine, titles[3]))
+        navigation.addItem(
+                BottomNavigationItem(R.drawable.ic_home_selected, titles[0]).setInactiveIconResource(R.drawable.ic_home_normal))
+                .addItem(BottomNavigationItem(R.drawable.ic_video_selected, titles[1]).setInactiveIconResource(R.drawable.ic_video_normal))
+                .addItem(BottomNavigationItem(R.drawable.ic_work_selected, titles[2]).setInactiveIconResource(R.drawable.ic_work_normal))
+                .addItem(BottomNavigationItem(R.drawable.ic_mine_selected, titles[3]).setInactiveIconResource(R.drawable.ic_mine_normal))
                 .initialise()
+
         navigation.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
             override fun onTabReselected(position: Int) {
 
@@ -94,24 +97,69 @@ class MainActivity : BaseActivity() {
     /**
      * 侧滑菜单处理
      */
-    fun switchDrawerLayout() {
+    fun switchDrawerLayout(type: Int) {
+        when (type) {
+            HomeworkFragment.HOMEWORK -> {
+                main_tv_subject.visibility = View.VISIBLE
+                subject_layout.visibility = View.VISIBLE
+            }
+            HomeworkFragment.WRONG_WORK -> {
+                main_tv_subject.visibility = View.GONE
+                subject_layout.visibility = View.GONE
+            }
+        }
+
+
         if (main_drawer_layout.isDrawerOpen(Gravity.END))
             main_drawer_layout.closeDrawer(Gravity.END)
         else
             main_drawer_layout.openDrawer(Gravity.END)
     }
 
+
+    private var mSubjectPos = 0
+    private var mTypePos = 0
     private fun initDrawerView() {
         val mInflater = LayoutInflater.from(this)
         // 禁用手势侧滑
         main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
-        subject_layout.adapter = object : TagAdapter<FilterData>(FilterData.problemType) {
+        type_layout.adapter = object : TagAdapter<FilterData>(FilterData.problemType) {
             override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
                 val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
                 tv.text = data?.Name
                 return tv
             }
+        }
+
+        val mSubjectAdapter = object : TagAdapter<FilterData>(FilterData.subjectAll) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+
+
+        subject_layout.adapter = mSubjectAdapter
+        subject_layout.setOnTagClickListener { _, position, _ ->
+            mSubjectPos = position
+            if (mSubjectPos == position) {
+                mSubjectAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
+        }
+
+
+
+        main_drawer_btn_clear.setOnClickListener {
+            RxBus.get().send(STATUS_SUBJECT, FilterData(-1, "默认"))
+            RxBus.get().send(STATUS_TYPE, FilterData(-1, "默认"))
+        }
+
+        main_drawer_btn_confirm.setOnClickListener {
+            RxBus.get().send(STATUS_SUBJECT, FilterData.subject[mSubjectPos])
+            RxBus.get().send(STATUS_TYPE, FilterData.problemType[mTypePos])
         }
 
 //        ###事件

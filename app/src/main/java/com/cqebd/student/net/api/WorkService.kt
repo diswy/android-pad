@@ -38,7 +38,7 @@ interface WorkService {
             @Field("ExaminationPapersTypeID") ExaminationPapersTypeID: Int?,
             @Field("status") status: Int?,
             @Field("pageindex") pageIndex: Int,
-            @Field("pagesieze") pageSize: Int)
+            @Field("pagesieze") pageSize: Int = 20)
             : LiveData<ApiResponse<List<WorkInfo>>>
 
     /**

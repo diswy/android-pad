@@ -100,6 +100,13 @@ class FilterViewModel : ViewModel() {
         filter(view, jobType, FilterData.jobType)
     }
 
+    fun filterJobType(status: FilterData) {
+        if (status.status == -1)
+            jobType.value = null
+        else
+            jobType.value = status
+    }
+
     /**
      * 订阅状态筛选
      */

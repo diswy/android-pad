@@ -24,7 +24,7 @@
         android:layout_marginStart="0dp"
         android:background="?android:attr/windowBackground"
         app:bnbActiveColor="@color/color_main"
-        app:bnbInactiveColor="@color/colorInactive"
+        app:bnbInactiveColor="@color/black"
         app:bnbMode="mode_fixed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

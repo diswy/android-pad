@@ -9,8 +9,9 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.cqebd.student.MainActivity
 import com.cqebd.student.R
-import com.cqebd.student.event.STATUS_TYPE
+import com.cqebd.student.event.*
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
@@ -18,6 +19,7 @@ import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.ui.JobPreviewActivity
 import com.cqebd.student.ui.WebActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
+import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.WorkListViewModel
 import com.cqebd.student.vo.entity.FilterData
@@ -70,7 +72,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    RxBus.get().send(STATUS_TYPE, FilterData(FilterData.jobStatus[index].status,FilterData.jobStatus[index].Name))
+                    filterViewModel.filterJobStatus(FilterData(FilterData.jobStatus[index].status,FilterData.jobStatus[index].Name))
                 }
                 return titleView
             }
@@ -92,6 +94,14 @@ class HomeworkContentFragment : BaseLazyFragment() {
             }
         }
         magic_indicator_subtitle.navigator = subCommonNavigator
+    }
+
+    override fun bindEvents() {
+        // 侧滑菜单处理
+        val mainActivity = activity as MainActivity
+        btn_filter.setOnClickListener {
+            mainActivity.switchDrawerLayout(HomeworkFragment.HOMEWORK)
+        }
     }
 
     override fun lazyLoad() {
@@ -120,7 +130,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
         })
 
         adapter = object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work,pageProcess.data){
-            val subjectBg = arrayOf(R.drawable.bg_subject1,R.drawable.bg_subject2,R.drawable.bg_subject3,R.drawable.bg_subject4)
+//            val subjectBg = arrayOf(R.drawable.bg_subject1,R.drawable.bg_subject2,R.drawable.bg_subject3,R.drawable.bg_subject4)
             override fun convert(helper: BaseViewHolder?, item: WorkInfo) {
                 helper?.itemView?.apply {
                     text_name.text = item.Name
@@ -224,14 +234,14 @@ class HomeworkContentFragment : BaseLazyFragment() {
         RxBus.get().unRegister(this)
     }
 
-    @Subscribe(code = 0x10000)
-    fun getBack(data:String) {
-        toast("No.1 tmd success one!!! $data")
+    @Subscribe(code = STATUS_TYPE)
+    fun filterJobType(status:FilterData) {
+        filterViewModel.filterJobType(status)
     }
 
-    @Subscribe(code = STATUS_TYPE)
-    fun filterStatus(status:FilterData) {
-        filterViewModel.filterJobStatus(status)
+    @Subscribe(code = STATUS_SUBJECT)
+    fun filterSubject(status:FilterData) {
+        filterViewModel.filterSubject(status)
     }
 
 

@@ -1,6 +1,7 @@
 package com.cqebd.student.vo.entity
 
 import com.orhanobut.logger.Logger
+import java.util.ArrayList
 
 /**
  * 描述
@@ -51,6 +52,16 @@ data class FilterData(val status: Int, val Name: String) {
                 FilterData(it.Id, it.Name)
             } ?: listOf()
         }
+
+        val subjectAll: List<FilterData> by lazy {
+            val mList = ArrayList<FilterData>()
+            mList.add(FilterData(-1,"全部"))
+            mList.addAll(subject)
+            mList
+        }
+
+
+
         //作业类型
         val jobType: List<FilterData> by lazy {
             val typeList = UserAccount.load()?.JobTypeList

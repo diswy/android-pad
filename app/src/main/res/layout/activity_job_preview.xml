@@ -2,57 +2,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/color_main">
+
         <ImageButton style="@style/btnBack" />
+
         <TextView
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="16sp"
             android:text="点点课"
             android:textColor="@color/colorWhite"
-            />
+            android:textSize="16sp" />
     </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <ProgressBar
                 android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
             <FrameLayout
                 android:id="@+id/web_parent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <com.cqebd.student.widget.SubmitButton
+                android:layout_weight="1" />
+            
+            <com.wuhangjia.firstlib.view.FancyButton
                 android:id="@+id/btn_start"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="开始答题"
-                android:textSize="16sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/colorWhite"
-                />
+                app:fb_shape="rect"
+                app:fb_hover_color="@color/color_subtitle_green"
+                app:fb_text_color="@color/colorWhite"
+                app:fb_text_size="16sp"
+                app:fb_bg_color="@color/color_main"
+                app:fb_text="开始答题"/>
+            
         </LinearLayout>
+
         <com.cqebd.student.widget.PageLoadView
             android:id="@+id/pageLoadView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>
