@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.ShareHomeworkViewModel
@@ -32,6 +33,7 @@ class ShareHomeworkActivity : BaseActivity() {
     private lateinit var filterViewModel: FilterViewModel
     private lateinit var shareHomeworkViewModel: ShareHomeworkViewModel
     private lateinit var adapter: BaseQuickAdapter<ShareHomeworkItem, BaseViewHolder>
+    private val pageProcess = PageProcess.build<ShareHomeworkItem> { it.Id }
     private var mPage = 1
     private var isRefresh = false
     private val mPageSize = 20
@@ -48,7 +50,8 @@ class ShareHomeworkActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         filterViewModel = ViewModelProviders.of(this).get(FilterViewModel::class.java)
-        shareHomeworkViewModel = ViewModelProviders.of(this).get(ShareHomeworkViewModel::class.java)
+        shareHomeworkViewModel = ViewModelProviders.of(this, ShareHomeworkViewModel.Factory(filterViewModel, pageProcess))
+                .get(ShareHomeworkViewModel::class.java)
 
         filterViewModel.shareHomeworkGrade.observe(this, Observer {
             tv_grade.text = it?.Name ?: "年级"

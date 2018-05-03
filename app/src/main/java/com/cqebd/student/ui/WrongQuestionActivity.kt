@@ -91,7 +91,7 @@ class WrongQuestionActivity : BaseActivity() {
     private fun getWrongQuestionList(){
         object :NetworkResource<List<WrongQuestion>>(){
             override fun createCall(): LiveData<ApiResponse<List<WrongQuestion>>> {
-                return  NetClient.workService().getWrongQuestionList(loginId,filterViewModel.subject.value?.status,filterViewModel.jobType.value?.status,null)
+                return  NetClient.workService().getWrongQuestionList(loginId,filterViewModel.subject.value?.status,filterViewModel.jobType.value?.status,null, pageProcess.pageIndex)
             }
         }.asLiveData.observe(this, Observer {
             when(it?.status){

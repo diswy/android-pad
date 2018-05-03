@@ -97,23 +97,18 @@ class MainActivity : BaseActivity() {
     /**
      * 侧滑菜单处理
      */
-    fun switchDrawerLayout(type: Int) {
-        when (type) {
-            HomeworkFragment.HOMEWORK -> {
-                main_tv_subject.visibility = View.VISIBLE
-                subject_layout.visibility = View.VISIBLE
-            }
-            HomeworkFragment.WRONG_WORK -> {
-                main_tv_subject.visibility = View.GONE
-                subject_layout.visibility = View.GONE
-            }
-        }
-
-
+    fun switchDrawerLayout() {
         if (main_drawer_layout.isDrawerOpen(Gravity.END))
             main_drawer_layout.closeDrawer(Gravity.END)
         else
             main_drawer_layout.openDrawer(Gravity.END)
+    }
+
+    fun disableDrawerLayout(){
+        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+    fun enableDrawerLayout(){
+        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
 
@@ -124,12 +119,20 @@ class MainActivity : BaseActivity() {
         // 禁用手势侧滑
         main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
-        type_layout.adapter = object : TagAdapter<FilterData>(FilterData.problemType) {
+        val mProblemTypeAdapter = object : TagAdapter<FilterData>(FilterData.jobType) {
             override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
                 val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
                 tv.text = data?.Name
                 return tv
             }
+        }
+        type_layout.adapter = mProblemTypeAdapter
+        type_layout.setOnTagClickListener { _, position, _ ->
+            mTypePos = position
+            if (mTypePos == position) {
+                mProblemTypeAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
         }
 
         val mSubjectAdapter = object : TagAdapter<FilterData>(FilterData.subjectAll) {
@@ -139,7 +142,6 @@ class MainActivity : BaseActivity() {
                 return tv
             }
         }
-
 
         subject_layout.adapter = mSubjectAdapter
         subject_layout.setOnTagClickListener { _, position, _ ->
@@ -151,15 +153,20 @@ class MainActivity : BaseActivity() {
         }
 
 
-
         main_drawer_btn_clear.setOnClickListener {
+            main_drawer_layout.closeDrawer(Gravity.END)
+            // 清除选中状态
+            mProblemTypeAdapter.setSelectedList(null)
+            mSubjectAdapter.setSelectedList(null)
+
             RxBus.get().send(STATUS_SUBJECT, FilterData(-1, "默认"))
             RxBus.get().send(STATUS_TYPE, FilterData(-1, "默认"))
         }
 
         main_drawer_btn_confirm.setOnClickListener {
-            RxBus.get().send(STATUS_SUBJECT, FilterData.subject[mSubjectPos])
-            RxBus.get().send(STATUS_TYPE, FilterData.problemType[mTypePos])
+            main_drawer_layout.closeDrawer(Gravity.END)
+            RxBus.get().send(STATUS_SUBJECT, FilterData.subjectAll[mSubjectPos])
+            RxBus.get().send(STATUS_TYPE, FilterData.jobType[mTypePos])
         }
 
 //        ###事件

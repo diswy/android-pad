@@ -31,7 +31,7 @@
     <color name="color_green_7dd21f">#7dd21f</color>
     <color name="color_blue_228bf7">#228bf7</color>
     <color name="color_purple_9b0df5">#9b0df5</color>
-    <color name="color_white_cccccc">#cccccc</color>
+    <color name="color_ccc">#cccccc</color>
 
     //temp
 
@@ -93,6 +93,8 @@
     <color name="color_title_green">#02cd5d</color>
     <color name="color_subtitle_green">#007634</color>
     <color name="color_work_list">#007634</color>
+    <color name="color_3d">#3d3d3d</color>
+    <color name="color_4b">#4b4b4b</color>
 
 
 

@@ -121,6 +121,13 @@ class FilterViewModel : ViewModel() {
         filter(view, shareHomeworkGrade, FilterData.gradeHomework)
     }
 
+    fun filterShareHomeworkGrade(filter: FilterData) {
+        if (filter.status == -1)
+            shareHomeworkGrade.value = null
+        else
+            shareHomeworkGrade.value = filter
+    }
+
     /**
      * 作业分享 题型筛选
      */

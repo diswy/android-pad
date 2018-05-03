@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.cqebd.student.R
 
 
 /**
@@ -16,9 +17,12 @@ abstract class BaseLazyFragment : Fragment() {
     private lateinit var mViewContent: View
     open var mIsVisible: Boolean = false
     open var mIsInit: Boolean = false// 是否初始化了界面
+    private var mVisible:Boolean = false
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+
+        mVisible = userVisibleHint
 
         if (userVisibleHint && mIsInit) {
             mIsVisible = true
@@ -31,7 +35,6 @@ abstract class BaseLazyFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewContent = inflater.inflate(getLayoutRes(), container, false)
-
         mViewContent.parent?.let {
             (it as ViewGroup).removeView(mViewContent)
         }
@@ -41,7 +44,8 @@ abstract class BaseLazyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
         bindEvents()
-        lazyLoad()
+        if (mVisible)
+            lazyLoad()
     }
 
     override fun onDestroyView() {

@@ -13,12 +13,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:textColor="@color/color_work_list"
         tools:text="2015.1.23  12:11:22" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shape_bg_white_border"
         android:padding="10dp">
 
@@ -36,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:lines="1"
-            android:textColor="@color/color_text_title"
-            android:textSize="14sp"
+            android:textColor="@color/color_3d"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/img_avatar"
             tools:text="2017年重庆市高考模拟测试真题" />
@@ -45,11 +48,12 @@
         <TextView
             android:id="@+id/tv_subtitle"
             android:layout_width="wrap_content"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_name"
+            android:layout_marginTop="10dp"
             android:lines="1"
-            android:textColor="@color/color_text_default"
-            android:textSize="13sp"
+            android:textColor="@color/color_4b"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/img_avatar"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"

@@ -100,7 +100,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
         // 侧滑菜单处理
         val mainActivity = activity as MainActivity
         btn_filter.setOnClickListener {
-            mainActivity.switchDrawerLayout(HomeworkFragment.HOMEWORK)
+            mainActivity.switchDrawerLayout()
         }
     }
 
@@ -110,12 +110,6 @@ class HomeworkContentFragment : BaseLazyFragment() {
         filterViewModel = ViewModelProviders.of(this).get(FilterViewModel::class.java).apply { yOff=0 }
         workListViewModel = ViewModelProviders.of(this,WorkListViewModel.Factory(filterViewModel,pageProcess))
                 .get(WorkListViewModel::class.java)
-
-        filterViewModel.subject.observe(this, Observer {
-            pageLoadView.show = true
-            pageProcess.data.clear()
-            workListViewModel.getWorkList()
-        })
 
         filterViewModel.jobStatus.observe(this, Observer {
             pageLoadView.show = true
@@ -130,7 +124,6 @@ class HomeworkContentFragment : BaseLazyFragment() {
         })
 
         adapter = object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work,pageProcess.data){
-//            val subjectBg = arrayOf(R.drawable.bg_subject1,R.drawable.bg_subject2,R.drawable.bg_subject3,R.drawable.bg_subject4)
             override fun convert(helper: BaseViewHolder?, item: WorkInfo) {
                 helper?.itemView?.apply {
                     text_name.text = item.Name
@@ -138,7 +131,6 @@ class HomeworkContentFragment : BaseLazyFragment() {
                     text_count.text = "共%s题".format(item.QuestionCount)
                     text_start_time.text = "布置时间: ".plus(formatTimeYMDHM(item.publishTime))
                     text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
-//                    text_subject.setBackgroundResource(subjectBg[helper.layoutPosition%4])
                     when(item.Status){
                         -1->{
                             text_status.text = "新作业"
@@ -196,7 +188,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
                             pageLoadView.hide()
                         }
                         if (data.size<20){
-                            adapter.loadMoreEnd(true)
+                            adapter.loadMoreEnd()
                         }
                     }else{
                         pageProcess.loadMoreData(data!!)

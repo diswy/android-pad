@@ -50,7 +50,9 @@ interface WorkService {
             @Field("userid") loginId: Long,
             @Field("SubjectTypeID") SubjectTypeID: Int?,
             @Field("ExaminationPapersTypeID") ExaminationPapersTypeID: Int?,
-            @Field("status") status: Int?)
+            @Field("status") status: Int?,
+            @Field("pageindex") pageIndex: Int,
+            @Field("pagesieze") pageSize: Int = 20)
             : LiveData<ApiResponse<List<WrongQuestion>>>
 
     /**

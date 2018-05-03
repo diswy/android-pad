@@ -64,9 +64,9 @@ class VideoFragment : BaseFragment() {
             }else{pageLoadView.hide()}
         })
 
-        pager_ad.setImagesUrl(arrayListOf("http://img3.imgtn.bdimg.com/it/u=133586149,2711567276&fm=11&gp=0.jpg"
-        ,"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=699537926,455842408&fm=11&gp=0.jpg"
-        ,"https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=970551692,898694267&fm=27&gp=0.jpg"))
+        pager_ad.setImagesUrl(arrayListOf("http://img.hb.aicdn.com/03db5cd4cd1bb2a311c5649060f91d84f59e7127e5ede-kzcL0Q_fw658"
+                , "http://img.hb.aicdn.com/03db5cd4cd1bb2a311c5649060f91d84f59e7127e5ede-kzcL0Q_fw658"
+                , "http://img.hb.aicdn.com/03db5cd4cd1bb2a311c5649060f91d84f59e7127e5ede-kzcL0Q_fw658"))
 
         adapter = object : BaseQuickAdapter<VideoInfo,BaseViewHolder>(R.layout.item_video){
             override fun convert(helper: BaseViewHolder?, item: VideoInfo) {

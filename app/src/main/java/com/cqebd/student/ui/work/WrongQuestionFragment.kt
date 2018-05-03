@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
+import com.cqebd.student.event.STATUS_TYPE
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.repository.NetworkResource
@@ -19,12 +20,10 @@ import com.cqebd.student.tools.formatTimeYMD
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.ui.WrongQuestionDetailsActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
-import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.WrongQuestion
 import com.cqebd.teacher.vo.Status
-import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
@@ -38,8 +37,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.toast
-import java.util.ArrayList
 
 /**
  * 错题本
@@ -49,7 +46,6 @@ class WrongQuestionFragment : BaseLazyFragment() {
     private lateinit var filterViewModel: FilterViewModel
     private val pageProcess = PageProcess.build<WrongQuestion> { it.StudentQuestionsTasksID }
     private lateinit var adapter: BaseQuickAdapter<WrongQuestion, BaseViewHolder>
-    private val subjects = ArrayList<FilterData>()
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_homework_content
@@ -57,9 +53,6 @@ class WrongQuestionFragment : BaseLazyFragment() {
 
     override fun initView() {
         super.initView()
-        subjects.clear()
-        subjects.add(FilterData(-1, "默认"))
-        subjects.addAll(FilterData.subject)
         // 副标题
         val subCommonNavigator = CommonNavigator(context)
         subCommonNavigator.scrollPivotX = 0.65f
@@ -68,20 +61,19 @@ class WrongQuestionFragment : BaseLazyFragment() {
                 val titleView = ColorTransitionPagerTitleView(context)
                 titleView.normalColor = resources.getColor(R.color.color_tab_title)
                 titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = subjects[index].Name
+                titleView.text = FilterData.subjectAll[index].Name
                 titleView.textSize = 14f
                 titleView.setOnClickListener {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-//                    RxBus.get().send(STATUS_TYPE, FilterData(FilterData.jobStatus[index].status, FilterData.jobStatus[index].Name))
-                    filterViewModel.filterSubject(FilterData(subjects[index].status, subjects[index].Name))
+                    filterViewModel.filterSubject(FilterData(FilterData.subjectAll[index].status, FilterData.subjectAll[index].Name))
                 }
                 return titleView
             }
 
             override fun getCount(): Int {
-                return FilterData.jobStatus.size
+                return FilterData.subjectAll.size
             }
 
             override fun getIndicator(p0: Context?): IPagerIndicator {
@@ -103,7 +95,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
         // 侧滑菜单处理
         val mainActivity = activity as MainActivity
         btn_filter.setOnClickListener {
-            mainActivity.switchDrawerLayout(HomeworkFragment.WRONG_WORK)
+            mainActivity.switchDrawerLayout()
         }
     }
 
@@ -141,6 +133,10 @@ class WrongQuestionFragment : BaseLazyFragment() {
             startActivity<WrongQuestionDetailsActivity>("taskId" to itemData.StudentQuestionsTasksID, "title" to itemData.Name)
         }
 
+        adapter.setOnLoadMoreListener({
+            getWrongQuestionList()
+        }, recyclerView)
+
         smart_refresh_layout.setOnRefreshListener {
             pageProcess.data.clear()
             getWrongQuestionList()
@@ -155,37 +151,49 @@ class WrongQuestionFragment : BaseLazyFragment() {
         RxBus.get().unRegister(this)
     }
 
-    @Subscribe(code = 0x10000)
-    fun getBack(data: String) {
-        toast("No.2 tmd success two!!! $data")
+    @Subscribe(code = STATUS_TYPE)
+    fun filterJobType(status: FilterData) {
+        filterViewModel.filterJobType(status)
     }
 
     private fun getWrongQuestionList() {
         object : NetworkResource<List<WrongQuestion>>() {
             override fun createCall(): LiveData<ApiResponse<List<WrongQuestion>>> {
-                return NetClient.workService().getWrongQuestionList(loginId, filterViewModel.subject.value?.status, filterViewModel.jobType.value?.status, null)
+                return NetClient.workService().getWrongQuestionList(loginId, filterViewModel.subject.value?.status, filterViewModel.jobType.value?.status, null, pageProcess.pageIndex)
             }
         }.asLiveData.observe(this, Observer {
             when (it?.status) {
                 Status.SUCCESS -> {
-                    pageProcess.refreshData(it.data!!)
-                    smart_refresh_layout.finishRefresh(true)
-//                    refreshLayout.refreshComplete(true)
-                    recyclerView.adapter.notifyDataSetChanged()
-                    if (pageProcess.data.isEmpty()) {
-                        pageLoadView.dataEmpty()
-                    } else {
-                        pageLoadView.hide()
-                    }
-//                    pageLoadView.hide()
+                    val data = it.data
+                    if (pageProcess.pageIndex==1){
+                        pageProcess.refreshData(data!!)
+                        smart_refresh_layout.finishRefresh(true)
+                        adapter.setNewData(pageProcess.data)
+                        if (pageProcess.data.isEmpty()){
+                            pageLoadView.dataEmpty()
+                        }else{
+                            pageLoadView.hide()
+                        }
+                        if (data.size<20){
+                            adapter.loadMoreEnd()
+                        }
+                    }else{
+                        pageProcess.loadMoreData(data!!)
+                        if (data.size>=20){
+                            adapter.loadMoreComplete()
+                        }else{
+                            adapter.loadMoreEnd()
+                        }
+                        adapter.notifyDataSetChanged()
 
+                    }
                 }
                 Status.ERROR -> {
                     smart_refresh_layout.finishRefresh(false)
-//                    refreshLayout.refreshComplete(false)
-//                    pageLoadView.error({
-//                        getWrongQuestionList()
-//                    })
+                    adapter.loadMoreFail()
+                    pageLoadView.error({
+                        getWrongQuestionList()
+                    })
                 }
                 Status.LOADING -> pageLoadView.load()
             }

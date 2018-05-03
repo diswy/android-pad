@@ -1,7 +1,6 @@
 package com.cqebd.student.vo.entity
 
-import com.orhanobut.logger.Logger
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 描述

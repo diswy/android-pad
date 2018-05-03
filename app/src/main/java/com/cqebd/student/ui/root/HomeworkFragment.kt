@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,11 @@ import android.view.animation.DecelerateInterpolator
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.event.STATUS_TYPE
-import com.cqebd.student.test.BlankFragment
+import com.cqebd.student.ui.work.BeSharedFragment
 import com.cqebd.student.ui.work.HomeworkContentFragment
+import com.cqebd.student.ui.work.MyCollectFragment
 import com.cqebd.student.ui.work.WrongQuestionFragment
-import com.cqebd.student.vo.entity.FilterData
-import gorden.rxbus.RxBus
+import kotlinx.android.synthetic.main.fragment_homework.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -27,7 +27,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import org.jetbrains.anko.support.v4.dip
-import kotlinx.android.synthetic.main.fragment_homework.*
 
 
 /**
@@ -39,9 +38,9 @@ class HomeworkFragment : BaseFragment() {
         const val WRONG_WORK = 1
         const val SHARED = 2
         const val COLLECT = 3
-        const val RECOMMEND = 4
     }
-    private val titles = listOf("作业", "错题", "分享", "收藏", "推荐")
+
+    private val titles = listOf("作业", "错题", "分享", "收藏")
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_homework, container, false)
@@ -54,7 +53,9 @@ class HomeworkFragment : BaseFragment() {
                 return when (position) {
                     0 -> HomeworkContentFragment()
                     1 -> WrongQuestionFragment()
-                    else -> BlankFragment()
+                    2 -> BeSharedFragment()
+                    3 -> MyCollectFragment()
+                    else -> HomeworkContentFragment()
                 }
             }
 
@@ -63,17 +64,37 @@ class HomeworkFragment : BaseFragment() {
             }
         }
 
+        view_pager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                val mainActivity = activity as MainActivity
+                if (position == 3)
+                    mainActivity.disableDrawerLayout()
+                else
+                    mainActivity.enableDrawerLayout()
+            }
+        })
+
         // 主标题
         val commonNavigator = CommonNavigator(context)
         commonNavigator.scrollPivotX = 0.65f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val titleView = ColorTransitionPagerTitleView(context)
-                titleView.normalColor = resources.getColor(R.color.color_tab_title)
+                titleView.normalColor = resources.getColor(R.color.color_title)
                 titleView.selectedColor = resources.getColor(R.color.color_main)
                 titleView.text = titles[index]
                 titleView.textSize = 16f
-                titleView.setOnClickListener { view_pager.currentItem = index }
+                val tp = titleView.paint
+                tp.isFakeBoldText = true
+                titleView.setOnClickListener {
+                    view_pager.currentItem = index
+                }
                 return titleView
             }
 
@@ -95,8 +116,6 @@ class HomeworkFragment : BaseFragment() {
         }
         magic_indicator.navigator = commonNavigator
         ViewPagerHelper.bind(magic_indicator, view_pager)
-
-
     }
 
     override fun bindEvents() {
