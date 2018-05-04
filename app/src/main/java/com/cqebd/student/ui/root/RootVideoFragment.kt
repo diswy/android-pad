@@ -5,13 +5,11 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.ui.work.BeSharedFragment
@@ -28,22 +26,17 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import org.jetbrains.anko.support.v4.dip
 
-
 /**
- *  作业
+ * Video
  */
-class HomeworkFragment : BaseFragment() {
-    private val titles = listOf("作业", "错题", "分享", "收藏")
+class RootVideoFragment : BaseFragment() {
+    private val titles = listOf("视频", "订阅", "课表", "收藏")
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_homework_video, container, false)
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-
-        val mainActivity = activity as MainActivity
-        mainActivity.filterLayoutItem(0,MainActivity.WORK)
-
         view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
@@ -60,28 +53,9 @@ class HomeworkFragment : BaseFragment() {
             }
         }
 
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                mainActivity.filterLayoutItem(position,MainActivity.WORK)
-
-                // position = 3 屏蔽收藏侧滑 无内容
-                if (position == 3){
-                    mainActivity.disableDrawerLayout()
-                }else{
-                    mainActivity.enableDrawerLayout()
-                }
-
-            }
-        })
-
         // 主标题
         val commonNavigator = CommonNavigator(context)
+        commonNavigator.isAdjustMode = true
         commonNavigator.scrollPivotX = 0.65f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
@@ -119,6 +93,3 @@ class HomeworkFragment : BaseFragment() {
     }
 
 }
-
-
-
