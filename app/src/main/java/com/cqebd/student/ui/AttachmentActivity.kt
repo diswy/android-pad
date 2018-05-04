@@ -22,7 +22,6 @@ import com.cqebd.student.vo.entity.WorkInfo
 import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.logError
 import gorden.rxbus.RxBus
-import gorden.util.XLog
 import gorden.widget.selector.SelectorButton
 import kotlinx.android.synthetic.main.activity_attachment.*
 import java.util.*

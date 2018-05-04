@@ -700,7 +700,10 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                                 intent.putExtra("url", url);
                                 mContext.startActivity(intent);
                             }).show();
-                    niftyDialog().setOnDismissListener(dialog -> mContext.finish());
+                    niftyDialog().setOnDismissListener(dialog -> {
+                        mContext.finish();
+                        RxBus.get().send(Constant.BUS_MESSAGE_REFRESH);
+                    });
 
                 } else {
                     Toast.show(response.getMessage());

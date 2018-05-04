@@ -48,6 +48,7 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
                 if (it.canWatchTimes==0||count<it.canWatchTimes){
                     activity.startActivity<AttachmentActivity>("papers" to true,
                             "taskInfo" to info,"attachment" to info.attachments)
+                    activity.finish()
                     return
                 }
             }
@@ -85,6 +86,7 @@ class JobPreviewViewModel(private val info: WorkInfo):ViewModel() {
                                 intent.putExtra("submitMode",submitMode)
                                 putWorkData(intent, it.body!![0].QuestionGruop, info)
                                 activity.startActivity(intent)
+                                activity.finish()
                                 RxBus.get().send(Constant.BUS_WORKTASK_CHANGE)
                             }else{
                                 loadingDialog.dismiss()

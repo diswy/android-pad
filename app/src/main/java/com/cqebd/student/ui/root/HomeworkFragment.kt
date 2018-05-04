@@ -48,6 +48,9 @@ class HomeworkFragment : BaseFragment() {
 
     override fun initialize(savedInstanceState: Bundle?) {
 
+        val mainActivity = activity as MainActivity
+        mainActivity.filterLayoutItem(0,MainActivity.WORK)
+
         view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
@@ -64,7 +67,7 @@ class HomeworkFragment : BaseFragment() {
             }
         }
 
-        view_pager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -73,10 +76,15 @@ class HomeworkFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 val mainActivity = activity as MainActivity
-                if (position == 3)
+                mainActivity.filterLayoutItem(position,MainActivity.WORK)
+
+                // position = 3 屏蔽收藏侧滑 无内容
+                if (position == 3){
                     mainActivity.disableDrawerLayout()
-                else
+                }else{
                     mainActivity.enableDrawerLayout()
+                }
+
             }
         })
 

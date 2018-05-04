@@ -11,6 +11,8 @@
 
     <item
         android:gravity="end|bottom"
+        android:left="65dp"
+        android:top="15dp"
         android:drawable="@drawable/ic_filter_checked">
     </item>
 

@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
+import com.cqebd.student.constant.Constant
 import com.cqebd.student.event.*
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
@@ -234,6 +235,12 @@ class HomeworkContentFragment : BaseLazyFragment() {
     @Subscribe(code = STATUS_SUBJECT)
     fun filterSubject(status:FilterData) {
         filterViewModel.filterSubject(status)
+    }
+    @Subscribe(code = Constant.BUS_MESSAGE_REFRESH)
+    fun refreshData() {
+        pageLoadView.show = true
+        pageProcess.data.clear()
+        workListViewModel.getWorkList()
     }
 
 

@@ -20,4 +20,5 @@ public class Constant {
     public static final int BUS_WORKTASK_CHANGE = 1004;
     public static final int BUS_FINISH_PREVIEW = 1005;
     public static final int BUS_MESSAGE_COUNT = 1006;
+    public static final int BUS_MESSAGE_REFRESH = 1007;
 }

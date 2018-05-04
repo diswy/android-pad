@@ -135,11 +135,25 @@ class FilterViewModel : ViewModel() {
         filter(view, problemType, FilterData.problemType)
     }
 
+    fun filterProblemType(filter:FilterData) {
+        if (filter.status == -1)
+            problemType.value = null
+        else
+            problemType.value = filter
+    }
+
     /**
      * 作业分享 时间筛选
      */
     fun filterShareHomeworkDate(view: View) {
         filter(view, shareHomeworkDate, FilterData.dateFilter)
+    }
+
+    fun filterShareHomeworkDate(filter:FilterData) {
+        if (filter.status == -1)
+            shareHomeworkDate.value = null
+        else
+            shareHomeworkDate.value = filter
     }
 
     private fun filter(view: View, filterData: MutableLiveData<FilterData>, filterDataList: List<FilterData>) {
