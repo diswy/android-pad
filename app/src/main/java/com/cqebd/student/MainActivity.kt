@@ -10,8 +10,13 @@ import android.widget.TextView
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.event.*
-import com.cqebd.student.ui.*
+import com.cqebd.student.event.STATUS_DATE
+import com.cqebd.student.event.STATUS_QUESTION_TYPE
+import com.cqebd.student.event.STATUS_SUBJECT
+import com.cqebd.student.event.STATUS_TYPE
+import com.cqebd.student.ui.HomeFragment
+import com.cqebd.student.ui.MineFragment
+import com.cqebd.student.ui.VideoFragment
 import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.vo.entity.FilterData
 import com.zhy.view.flowlayout.FlowLayout
@@ -91,35 +96,24 @@ class MainActivity : BaseActivity() {
         currentFragment = targetFragment
     }
 
-    override fun bindEvents() {
-    }
-
     /**
-     * 侧滑菜单处理
+     * -------------------侧滑菜单部分-------------------
      */
-    fun switchDrawerLayout() {
-        if (main_drawer_layout.isDrawerOpen(Gravity.END))
-            main_drawer_layout.closeDrawer(Gravity.END)
-        else
-            main_drawer_layout.openDrawer(Gravity.END)
-    }
-
-    fun disableDrawerLayout(){
-        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-    }
-    fun enableDrawerLayout(){
-        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-    }
-
-
-    private var mSubjectPos = 0
-    private var mTypePos = 0
+    private var mSubjectPos = 0     // 学科
+    private var mTypePos = 0        // 类型
+    private var mQuestionTypePos = 0// 题型
+    private var mDatePos = 0        // 日期
+    private lateinit var mProblemTypeAdapter: TagAdapter<FilterData>
+    private lateinit var mSubjectAdapter: TagAdapter<FilterData>
+    private lateinit var mQuestionTypeAdapter: TagAdapter<FilterData>
+    private lateinit var mDateAdapter: TagAdapter<FilterData>
     private fun initDrawerView() {
         val mInflater = LayoutInflater.from(this)
         // 禁用手势侧滑
         main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
-        val mProblemTypeAdapter = object : TagAdapter<FilterData>(FilterData.jobType) {
+        // 类型适配
+        mProblemTypeAdapter = object : TagAdapter<FilterData>(FilterData.jobType) {
             override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
                 val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
                 tv.text = data?.Name
@@ -134,15 +128,14 @@ class MainActivity : BaseActivity() {
             }
             return@setOnTagClickListener true
         }
-
-        val mSubjectAdapter = object : TagAdapter<FilterData>(FilterData.subjectAll) {
+        // 学科适配
+        mSubjectAdapter = object : TagAdapter<FilterData>(FilterData.subjectAll) {
             override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
                 val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
                 tv.text = data?.Name
                 return tv
             }
         }
-
         subject_layout.adapter = mSubjectAdapter
         subject_layout.setOnTagClickListener { _, position, _ ->
             mSubjectPos = position
@@ -151,45 +144,139 @@ class MainActivity : BaseActivity() {
             }
             return@setOnTagClickListener true
         }
-
+        // 题型适配
+        mQuestionTypeAdapter = object : TagAdapter<FilterData>(FilterData.problemType) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+        question_type_layout.adapter = mQuestionTypeAdapter
+        question_type_layout.setOnTagClickListener { _, position, _ ->
+            mQuestionTypePos = position
+            if (mQuestionTypePos == position) {
+                mQuestionTypeAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
+        }
+        // 日期适配
+        mDateAdapter = object : TagAdapter<FilterData>(FilterData.dateFilter) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+        date_layout.adapter = mDateAdapter
+        date_layout.setOnTagClickListener { _, position, _ ->
+            mDatePos = position
+            if (mDatePos == position) {
+                mDateAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
+        }
 
         main_drawer_btn_clear.setOnClickListener {
             main_drawer_layout.closeDrawer(Gravity.END)
             // 清除选中状态
             mProblemTypeAdapter.setSelectedList(null)
             mSubjectAdapter.setSelectedList(null)
+            mQuestionTypeAdapter.setSelectedList(null)
+            mDateAdapter.setSelectedList(null)
 
             RxBus.get().send(STATUS_SUBJECT, FilterData(-1, "默认"))
             RxBus.get().send(STATUS_TYPE, FilterData(-1, "默认"))
+            RxBus.get().send(STATUS_QUESTION_TYPE, FilterData(-1, "默认"))
+            RxBus.get().send(STATUS_DATE, FilterData(-1, "默认"))
         }
 
         main_drawer_btn_confirm.setOnClickListener {
             main_drawer_layout.closeDrawer(Gravity.END)
             RxBus.get().send(STATUS_SUBJECT, FilterData.subjectAll[mSubjectPos])
             RxBus.get().send(STATUS_TYPE, FilterData.jobType[mTypePos])
+            RxBus.get().send(STATUS_QUESTION_TYPE, FilterData.subjectAll[mQuestionTypePos])
+            RxBus.get().send(STATUS_DATE, FilterData.jobType[mDatePos])
         }
 
-//        ###事件
-//
-//        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener()
-//        {
-//            @Override
-//            public boolean onTagClick(View view, int position, FlowLayout parent)
-//            {
-//                Toast.makeText(getActivity(), mVals[position], Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
-//
-//        点击标签时的回调。
-//
-//        mFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener()
-//        {
-//            @Override
-//            public void onSelected(Set<Integer> selectPosSet)
-//            {
-//                getActivity().setTitle("choose:" + selectPosSet.toString());
-//            }
-//        });
     }
+
+    /**
+     * 侧滑菜单事件
+     */
+    fun switchDrawerLayout() {
+        if (main_drawer_layout.isDrawerOpen(Gravity.END))
+            main_drawer_layout.closeDrawer(Gravity.END)
+        else
+            main_drawer_layout.openDrawer(Gravity.END)
+    }
+
+    fun disableDrawerLayout() {
+        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    fun enableDrawerLayout() {
+        main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    /**
+     * 根据不同Item 展现不同菜单
+     */
+    companion object {
+        const val WORK = 0x333
+        const val VIDEO = 0x222
+    }
+
+    fun filterLayoutItem(pos: Int, item: Int) {
+        if (item == WORK) {
+            mProblemTypeAdapter.setSelectedList(null)
+            mSubjectAdapter.setSelectedList(null)
+            mQuestionTypeAdapter.setSelectedList(null)
+            mDateAdapter.setSelectedList(null)
+            when (pos) {
+                0 -> {
+                    main_tv_subject.visibility = View.VISIBLE
+                    subject_layout.visibility = View.VISIBLE
+                    main_tv_type.visibility = View.VISIBLE
+                    type_layout.visibility = View.VISIBLE
+                    main_tv_question_type.visibility = View.GONE
+                    question_type_layout.visibility = View.GONE
+                    main_tv_date.visibility = View.GONE
+                    date_layout.visibility = View.GONE
+                }
+                1 -> {
+                    main_tv_subject.visibility = View.GONE
+                    subject_layout.visibility = View.GONE
+                    main_tv_type.visibility = View.VISIBLE
+                    type_layout.visibility = View.VISIBLE
+                    main_tv_question_type.visibility = View.GONE
+                    question_type_layout.visibility = View.GONE
+                    main_tv_date.visibility = View.GONE
+                    date_layout.visibility = View.GONE
+                }
+                2 -> {
+                    main_tv_subject.visibility = View.VISIBLE
+                    subject_layout.visibility = View.VISIBLE
+                    main_tv_type.visibility = View.GONE
+                    type_layout.visibility = View.GONE
+                    main_tv_question_type.visibility = View.VISIBLE
+                    question_type_layout.visibility = View.VISIBLE
+                    main_tv_date.visibility = View.VISIBLE
+                    date_layout.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        if (item == VIDEO) {
+            when (pos) {
+                0 -> {
+                }
+                1 -> {
+                }
+                2 -> {
+                }
+            }
+        }
+    }
+
 }

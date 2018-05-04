@@ -64,7 +64,7 @@ class HomeworkFragment : BaseFragment() {
             }
         }
 
-        view_pager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -73,10 +73,15 @@ class HomeworkFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 val mainActivity = activity as MainActivity
-                if (position == 3)
+
+                // position = 3 屏蔽收藏侧滑 无内容
+                if (position == 3){
                     mainActivity.disableDrawerLayout()
-                else
+                }else{
                     mainActivity.enableDrawerLayout()
+                }
+                mainActivity.filterLayoutItem(position,MainActivity.WORK)
+
             }
         })
 

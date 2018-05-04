@@ -15,6 +15,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
+import com.cqebd.student.event.STATUS_DATE
+import com.cqebd.student.event.STATUS_QUESTION_TYPE
+import com.cqebd.student.event.STATUS_SUBJECT
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMDHM
@@ -31,6 +34,7 @@ import com.google.gson.reflect.TypeToken
 import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
+import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.fragment_homework_content.*
 import kotlinx.android.synthetic.main.item_share_homework.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
@@ -113,6 +117,12 @@ class BeSharedFragment : BaseLazyFragment() {
             shareHomeworkViewModel.getShareHomeworkList()
         })
 
+        filterViewModel.shareHomeworkDate.observe(this, Observer {
+            pageLoadView.show = true
+            pageProcess.data.clear()
+            shareHomeworkViewModel.getShareHomeworkList()
+        })
+
         adapter = object : BaseQuickAdapter<ShareHomeworkItem, BaseViewHolder>(R.layout.item_share_homework, pageProcess.data) {
             @SuppressLint("SetTextI18n")
             override fun convert(helper: BaseViewHolder?, item: ShareHomeworkItem) {
@@ -175,33 +185,61 @@ class BeSharedFragment : BaseLazyFragment() {
         shareHomeworkViewModel.sharedList.observe(this, Observer {
             when (it?.status) {
                 Status.SUCCESS -> {
-                    smart_refresh_layout.finishRefresh(true)
-                    pageLoadView.hide()
-
                     val data = it.data?.DataList
-                    if (pageProcess.pageIndex == 1) {
-                        pageProcess.refreshData(data!!)
-                        smart_refresh_layout.finishRefresh(true)
-                        adapter.setNewData(pageProcess.data)
-                        Logger.d(pageProcess.data)
-                        if (pageProcess.data.isEmpty()) {
-                            pageLoadView.dataEmpty()
-                        } else {
-                            pageLoadView.hide()
+                    data?.let {
+                        if (pageProcess.pageIndex==1){
+                            pageProcess.refreshData(it)
+                            smart_refresh_layout.finishRefresh(true)
+                            adapter.setNewData(pageProcess.data)
+                            Logger.d(pageProcess.data)
+                            if (pageProcess.data.isEmpty()){
+                                pageLoadView.dataEmpty()
+                            }else{
+                                pageLoadView.hide()
+                            }
+                            if (it.size<20){
+                                adapter.loadMoreEnd()
+                            }
+                        }else{
+                            pageProcess.loadMoreData(it)
+                            if (it.size>=20){
+                                adapter.loadMoreComplete()
+                            }else{
+                                adapter.loadMoreEnd()
+                            }
+                            adapter.notifyDataSetChanged()
                         }
-                        if (data.size < 20) {
-                            adapter.loadMoreEnd()
-                        }
-                    } else {
-                        pageProcess.loadMoreData(data!!)
-                        if (data.size >= 20) {
-                            adapter.loadMoreComplete()
-                        } else {
-                            adapter.loadMoreEnd()
-                        }
-                        adapter.notifyDataSetChanged()
-
                     }
+
+
+
+//                    smart_refresh_layout.finishRefresh(true)
+//                    pageLoadView.hide()
+//
+//                    val data = it.data?.DataList
+//                    if (pageProcess.pageIndex == 1) {
+//                        pageProcess.refreshData(data!!)
+//                        smart_refresh_layout.finishRefresh(true)
+//                        adapter.setNewData(pageProcess.data)
+//                        Logger.d(pageProcess.data)
+//                        if (pageProcess.data.isEmpty()) {
+//                            pageLoadView.dataEmpty()
+//                        } else {
+//                            pageLoadView.hide()
+//                        }
+//                        if (data.size < 20) {
+//                            adapter.loadMoreEnd()
+//                        }
+//                    } else {
+//                        pageProcess.loadMoreData(data!!)
+//                        if (data.size >= 20) {
+//                            adapter.loadMoreComplete()
+//                        } else {
+//                            adapter.loadMoreEnd()
+//                        }
+//                        adapter.notifyDataSetChanged()
+//
+//                    }
                 }
                 Status.ERROR -> {
                     smart_refresh_layout.finishRefresh(false)
@@ -235,6 +273,19 @@ class BeSharedFragment : BaseLazyFragment() {
     private fun toWebActivity(id: Int) {
         val url = "http://service.student.cqebd.cn/HomeWork/TaskShare?id=%s"// 跳转详情的URL
         startActivity<WebActivity>("url" to url.format(id))
+    }
+
+    @Subscribe(code = STATUS_SUBJECT)
+    fun filterSubject(filter:FilterData) {
+        filterViewModel.filterSubject(filter)
+    }
+    @Subscribe(code = STATUS_QUESTION_TYPE)
+    fun filterQuestion(filter:FilterData) {
+        filterViewModel.filterProblemType(filter)
+    }
+    @Subscribe(code = STATUS_DATE)
+    fun filterDate(filter:FilterData) {
+        filterViewModel.filterShareHomeworkDate(filter)
     }
 
 }
