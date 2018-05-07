@@ -26,7 +26,7 @@ import org.jetbrains.anko.support.v4.dip
 /**
  *  收藏
  */
-class MyCollectFragment : BaseLazyFragment() {
+class MyWorkCollectFragment : BaseLazyFragment() {
     private val collectUrlNoSubject = "studentCollect/StudentCollectList?studentid=%s"
     val collectUrlSubject = "studentCollect/StudentCollectList?studentid=%s&SubjectTypeId=%d"
 

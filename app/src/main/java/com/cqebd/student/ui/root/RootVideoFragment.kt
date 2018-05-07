@@ -12,11 +12,11 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.ui.work.BeSharedFragment
-import com.cqebd.student.ui.work.HomeworkContentFragment
-import com.cqebd.student.ui.work.MyCollectFragment
-import com.cqebd.student.ui.work.WrongQuestionFragment
-import kotlinx.android.synthetic.main.fragment_homework_video.*
+import com.cqebd.student.test.BlankFragment
+import com.cqebd.student.ui.video.MyVideoCollectFragment
+import com.cqebd.student.ui.video.MySubscribeFragment
+import com.cqebd.student.ui.video.VideoContentFragment
+import kotlinx.android.synthetic.main.fragment_root_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -30,21 +30,20 @@ import org.jetbrains.anko.support.v4.dip
  * Video
  */
 class RootVideoFragment : BaseFragment() {
-    private val titles = listOf("视频", "订阅", "课表", "收藏")
+    private val titles = listOf("视频", "订阅", "直播", "课表", "收藏")
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_homework_video, container, false)
+        return inflater?.inflate(R.layout.fragment_root_video, container, false)
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
+        video_vp.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
-                    0 -> HomeworkContentFragment()
-                    1 -> WrongQuestionFragment()
-                    2 -> BeSharedFragment()
-                    3 -> MyCollectFragment()
-                    else -> HomeworkContentFragment()
+                    0 -> VideoContentFragment()
+                    1 -> MySubscribeFragment()
+                    4 -> MyVideoCollectFragment()
+                    else -> BlankFragment()
                 }
             }
 
@@ -56,7 +55,6 @@ class RootVideoFragment : BaseFragment() {
         // 主标题
         val commonNavigator = CommonNavigator(context)
         commonNavigator.isAdjustMode = true
-        commonNavigator.scrollPivotX = 0.65f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val titleView = ColorTransitionPagerTitleView(context)
@@ -67,7 +65,7 @@ class RootVideoFragment : BaseFragment() {
                 val tp = titleView.paint
                 tp.isFakeBoldText = true
                 titleView.setOnClickListener {
-                    view_pager.currentItem = index
+                    video_vp.currentItem = index
                 }
                 return titleView
             }
@@ -88,8 +86,8 @@ class RootVideoFragment : BaseFragment() {
                 return indicator
             }
         }
-        magic_indicator.navigator = commonNavigator
-        ViewPagerHelper.bind(magic_indicator, view_pager)
+        video_magic_indicator.navigator = commonNavigator
+        ViewPagerHelper.bind(video_magic_indicator, video_vp)
     }
 
 }

@@ -17,7 +17,9 @@ import com.cqebd.student.event.STATUS_TYPE
 import com.cqebd.student.ui.HomeFragment
 import com.cqebd.student.ui.MineFragment
 import com.cqebd.student.ui.VideoFragment
+import com.cqebd.student.ui.WorkFragment
 import com.cqebd.student.ui.root.HomeworkFragment
+import com.cqebd.student.ui.root.RootVideoFragment
 import com.cqebd.student.vo.entity.FilterData
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
@@ -72,7 +74,8 @@ class MainActivity : BaseActivity() {
                     targetFragment = HomeFragment()
                 }
                 1 -> {
-                    targetFragment = VideoFragment()
+//                    targetFragment = VideoFragment()
+                    targetFragment = RootVideoFragment()
                 }
                 2 -> {
 //                    targetFragment = WorkFragment()

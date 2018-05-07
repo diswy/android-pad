@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_video_snapshot"
+        android:layout_width="100dp"
+        android:layout_height="70dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_green_play"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_video_snapshot"
+        app:layout_constraintEnd_toEndOf="@+id/iv_video_snapshot"
+        app:layout_constraintStart_toStartOf="@+id/iv_video_snapshot"
+        app:layout_constraintTop_toTopOf="@+id/iv_video_snapshot" />
+
+    <TextView
+        android:id="@+id/tv_video_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_title"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_video_snapshot"
+        app:layout_constraintTop_toTopOf="@+id/iv_video_snapshot"
+        tools:text="标题" />
+
+    <TextView
+        android:id="@+id/tv_video_teacher_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="8dp"
+        android:textColor="@color/color_subtitle_grey"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_video_snapshot"
+        app:layout_constraintTop_toBottomOf="@+id/tv_video_title"
+        tools:text="主讲老师：李老师\n年级：八年级" />
+
+    <TextView
+        android:id="@+id/tv_video_count_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:lineSpacingExtra="8dp"
+        android:textColor="@color/color_subtitle_grey"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_video_teacher_grade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_video_teacher_grade"
+        tools:text="共1节\n科目：数学" />
+
+
+</android.support.constraint.ConstraintLayout>

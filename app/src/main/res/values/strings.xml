@@ -5,6 +5,10 @@
     <string name="yes">是</string>
     <string name="no">否</string>
 
+    <string name="teacher_and_grade">主讲老师：%1$s\n年级：%2s</string>
+    <string name="count_and_subject">共%1$d节\n学科：%2s</string>
+
+
     <string-array name="title">
         <item>首页</item>
         <item>视频</item>

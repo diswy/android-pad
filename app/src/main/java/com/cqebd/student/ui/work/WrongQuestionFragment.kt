@@ -27,7 +27,7 @@ import com.cqebd.teacher.vo.Status
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
-import kotlinx.android.synthetic.main.fragment_homework_content.*
+import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_wrong_question.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -48,7 +48,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
     private lateinit var adapter: BaseQuickAdapter<WrongQuestion, BaseViewHolder>
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_homework_content
+        return R.layout.fragment_work_content
     }
 
     override fun initView() {
@@ -165,27 +165,28 @@ class WrongQuestionFragment : BaseLazyFragment() {
             when (it?.status) {
                 Status.SUCCESS -> {
                     val data = it.data
-                    if (pageProcess.pageIndex==1){
-                        pageProcess.refreshData(data!!)
-                        smart_refresh_layout.finishRefresh(true)
-                        adapter.setNewData(pageProcess.data)
-                        if (pageProcess.data.isEmpty()){
-                            pageLoadView.dataEmpty()
-                        }else{
-                            pageLoadView.hide()
-                        }
-                        if (data.size<20){
-                            adapter.loadMoreEnd()
-                        }
-                    }else{
-                        pageProcess.loadMoreData(data!!)
-                        if (data.size>=20){
-                            adapter.loadMoreComplete()
-                        }else{
-                            adapter.loadMoreEnd()
-                        }
-                        adapter.notifyDataSetChanged()
+                    smart_refresh_layout.finishRefresh(true)
 
+                    data?.let {
+                        if (pageProcess.pageIndex == 1) {
+                            pageProcess.refreshData(it)
+                            adapter.setNewData(pageProcess.data)
+                        } else {
+                            pageProcess.loadMoreData(it)
+                            adapter.notifyDataSetChanged()
+                        }
+
+                        if (it.size >= 20) {
+                            adapter.loadMoreComplete()
+                        } else {
+                            adapter.loadMoreEnd()
+                        }
+                    }
+
+                    if (pageProcess.data.isEmpty()) {
+                        pageLoadView.dataEmpty()
+                    } else {
+                        pageLoadView.hide()
                     }
                 }
                 Status.ERROR -> {

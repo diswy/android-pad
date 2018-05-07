@@ -16,13 +16,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-    provided deps.support.recyclerview
-    provided deps.support.app_compat
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly deps.support.recyclerview
+    compileOnly deps.support.app_compat
     implementation deps.glide.core
     annotationProcessor deps.glide.compiler
 }

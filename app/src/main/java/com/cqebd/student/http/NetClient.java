@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.cqebd.student.net.gateway.GatewayInterceptor;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +59,7 @@ public class NetClient {
 
     public static void netErr(String errMsg) {
         if (!TextUtils.isEmpty(errMsg)) {
-            XLog.e(errMsg);
+            Logger.d(errMsg);
         }
     }
 

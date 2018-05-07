@@ -35,7 +35,7 @@ import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
-import kotlinx.android.synthetic.main.fragment_homework_content.*
+import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_share_homework.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -53,7 +53,7 @@ class BeSharedFragment : BaseLazyFragment() {
     private lateinit var adapter: BaseQuickAdapter<ShareHomeworkItem, BaseViewHolder>
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_homework_content
+        return R.layout.fragment_work_content
     }
 
     override fun initView() {
@@ -186,60 +186,29 @@ class BeSharedFragment : BaseLazyFragment() {
             when (it?.status) {
                 Status.SUCCESS -> {
                     val data = it.data?.DataList
+                    smart_refresh_layout.finishRefresh(true)
+
                     data?.let {
-                        if (pageProcess.pageIndex==1){
+                        if (pageProcess.pageIndex == 1) {
                             pageProcess.refreshData(it)
-                            smart_refresh_layout.finishRefresh(true)
                             adapter.setNewData(pageProcess.data)
-                            Logger.d(pageProcess.data)
-                            if (pageProcess.data.isEmpty()){
-                                pageLoadView.dataEmpty()
-                            }else{
-                                pageLoadView.hide()
-                            }
-                            if (it.size<20){
-                                adapter.loadMoreEnd()
-                            }
-                        }else{
+                        } else {
                             pageProcess.loadMoreData(it)
-                            if (it.size>=20){
-                                adapter.loadMoreComplete()
-                            }else{
-                                adapter.loadMoreEnd()
-                            }
                             adapter.notifyDataSetChanged()
+                        }
+
+                        if (it.size >= 20) {
+                            adapter.loadMoreComplete()
+                        } else {
+                            adapter.loadMoreEnd()
                         }
                     }
 
-
-
-//                    smart_refresh_layout.finishRefresh(true)
-//                    pageLoadView.hide()
-//
-//                    val data = it.data?.DataList
-//                    if (pageProcess.pageIndex == 1) {
-//                        pageProcess.refreshData(data!!)
-//                        smart_refresh_layout.finishRefresh(true)
-//                        adapter.setNewData(pageProcess.data)
-//                        Logger.d(pageProcess.data)
-//                        if (pageProcess.data.isEmpty()) {
-//                            pageLoadView.dataEmpty()
-//                        } else {
-//                            pageLoadView.hide()
-//                        }
-//                        if (data.size < 20) {
-//                            adapter.loadMoreEnd()
-//                        }
-//                    } else {
-//                        pageProcess.loadMoreData(data!!)
-//                        if (data.size >= 20) {
-//                            adapter.loadMoreComplete()
-//                        } else {
-//                            adapter.loadMoreEnd()
-//                        }
-//                        adapter.notifyDataSetChanged()
-//
-//                    }
+                    if (pageProcess.data.isEmpty()) {
+                        pageLoadView.dataEmpty()
+                    } else {
+                        pageLoadView.hide()
+                    }
                 }
                 Status.ERROR -> {
                     smart_refresh_layout.finishRefresh(false)

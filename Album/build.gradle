@@ -8,9 +8,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.support.app_compat
     implementation deps.support.design
-    compile 'me.xiaopan:sketch:2.4.0-beta1'
+    implementation 'me.xiaopan:sketch:2.4.0-beta1'
     api project(':LibGorden')
 }

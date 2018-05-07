@@ -8,10 +8,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.support.app_compat
     implementation deps.support.design
-    compile deps.rxjava2
-    compile deps.rx_android
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    api deps.rxjava2
+    api deps.rx_android
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 }

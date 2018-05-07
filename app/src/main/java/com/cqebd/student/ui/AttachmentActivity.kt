@@ -138,7 +138,6 @@ class AttachmentActivity : BaseActivity() {
         }
 
         btn_startAnswer.setOnClickListener {
-            this.finish()
             viewModel.startAnswer(this, true)
         }
     }

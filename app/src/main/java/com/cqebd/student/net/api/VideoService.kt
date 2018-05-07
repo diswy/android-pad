@@ -4,10 +4,7 @@ import android.arch.lifecycle.LiveData
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
-import com.cqebd.student.vo.entity.CourseInfo
-import com.cqebd.student.vo.entity.PeriodInfo
-import com.cqebd.student.vo.entity.PeriodResponse
-import com.cqebd.student.vo.entity.VideoInfo
+import com.cqebd.student.vo.entity.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -85,5 +82,13 @@ interface VideoService {
             @Query("id") id: Int,
             @Query("studentid") studentid: Long = loginId)
             : Call<BaseResponse<PeriodResponse>>
+
+    /**
+     * 获取收藏列表
+     */
+    @GET("api/CoursePeriod/GetCollectByStudentId")
+    fun getCollectList
+            (@Query("studentid") studentid: Long = loginId)
+            : Call<BaseResponse<List<VideoInfo>>>
 
 }

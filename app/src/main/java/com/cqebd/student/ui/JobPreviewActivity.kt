@@ -60,7 +60,6 @@ class JobPreviewActivity : BaseActivity() {
 
     override fun bindEvents() {
         btn_start.setOnClickListener {
-            this.finish()
             viewModel.startAnswer(this)
         }
     }

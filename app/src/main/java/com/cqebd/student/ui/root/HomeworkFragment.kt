@@ -16,9 +16,10 @@ import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.ui.work.BeSharedFragment
 import com.cqebd.student.ui.work.HomeworkContentFragment
-import com.cqebd.student.ui.work.MyCollectFragment
+import com.cqebd.student.ui.work.MyWorkCollectFragment
 import com.cqebd.student.ui.work.WrongQuestionFragment
-import kotlinx.android.synthetic.main.fragment_homework_video.*
+import com.orhanobut.logger.Logger
+import kotlinx.android.synthetic.main.fragment_root_homework.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -36,21 +37,21 @@ class HomeworkFragment : BaseFragment() {
     private val titles = listOf("作业", "错题", "分享", "收藏")
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_homework_video, container, false)
+        return inflater?.inflate(R.layout.fragment_root_homework, container, false)
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
 
         val mainActivity = activity as MainActivity
         mainActivity.filterLayoutItem(0,MainActivity.WORK)
-
+        Logger.d("--->>>HomeworkFragment创建")
         view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> HomeworkContentFragment()
                     1 -> WrongQuestionFragment()
                     2 -> BeSharedFragment()
-                    3 -> MyCollectFragment()
+                    3 -> MyWorkCollectFragment()
                     else -> HomeworkContentFragment()
                 }
             }
