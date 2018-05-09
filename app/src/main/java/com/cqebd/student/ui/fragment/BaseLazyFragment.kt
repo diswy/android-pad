@@ -58,11 +58,11 @@ abstract class BaseLazyFragment : Fragment() {
         lazyLoad()
     }
 
+    protected abstract fun getLayoutRes(): Int
+
     protected abstract fun lazyLoad()
 
     protected abstract fun onInvisible()
-
-    protected abstract fun getLayoutRes(): Int
 
     open fun initView() {
         mIsInit = true

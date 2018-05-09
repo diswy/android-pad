@@ -95,5 +95,8 @@
     <color name="color_work_list">#007634</color>
     <color name="color_3d">#3d3d3d</color>
     <color name="color_4b">#4b4b4b</color>
+    <color name="color_schedule">#5ac98b</color>
+    <color name="color_new_divider">#efefef</color>
+    <color name="color_price">#e3065f</color>
 
 </resources>

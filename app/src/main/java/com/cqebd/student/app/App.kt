@@ -20,6 +20,7 @@ import com.netease.nimlib.sdk.util.NIMUtil
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import com.umeng.commonsdk.UMConfigure
 import gorden.lib.anko.static.logInit
 import gorden.util.XLog
 
@@ -63,13 +64,16 @@ class App : Application() {
 
         // 网易云信
         NIMClient.init(this, null, null)
-
         if (NIMUtil.isMainProcess(this)) {
             // 注册自定义消息附件解析器
             NIMClient.getService(MsgService::class.java).registerCustomAttachmentParser(CustomAttachParser())
 
             ChatRoomHelper.init()
         }
+
+        // 友盟
+        UMConfigure.setLogEnabled(true)
+        UMConfigure.init(this, "5af25b66b27b0a5574000090", "server", UMConfigure.DEVICE_TYPE_PHONE, null)
     }
 
     override fun attachBaseContext(base: Context?) {

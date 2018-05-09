@@ -7,10 +7,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
-import com.cqebd.student.app.App
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.glide.GlideRoundTransform
-import com.cqebd.student.tools.formatTimeYMD
 import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.viewmodel.SubscribeListViewModel
@@ -29,7 +27,7 @@ class MySubscribeFragment : BaseLazyFragment() {
     private var subscribeList: List<VideoInfo>? = null
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_my_subscribe_collect
+        return R.layout.fragment_my_subscribe_collect_live
     }
 
     override fun lazyLoad() {

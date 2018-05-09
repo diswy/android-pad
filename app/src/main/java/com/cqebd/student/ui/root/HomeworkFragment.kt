@@ -44,7 +44,6 @@ class HomeworkFragment : BaseFragment() {
 
         val mainActivity = activity as MainActivity
         mainActivity.filterLayoutItem(0,MainActivity.WORK)
-        Logger.d("--->>>HomeworkFragment创建")
         view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {

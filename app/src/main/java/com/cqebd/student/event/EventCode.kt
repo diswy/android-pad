@@ -8,3 +8,7 @@ const val STATUS_SUBJECT = 0x10001
 const val STATUS_QUESTION_TYPE = 0x10002
 
 const val STATUS_DATE = 0x10003
+
+const val STATUS_TIME = 0x10004
+
+const val STATUS_SUBSCRIBE = 0x10005

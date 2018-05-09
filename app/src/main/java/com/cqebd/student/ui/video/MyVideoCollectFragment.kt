@@ -23,7 +23,7 @@ class MyVideoCollectFragment : BaseLazyFragment() {
     private lateinit var adapter: BaseQuickAdapter<VideoInfo, BaseViewHolder>
     private var call: Call<BaseResponse<List<VideoInfo>>>? = null
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_my_subscribe_collect
+        return R.layout.fragment_my_subscribe_collect_live
     }
 
     override fun lazyLoad() {
@@ -62,8 +62,13 @@ class MyVideoCollectFragment : BaseLazyFragment() {
 
     private fun getMyCollect() {
         pageLoadView.load()
+        call?.let {
+            if (it.isExecuted)
+                call = NetClient.videoService().getCollectList()
+        }
         call?.enqueue(object : NetCallBack<BaseResponse<List<VideoInfo>>>() {
                     override fun onSucceed(response: BaseResponse<List<VideoInfo>>?) {
+                        smart_refresh_layout.finishRefresh(true)
                         response?.data?.let {
                             Logger.json(Gson().toJson(it))
                             adapter.setNewData(it)
@@ -78,7 +83,7 @@ class MyVideoCollectFragment : BaseLazyFragment() {
                     }
 
                     override fun onFailure() {
-
+                        smart_refresh_layout.finishRefresh(false)
                     }
 
                 })

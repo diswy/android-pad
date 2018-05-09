@@ -70,7 +70,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterJobStatus(FilterData(FilterData.jobStatus[index].status, FilterData.jobStatus[index].Name))
+                    filterViewModel.filterJobStatus(FilterData.jobStatus[index])
                 }
                 return titleView
             }

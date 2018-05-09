@@ -67,7 +67,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterSubject(FilterData(FilterData.subjectAll[index].status, FilterData.subjectAll[index].Name))
+                    filterViewModel.filterSubject(FilterData.subjectAll[index])
                 }
                 return titleView
             }

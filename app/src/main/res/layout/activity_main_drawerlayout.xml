@@ -92,6 +92,38 @@
                     android:layout_marginTop="10dp"
                     app:max_select="1" />
 
+                <TextView
+                    android:id="@+id/main_tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="时段"
+                    android:textColor="@color/color_title"
+                    android:textSize="18sp" />
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:max_select="1" />
+
+                <TextView
+                    android:id="@+id/main_tv_subscribe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="状态"
+                    android:textColor="@color/color_title"
+                    android:textSize="18sp" />
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/subscribe_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:max_select="1" />
+
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>

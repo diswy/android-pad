@@ -5,17 +5,17 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.test.BlankFragment
-import com.cqebd.student.ui.video.MyVideoCollectFragment
-import com.cqebd.student.ui.video.MySubscribeFragment
-import com.cqebd.student.ui.video.VideoContentFragment
+import com.cqebd.student.ui.video.*
 import kotlinx.android.synthetic.main.fragment_root_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -37,11 +37,16 @@ class RootVideoFragment : BaseFragment() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        val mainActivity = activity as MainActivity
+        mainActivity.filterLayoutItem(0, MainActivity.VIDEO)
+
         video_vp.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> VideoContentFragment()
                     1 -> MySubscribeFragment()
+                    2 -> LiveFragment()
+                    3 -> ScheduleFragment()
                     4 -> MyVideoCollectFragment()
                     else -> BlankFragment()
                 }
@@ -52,9 +57,26 @@ class RootVideoFragment : BaseFragment() {
             }
         }
 
+        video_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                mainActivity.filterLayoutItem(position,MainActivity.VIDEO)
+                if (position == 0){
+                    mainActivity.enableDrawerLayout()
+                }else{
+                    mainActivity.disableDrawerLayout()
+                }
+
+            }
+        })
+
         // 主标题
         val commonNavigator = CommonNavigator(context)
-        commonNavigator.isAdjustMode = true
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val titleView = ColorTransitionPagerTitleView(context)

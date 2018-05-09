@@ -3,6 +3,7 @@ package com.cqebd.student.app
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.umeng.analytics.MobclickAgent
 
 /**
  * 描述
@@ -14,6 +15,17 @@ abstract class BaseActivity:AppCompatActivity(){
         setContentView()
         initialize(savedInstanceState)
         bindEvents()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //友盟统计
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this)
     }
 
     /**

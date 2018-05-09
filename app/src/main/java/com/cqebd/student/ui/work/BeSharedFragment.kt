@@ -72,7 +72,7 @@ class BeSharedFragment : BaseLazyFragment() {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterShareHomeworkGrade(FilterData(FilterData.gradeHomework[index].status, FilterData.gradeHomework[index].Name))
+                    filterViewModel.filterShareHomeworkGrade(FilterData.gradeHomework[index])
                 }
                 return titleView
             }

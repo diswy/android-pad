@@ -10,10 +10,7 @@ import android.widget.TextView
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.event.STATUS_DATE
-import com.cqebd.student.event.STATUS_QUESTION_TYPE
-import com.cqebd.student.event.STATUS_SUBJECT
-import com.cqebd.student.event.STATUS_TYPE
+import com.cqebd.student.event.*
 import com.cqebd.student.ui.HomeFragment
 import com.cqebd.student.ui.MineFragment
 import com.cqebd.student.ui.VideoFragment
@@ -106,10 +103,14 @@ class MainActivity : BaseActivity() {
     private var mTypePos = 0        // 类型
     private var mQuestionTypePos = 0// 题型
     private var mDatePos = 0        // 日期
+    private var mTimePos = 0        // 时段
+    private var mSubscribePos = 0   // 订阅状态
     private lateinit var mProblemTypeAdapter: TagAdapter<FilterData>
     private lateinit var mSubjectAdapter: TagAdapter<FilterData>
     private lateinit var mQuestionTypeAdapter: TagAdapter<FilterData>
     private lateinit var mDateAdapter: TagAdapter<FilterData>
+    private lateinit var mTimeAdapter: TagAdapter<FilterData>
+    private lateinit var mSubscribeAdapter: TagAdapter<FilterData>
     private fun initDrawerView() {
         val mInflater = LayoutInflater.from(this)
         // 禁用手势侧滑
@@ -179,6 +180,38 @@ class MainActivity : BaseActivity() {
             }
             return@setOnTagClickListener true
         }
+        // 时段适配
+        mTimeAdapter = object : TagAdapter<FilterData>(FilterData.dateTime) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+        time_layout.adapter = mTimeAdapter
+        time_layout.setOnTagClickListener { _, position, _ ->
+            mTimePos = position
+            if (mTimePos == position) {
+                mTimeAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
+        }
+        // 订阅状态适配
+        mSubscribeAdapter = object : TagAdapter<FilterData>(FilterData.subscribeStatus) {
+            override fun getView(parent: FlowLayout?, position: Int, data: FilterData?): View {
+                val tv = mInflater.inflate(R.layout.tag_tv, parent, false) as TextView
+                tv.text = data?.Name
+                return tv
+            }
+        }
+        subscribe_layout.adapter = mSubscribeAdapter
+        subscribe_layout.setOnTagClickListener { _, position, _ ->
+            mSubscribePos = position
+            if (mSubscribePos == position) {
+                mSubscribeAdapter.setSelectedList(position)
+            }
+            return@setOnTagClickListener true
+        }
 
         main_drawer_btn_clear.setOnClickListener {
             main_drawer_layout.closeDrawer(Gravity.END)
@@ -187,11 +220,17 @@ class MainActivity : BaseActivity() {
             mSubjectAdapter.setSelectedList(null)
             mQuestionTypeAdapter.setSelectedList(null)
             mDateAdapter.setSelectedList(null)
+            mTimeAdapter.setSelectedList(null)
+            mSubscribeAdapter.setSelectedList(null)
 
             RxBus.get().send(STATUS_SUBJECT, FilterData(-1, "默认"))
             RxBus.get().send(STATUS_TYPE, FilterData(-1, "默认"))
             RxBus.get().send(STATUS_QUESTION_TYPE, FilterData(-1, "默认"))
             RxBus.get().send(STATUS_DATE, FilterData(-1, "默认"))
+
+            RxBus.get().send(STATUS_TIME, FilterData(-1, "默认"))
+            RxBus.get().send(STATUS_SUBSCRIBE, FilterData(-1, "默认"))
+
         }
 
         main_drawer_btn_confirm.setOnClickListener {
@@ -200,6 +239,9 @@ class MainActivity : BaseActivity() {
             RxBus.get().send(STATUS_TYPE, FilterData.jobType[mTypePos])
             RxBus.get().send(STATUS_QUESTION_TYPE, FilterData.subjectAll[mQuestionTypePos])
             RxBus.get().send(STATUS_DATE, FilterData.jobType[mDatePos])
+
+            RxBus.get().send(STATUS_TIME, FilterData.dateTime[mTimePos])
+            RxBus.get().send(STATUS_SUBSCRIBE, FilterData.subscribeStatus[mSubscribePos])
         }
 
     }
@@ -236,6 +278,11 @@ class MainActivity : BaseActivity() {
             mSubjectAdapter.setSelectedList(null)
             mQuestionTypeAdapter.setSelectedList(null)
             mDateAdapter.setSelectedList(null)
+
+            main_tv_time.visibility = View.GONE
+            main_tv_subscribe.visibility = View.GONE
+            subscribe_layout.visibility = View.GONE
+            time_layout.visibility = View.GONE
             when (pos) {
                 0 -> {
                     main_tv_subject.visibility = View.VISIBLE
@@ -271,12 +318,21 @@ class MainActivity : BaseActivity() {
         }
 
         if (item == VIDEO) {
+            main_tv_type.visibility = View.GONE
+            type_layout.visibility = View.GONE
+            main_tv_question_type.visibility = View.GONE
+            question_type_layout.visibility = View.GONE
+            main_tv_date.visibility = View.GONE
+            date_layout.visibility = View.GONE
+
             when (pos) {
                 0 -> {
-                }
-                1 -> {
-                }
-                2 -> {
+                    main_tv_subject.visibility = View.VISIBLE
+                    subject_layout.visibility = View.VISIBLE
+                    main_tv_time.visibility = View.VISIBLE
+                    main_tv_subscribe.visibility = View.VISIBLE
+                    subscribe_layout.visibility = View.VISIBLE
+                    time_layout.visibility = View.VISIBLE
                 }
             }
         }

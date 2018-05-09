@@ -72,11 +72,28 @@ class FilterViewModel : ViewModel() {
         filter(view, dateTime, FilterData.dateTime)
     }
 
+    fun filterDateTime(filter: FilterData) {
+        if (filter.status == -1)
+            dateTime.value = null
+        else
+            dateTime.value = filter
+    }
+
     /**
      * 年级筛选
      */
     fun filterGrade(view: View) {
         filter(view, grade, FilterData.grade)
+    }
+
+    fun filterGrade(filter: FilterData) {
+        if (filter.status == -1) {
+            shareHomeworkGrade.value = null
+            grade.value = null
+        } else {
+            shareHomeworkGrade.value = filter
+            grade.value = filter
+        }
     }
 
     /**
@@ -114,6 +131,13 @@ class FilterViewModel : ViewModel() {
         filter(view, subscribeStatus, FilterData.subscribeStatus)
     }
 
+    fun filterSubscribeStatus(filter: FilterData) {
+        if (filter.status == -1)
+            subscribeStatus.value = null
+        else
+            subscribeStatus.value = filter
+    }
+
     /**
      * 作业分享 年级筛选
      */
@@ -135,7 +159,7 @@ class FilterViewModel : ViewModel() {
         filter(view, problemType, FilterData.problemType)
     }
 
-    fun filterProblemType(filter:FilterData) {
+    fun filterProblemType(filter: FilterData) {
         if (filter.status == -1)
             problemType.value = null
         else
@@ -149,7 +173,7 @@ class FilterViewModel : ViewModel() {
         filter(view, shareHomeworkDate, FilterData.dateFilter)
     }
 
-    fun filterShareHomeworkDate(filter:FilterData) {
+    fun filterShareHomeworkDate(filter: FilterData) {
         if (filter.status == -1)
             shareHomeworkDate.value = null
         else

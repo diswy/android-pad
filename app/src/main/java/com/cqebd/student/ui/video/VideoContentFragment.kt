@@ -8,8 +8,10 @@ import android.view.animation.DecelerateInterpolator
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.App
+import com.cqebd.student.event.*
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.glide.GlideRoundTransform
 import com.cqebd.student.glide.RoundedTransformation
@@ -22,6 +24,7 @@ import com.cqebd.student.vo.entity.VideoInfo
 import com.cqebd.teacher.vo.Status
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
+import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.fragment_video_content.*
 import kotlinx.android.synthetic.main.item_new_video.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
@@ -53,19 +56,19 @@ class VideoContentFragment : BaseLazyFragment() {
                 val titleView = ColorTransitionPagerTitleView(context)
                 titleView.normalColor = resources.getColor(R.color.color_tab_title)
                 titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = FilterData.subjectAll[index].Name
+                titleView.text = FilterData.grade[index].Name
                 titleView.textSize = 14f
                 titleView.setOnClickListener {
                     magic_indicator_subtitle.onPageSelected(index)
                     magic_indicator_subtitle.onPageScrollStateChanged(index)
                     magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-//                    filterViewModel.filterJobStatus(FilterData(FilterData.jobStatus[index].status, FilterData.jobStatus[index].Name))
+                    filterViewModel.filterGrade(FilterData.grade[index])
                 }
                 return titleView
             }
 
             override fun getCount(): Int {
-                return FilterData.subjectAll.size
+                return FilterData.grade.size
             }
 
             override fun getIndicator(p0: Context?): IPagerIndicator {
@@ -98,6 +101,13 @@ class VideoContentFragment : BaseLazyFragment() {
             }
         })
 
+        filterViewModel.grade.observe(this, Observer {
+            videoListViewModel.filter(videoList)
+        })
+        filterViewModel.subscribeStatus.observe(this, Observer {
+            videoListViewModel.filter(videoList)
+        })
+
         adapter = object : BaseQuickAdapter<VideoInfo, BaseViewHolder>(R.layout.item_new_video) {
             override fun convert(helper: BaseViewHolder?, item: VideoInfo) {
                 helper?.itemView?.apply {
@@ -128,6 +138,14 @@ class VideoContentFragment : BaseLazyFragment() {
         RxBus.get().unRegister(this)
     }
 
+    override fun bindEvents() {
+        // 侧滑菜单处理
+        val mainActivity = activity as MainActivity
+        btn_filter.setOnClickListener {
+            mainActivity.switchDrawerLayout()
+        }
+    }
+
     private fun getCourseList() {
         videoListViewModel.getCourseList().observe(this, Observer {
             when (it?.status) {
@@ -146,5 +164,20 @@ class VideoContentFragment : BaseLazyFragment() {
                 Status.LOADING -> pageLoadView.load()
             }
         })
+    }
+
+    @Subscribe(code = STATUS_SUBSCRIBE)
+    fun filterSubscribeStatus(filter: FilterData) {
+        filterViewModel.filterSubscribeStatus(filter)
+    }
+
+    @Subscribe(code = STATUS_SUBJECT)
+    fun filterSubject(filter: FilterData) {
+        filterViewModel.filterSubject(filter)
+    }
+
+    @Subscribe(code = STATUS_TIME)
+    fun filterTime(filter: FilterData) {
+        filterViewModel.filterDateTime(filter)
     }
 }
