@@ -2,19 +2,18 @@ package com.cqebd.student.ui.video
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
-import com.cqebd.student.app.App
-import com.cqebd.student.event.*
+import com.cqebd.student.`interface`.CustomCallback
+import com.cqebd.student.adapter.SubtitleNavigatorAdapter
+import com.cqebd.student.event.STATUS_SUBJECT
+import com.cqebd.student.event.STATUS_SUBSCRIBE
+import com.cqebd.student.event.STATUS_TIME
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.glide.GlideRoundTransform
-import com.cqebd.student.glide.RoundedTransformation
 import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.viewmodel.FilterViewModel
@@ -29,12 +28,6 @@ import kotlinx.android.synthetic.main.fragment_video_content.*
 import kotlinx.android.synthetic.main.item_new_video.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
-import org.jetbrains.anko.support.v4.dip
 
 class VideoContentFragment : BaseLazyFragment() {
     private lateinit var filterViewModel: FilterViewModel
@@ -48,42 +41,20 @@ class VideoContentFragment : BaseLazyFragment() {
 
     override fun initView() {
         super.initView()
-        // 副标题
-        val subCommonNavigator = CommonNavigator(context)
-        subCommonNavigator.scrollPivotX = 0.65f
-        subCommonNavigator.adapter = object : CommonNavigatorAdapter() {
-            override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                val titleView = ColorTransitionPagerTitleView(context)
-                titleView.normalColor = resources.getColor(R.color.color_tab_title)
-                titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = FilterData.grade[index].Name
-                titleView.textSize = 14f
-                titleView.setOnClickListener {
-                    magic_indicator_subtitle.onPageSelected(index)
-                    magic_indicator_subtitle.onPageScrollStateChanged(index)
-                    magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterGrade(FilterData.grade[index])
+
+        context?.let {
+            // 副标题
+            val subCommonNavigator = CommonNavigator(it)
+            val mSubtitleNavigatorAdapter = SubtitleNavigatorAdapter(it, FilterData.grade, magic_indicator_subtitle)
+            subCommonNavigator.adapter = mSubtitleNavigatorAdapter
+            magic_indicator_subtitle.navigator = subCommonNavigator
+
+            mSubtitleNavigatorAdapter.setOnTitleViewOnClickListener(object : CustomCallback.OnPositionListener {
+                override fun onClickPos(pos: Int) {
+                    filterViewModel.filterGrade(FilterData.grade[pos])
                 }
-                return titleView
-            }
-
-            override fun getCount(): Int {
-                return FilterData.grade.size
-            }
-
-            override fun getIndicator(p0: Context?): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight = dip(2).toFloat()
-                indicator.lineWidth = dip(15).toFloat()
-                indicator.roundRadius = dip(3).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(resources.getColor(R.color.color_main))
-                return indicator
-            }
+            })
         }
-        magic_indicator_subtitle.navigator = subCommonNavigator
     }
 
     override fun lazyLoad() {
@@ -113,7 +84,7 @@ class VideoContentFragment : BaseLazyFragment() {
                 helper?.itemView?.apply {
                     GlideApp.with(context)
                             .load(item.Snapshoot)
-                            .transforms(CenterCrop(),GlideRoundTransform(context))
+                            .transforms(CenterCrop(), GlideRoundTransform(context))
 //                            .placeholder(R.drawable.ic_avatar)
                             .into(iv_video_snapshot)
                     tv_video_title.text = item.Name

@@ -4,13 +4,12 @@ package com.cqebd.student.ui.work
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
+import com.cqebd.student.`interface`.CustomCallback
+import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.event.STATUS_TYPE
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.NetClient
@@ -31,12 +30,6 @@ import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_wrong_question.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
-import org.jetbrains.anko.support.v4.dip
 
 /**
  * 错题本
@@ -53,42 +46,20 @@ class WrongQuestionFragment : BaseLazyFragment() {
 
     override fun initView() {
         super.initView()
-        // 副标题
-        val subCommonNavigator = CommonNavigator(context)
-        subCommonNavigator.scrollPivotX = 0.65f
-        subCommonNavigator.adapter = object : CommonNavigatorAdapter() {
-            override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                val titleView = ColorTransitionPagerTitleView(context)
-                titleView.normalColor = resources.getColor(R.color.color_tab_title)
-                titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = FilterData.subjectAll[index].Name
-                titleView.textSize = 14f
-                titleView.setOnClickListener {
-                    magic_indicator_subtitle.onPageSelected(index)
-                    magic_indicator_subtitle.onPageScrollStateChanged(index)
-                    magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterSubject(FilterData.subjectAll[index])
+
+        context?.let {
+            // 副标题
+            val subCommonNavigator = CommonNavigator(it)
+            val mSubtitleNavigatorAdapter = SubtitleNavigatorAdapter(it, FilterData.subjectAll, magic_indicator_subtitle)
+            subCommonNavigator.adapter = mSubtitleNavigatorAdapter
+            magic_indicator_subtitle.navigator = subCommonNavigator
+
+            mSubtitleNavigatorAdapter.setOnTitleViewOnClickListener(object : CustomCallback.OnPositionListener {
+                override fun onClickPos(pos: Int) {
+                    filterViewModel.filterSubject(FilterData.subjectAll[pos])
                 }
-                return titleView
-            }
-
-            override fun getCount(): Int {
-                return FilterData.subjectAll.size
-            }
-
-            override fun getIndicator(p0: Context?): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight = dip(2).toFloat()
-                indicator.lineWidth = dip(15).toFloat()
-                indicator.roundRadius = dip(3).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(resources.getColor(R.color.color_main))
-                return indicator
-            }
+            })
         }
-        magic_indicator_subtitle.navigator = subCommonNavigator
     }
 
     override fun bindEvents() {

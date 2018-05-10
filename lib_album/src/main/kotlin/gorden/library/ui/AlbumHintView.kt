@@ -11,8 +11,8 @@ import android.view.animation.Animation.AnimationListener
 import android.widget.LinearLayout
 import gorden.library.R
 import kotlinx.android.synthetic.main.layout_album_hint.view.*
-import org.apache.http.conn.ConnectTimeoutException
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -217,7 +217,7 @@ internal class AlbumHintView(context: Context?, attrs: AttributeSet?) : LinearLa
             } else {
                 message = "没有网络连接"
             }
-        } else if (exception is SocketTimeoutException || exception is ConnectTimeoutException) {
+        } else if (exception is SocketTimeoutException || exception is IOException) {
             message = "网络连接超时"
         } else if (exception is FileNotFoundException) {
             message = "网络连接异常【404】"

@@ -1,218 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/colorWhite"
+    app:srlDragRate="0.75"
+    app:srlEnableLoadMore="true"
+    app:srlEnablePureScrollMode="true">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/ic_avatar" />
-
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="张一山"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_flower3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_flower3"
-                android:drawablePadding="5dp"
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:id="@+id/text_flower2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:drawableLeft="@drawable/ic_flower2"
-                android:drawablePadding="5dp"
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:id="@+id/text_flower1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_flower1"
-                android:drawablePadding="5dp"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <android.support.v7.widget.GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:columnCount="4">
-
-        <LinearLayout
-            android:id="@+id/item_flower_list"
-            android:layout_height="80dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:gravity="center"
+            android:divider="@drawable/divider_10dp"
             android:orientation="vertical"
-            app:layout_columnWeight="1">
+            android:showDividers="middle|end">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_hhb" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <ImageView
+                    android:id="@+id/img_avatar"
+                    android:layout_width="74dp"
+                    android:layout_height="74dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/ic_new_avatar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_mine_msg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/color_mine_item"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
+                    app:layout_constraintStart_toEndOf="@+id/img_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/img_avatar"
+                    tools:text="姓名" />
+
+                <TextView
+                    android:id="@+id/text_flower3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="32dp"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_mine_small_flower"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_flower2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_mine_big_flower"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_flower3"
+                    app:layout_constraintStart_toEndOf="@+id/text_flower3"
+                    app:layout_constraintTop_toTopOf="@+id/text_flower3"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_flower1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:drawablePadding="12dp"
+                    android:drawableStart="@drawable/ic_mine_award"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_flower3"
+                    app:layout_constraintStart_toEndOf="@+id/text_flower2"
+                    app:layout_constraintTop_toTopOf="@+id/text_flower3"
+                    tools:text="3" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/item_flower_list"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_flower"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="红花榜"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/item_like_list"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_like"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="点赞榜"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/item_my_share"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_shared"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="我的分享"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="红花榜" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_like_list"
-            android:layout_height="80dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_dzb" />
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_collect"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="我的收藏"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="点赞榜" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_my_share"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_wdfx" />
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_modify_pass"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="修改密码"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/item_exit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="我的分享" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_sc" />
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_exit"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="退出登录"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/item_about"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_mine_item_about_us"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="关于"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
+
+            <Button
+                android:visibility="gone"
+                android:id="@+id/btn_test_jump"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="收藏" />
+                android:text="TEST" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
+    </ScrollView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_xgmm" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="修改密码" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_about"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_about" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="关于" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_exit"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_columnWeight="1">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_about" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="退出登录" />
-        </LinearLayout>
-    </android.support.v7.widget.GridLayout>
-
-    <Button
-        android:id="@+id/btn_test_jump"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TEST" />
-
-</LinearLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

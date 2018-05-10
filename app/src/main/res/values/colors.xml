@@ -98,5 +98,8 @@
     <color name="color_schedule">#5ac98b</color>
     <color name="color_new_divider">#efefef</color>
     <color name="color_price">#e3065f</color>
+    <color name="color_bg_fa">#fafafa</color>
+    <color name="color_mine_item">#2d3336</color>
+    <color name="color_bg_d1">#d1d1d1</color>
 
 </resources>

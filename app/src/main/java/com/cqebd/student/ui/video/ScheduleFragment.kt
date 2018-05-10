@@ -5,13 +5,11 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import com.anko.static.dp
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.db.entity.ClassSchedule
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.glide.GlideRoundTransform
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.tools.toast

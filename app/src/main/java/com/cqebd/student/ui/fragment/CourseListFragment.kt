@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseSectionQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
+import com.cqebd.student.adapter.VideoCourseAdapter
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
@@ -18,6 +20,7 @@ import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoActivity
 import com.cqebd.student.viewmodel.PeriodListViewModel
 import com.cqebd.student.vo.entity.PeriodInfo
+import com.cqebd.student.vo.entity.SectionPeriodInfo
 import com.cqebd.teacher.vo.Status
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.item_course.view.*
@@ -26,7 +29,8 @@ import kotlinx.android.synthetic.main.merge_rv_refresh_layout.*
 
 class CourseListFragment : BaseFragment() {
     private lateinit var periodListViewModel: PeriodListViewModel
-    private lateinit var adapter: BaseQuickAdapter<PeriodInfo, BaseViewHolder>
+//    private lateinit var adapter: BaseQuickAdapter<PeriodInfo, BaseViewHolder>
+    private lateinit var adapter: BaseSectionQuickAdapter<SectionPeriodInfo, BaseViewHolder>
     private var periodInfo: List<PeriodInfo>? = null
     private var courseId: Long = 0
 
@@ -40,47 +44,66 @@ class CourseListFragment : BaseFragment() {
         periodListViewModel = ViewModelProviders.of(this).get(PeriodListViewModel::class.java)
 
         periodListViewModel.videoList.observe(this, Observer {
-            adapter.setNewData(it)
+
             if (it == null || it.isEmpty()) {
                 pageLoadView.show = true
                 pageLoadView.dataEmpty()
             } else {
                 pageLoadView.hide()
             }
+
+            it?.let {
+                val list = ArrayList<SectionPeriodInfo>()
+                list.add(SectionPeriodInfo("全部课程"))
+                for (item in it){
+                    list.add(SectionPeriodInfo(item))
+                }
+                adapter.setNewData(list)
+            }
         })
 
-        adapter = object : BaseQuickAdapter<PeriodInfo, BaseViewHolder>(R.layout.item_course) {
-            override fun convert(helper: BaseViewHolder?, item: PeriodInfo) {
-                helper?.itemView?.apply {
-                    GlideApp.with(App.mContext).load(item.Snapshoot).centerInside().placeholder(R.drawable.ic_avatar).into(img_snapshoot)
-                    text_name.text = item.Name
-                    text_teacher.text = "主讲老师: ".plus(item.TeacherName)
-                    text_start.text = "开课时间：".plus(formatTimeYMDHM(item.PlanStartDate))
-                    text_grade.text = "年级: ".plus(item.GradeName)
-                    when (item.Status) {
-                        0 -> {
-                            text_label.text = "未开始"
-                            text_label.isEnabled = false
-                        }
-                        1 -> {
-                            text_label.text = "直播中"
+        val mVideoCourseAdapter = VideoCourseAdapter()
+        adapter = mVideoCourseAdapter
 
-                        }
-                        2 -> {
-                            text_label.text = "直播结束"
-                            text_label.isEnabled = false
-                        }
-                        3 -> {
-                            text_label.text = "回放"
-                        }
-                    }
-                }
-            }
-        }
+//        adapter = object : BaseQuickAdapter<PeriodInfo, BaseViewHolder>(R.layout.item_course) {
+//            override fun convert(helper: BaseViewHolder?, item: PeriodInfo) {
+//                helper?.itemView?.apply {
+//                    GlideApp.with(App.mContext).load(item.Snapshoot).centerInside().placeholder(R.drawable.ic_avatar).into(img_snapshoot)
+//                    text_name.text = item.Name
+//                    text_teacher.text = "主讲老师: ".plus(item.TeacherName)
+//                    text_start.text = "开课时间：".plus(formatTimeYMDHM(item.PlanStartDate))
+//                    text_grade.text = "年级: ".plus(item.GradeName)
+//                    when (item.Status) {
+//                        0 -> {
+//                            text_label.text = "未开始"
+//                            text_label.isEnabled = false
+//                        }
+//                        1 -> {
+//                            text_label.text = "直播中"
+//
+//                        }
+//                        2 -> {
+//                            text_label.text = "直播结束"
+//                            text_label.isEnabled = false
+//                        }
+//                        3 -> {
+//                            text_label.text = "回放"
+//                        }
+//                    }
+//                }
+//            }
+//        }
         adapter.bindToRecyclerView(recyclerView)
         adapter.setOnItemClickListener { adapter, _, position ->
-            val itemData = adapter.data[position] as PeriodInfo
+//            val mSectionPeriodInfo = adapter.data[position] as SectionPeriodInfo
+//            if (mSectionPeriodInfo)
+//
+//            val mItem = mSectionPeriodInfo.t
 
+
+
+            val itemDataParent = adapter.data[position] as SectionPeriodInfo
+            val itemData = itemDataParent.t
             when {
                 itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
                 itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)

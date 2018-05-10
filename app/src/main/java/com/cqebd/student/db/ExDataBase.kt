@@ -13,23 +13,24 @@ import com.cqebd.student.db.type.Converters
  * 描述
  * Created by gorden on 2018/3/12.
  */
-@Database(entities = [ClassSchedule::class],version = 2)
+@Database(entities = [ClassSchedule::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
-abstract class ExDataBase: RoomDatabase() {
-    abstract fun courseDao():CourseDao
+abstract class ExDataBase : RoomDatabase() {
+    abstract fun courseDao(): CourseDao
 
     companion object {
-        @Volatile private var INSTANCE: ExDataBase? = null
+        @Volatile
+        private var INSTANCE: ExDataBase? = null
 
-        fun getInstance():ExDataBase{
-            return INSTANCE?: synchronized(this){
-                INSTANCE?: buildDatabase().also {
+        fun getInstance(): ExDataBase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase().also {
                     INSTANCE = it
                 }
             }
         }
 
-        private fun buildDatabase():ExDataBase =
+        private fun buildDatabase(): ExDataBase =
                 Room.databaseBuilder(App.mContext, ExDataBase::class.java, "db_student")
                         .fallbackToDestructiveMigration()
                         .addMigrations()

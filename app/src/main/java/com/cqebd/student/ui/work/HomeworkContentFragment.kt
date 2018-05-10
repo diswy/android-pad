@@ -3,16 +3,16 @@ package com.cqebd.student.ui.work
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
+import com.cqebd.student.`interface`.CustomCallback
+import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.constant.Constant
-import com.cqebd.student.event.*
+import com.cqebd.student.event.STATUS_SUBJECT
+import com.cqebd.student.event.STATUS_TYPE
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
@@ -25,7 +25,6 @@ import com.cqebd.student.viewmodel.WorkListViewModel
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.teacher.vo.Status
-import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
@@ -33,12 +32,6 @@ import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_work.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
-import org.jetbrains.anko.support.v4.dip
 
 /**
  * 作业内容
@@ -57,41 +50,20 @@ class HomeworkContentFragment : BaseLazyFragment() {
 
     override fun initView() {
         super.initView()
-        // 副标题
-        val subCommonNavigator = CommonNavigator(context)
-        subCommonNavigator.adapter = object : CommonNavigatorAdapter() {
-            override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                val titleView = ColorTransitionPagerTitleView(context)
-                titleView.normalColor = resources.getColor(R.color.color_tab_title)
-                titleView.selectedColor = resources.getColor(R.color.color_main)
-                titleView.text = FilterData.jobStatus[index].Name
-                titleView.textSize = 14f
-                titleView.setOnClickListener {
-                    magic_indicator_subtitle.onPageSelected(index)
-                    magic_indicator_subtitle.onPageScrollStateChanged(index)
-                    magic_indicator_subtitle.onPageScrolled(index, 0f, 0)
-                    filterViewModel.filterJobStatus(FilterData.jobStatus[index])
+
+        context?.let {
+            // 副标题
+            val subCommonNavigator = CommonNavigator(it)
+            val mSubtitleNavigatorAdapter = SubtitleNavigatorAdapter(it, FilterData.jobStatus, magic_indicator_subtitle)
+            subCommonNavigator.adapter = mSubtitleNavigatorAdapter
+            magic_indicator_subtitle.navigator = subCommonNavigator
+
+            mSubtitleNavigatorAdapter.setOnTitleViewOnClickListener(object : CustomCallback.OnPositionListener {
+                override fun onClickPos(pos: Int) {
+                    filterViewModel.filterJobStatus(FilterData.jobStatus[pos])
                 }
-                return titleView
-            }
-
-            override fun getCount(): Int {
-                return FilterData.jobStatus.size
-            }
-
-            override fun getIndicator(p0: Context?): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight = dip(2).toFloat()
-                indicator.lineWidth = dip(15).toFloat()
-                indicator.roundRadius = dip(3).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(resources.getColor(R.color.color_main))
-                return indicator
-            }
+            })
         }
-        magic_indicator_subtitle.navigator = subCommonNavigator
     }
 
     override fun bindEvents() {

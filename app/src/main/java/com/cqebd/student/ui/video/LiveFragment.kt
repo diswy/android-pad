@@ -5,7 +5,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.glide.RoundedTransformation
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import kotlinx.android.synthetic.main.item_live_video.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
