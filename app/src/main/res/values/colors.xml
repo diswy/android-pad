@@ -6,7 +6,7 @@
     <!--<color name="colorPrimaryDark">#0aaf73</color>-->
     <!--<color name="colorPrimaryDark">#55c340</color>-->
     <color name="colorPrimaryDark">#009944</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#009944</color>
     
     <color name="colorActive">#0dc984</color>
     <color name="colorInactive">#cccccc</color>
@@ -101,5 +101,6 @@
     <color name="color_bg_fa">#fafafa</color>
     <color name="color_mine_item">#2d3336</color>
     <color name="color_bg_d1">#d1d1d1</color>
+    <color name="color_333a42">#333a42</color>
 
 </resources>

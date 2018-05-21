@@ -117,7 +117,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         (videoContent as FrameLayout).addView(mediaTitle)
 
         mediaController = ExMediaController(context, mediaTitle)
-        (videoContent as FrameLayout).addView(mediaController, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+        mediaController.visibility = View.GONE
+        (videoContent as FrameLayout).addView(mediaController, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, Gravity.BOTTOM))
 
         thumbImageView = ImageView(context)
         thumbImageView.visibility = View.GONE
@@ -236,13 +237,17 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
             when (playbackState) {
                 Player.STATE_READY -> {
                     loadingView.visibility = View.GONE
+                    mediaController.hide()
+                    mediaController.showPlayBtn()
                     contentDuration = mPlayer?.duration ?: 0
                 }
                 Player.STATE_BUFFERING -> {
                     loadingView.visibility = View.VISIBLE
+                    mediaController.hidePlayBtn()
                 }
                 Player.STATE_ENDED -> {
                     loadingView.visibility = View.GONE
+                    mediaController.showPlayBtn()
                     onCompletionListener?.invoke()
                     saveProgress(0)
                     release(true)
@@ -250,6 +255,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
                 }
                 Player.STATE_IDLE -> {
                     loadingView.visibility = View.GONE
+                    mediaController.showPlayBtn()
                 }
             }
         }

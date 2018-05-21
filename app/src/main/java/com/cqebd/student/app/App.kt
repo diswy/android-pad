@@ -20,6 +20,7 @@ import com.netease.nimlib.sdk.util.NIMUtil
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import com.squareup.leakcanary.LeakCanary
 import com.umeng.commonsdk.UMConfigure
 import gorden.lib.anko.static.logInit
 import gorden.util.XLog
@@ -48,6 +49,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         mContext = this
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
 
         println("BuildConfig.SHOW_LOG = ${BuildConfig.SHOW_LOG}")
         val formatStrategy = PrettyFormatStrategy.newBuilder()

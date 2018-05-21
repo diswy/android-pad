@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_height="30dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#66000000"
-    android:layout_height="30dp">
+    android:orientation="horizontal">
+
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="30dp"
-        android:src="@drawable/ic_back"
+        android:layout_height="match_parent"
         android:background="@null"
         android:padding="5dp"
-        android:visibility="gone"
         android:scaleType="centerInside"
-        android:layout_height="match_parent"/>
+        android:src="@drawable/ic_back"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:lines="1"
         android:layout_marginLeft="10dp"
         android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="1"
         android:textColor="@android:color/white"
-        android:textSize="13sp"
-        />
+        android:textSize="13sp" />
 </LinearLayout>

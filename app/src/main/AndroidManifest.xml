@@ -139,7 +139,9 @@
         <activity android:name=".netease.ui.ChatRoomActivity" />
         <activity android:name=".ui.FindPasswordActivity" />
         <activity android:name=".ui.AgentWebActivity" />
-        <activity android:name=".test.TestTablayout"></activity>
+        <activity android:name=".test.TestTablayout" />
+        <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".PersonalActivity"></activity>
     </application>
 
 </manifest>

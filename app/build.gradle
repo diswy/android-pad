@@ -89,6 +89,7 @@ dependencies {
     implementation deps.support.gridlayout
     implementation deps.support.vector_drawable
     implementation deps.lifecycle.extensions
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     kapt deps.lifecycle.compiler
     implementation deps.room.runtime
     kapt deps.room.compiler
@@ -126,6 +127,9 @@ dependencies {
     implementation 'com.umeng.sdk:common:1.5.0'
     implementation 'com.umeng.sdk:analytics:7.5.0'
     implementation 'com.umeng.sdk:debug:1.0.0'
+    //leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     // (必选)
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:multidex:1.0.3'

@@ -2,6 +2,7 @@ package gorden.lib.video
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.view.*
@@ -9,6 +10,7 @@ import android.widget.*
 import gorden.lib.anko.static.logInfo
 import kotlinx.android.synthetic.main.mediacontroller.view.*
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.textColor
 import java.util.*
 
 @SuppressLint("ViewConstructor")
@@ -58,7 +60,6 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
 
     init {
         LayoutInflater.from(context).inflate(R.layout.mediacontroller, this, true)
-
         btn_start.setOnClickListener {
             doPauseResume()
             show()
@@ -68,7 +69,7 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                 mIsFullScreen = false
             } else {
                 mIsFullScreen = true
-                btn_fullscreen.visibility = View.GONE
+                btn_fullscreen.visibility = View.VISIBLE
             }
             mPlayer.fullScreen(mIsFullScreen)
         }
@@ -84,7 +85,8 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                     val tv = TextView(context)
                     tv.text = definition.definitionName
                     tv.gravity = Gravity.CENTER
-                    tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dip(40f))
+                    tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dip(30f))
+                    tv.setTextColor(Color.parseColor("#ffffff"))
                     tv.setOnClickListener {
                         if (definition.definitionCode != mCurrentDefinitionCode) {
                             mPlayer.switchDefinition(definition.definitionPath, mTitle)
@@ -215,14 +217,22 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
         }
     }
 
+    fun hidePlayBtn(){
+        btn_start.visibility = View.GONE
+    }
+
+    fun showPlayBtn(){
+        btn_start.visibility = View.VISIBLE
+    }
+
     fun updateControllerBar(isFull: Boolean) {
         mIsFullScreen = isFull
         if (isFull) {
             text_code.visibility = View.VISIBLE
-            btn_fullscreen.visibility = View.GONE
+            btn_fullscreen.visibility = View.VISIBLE
             title.visibility(true)
         } else {
-            text_code.visibility = View.GONE
+            text_code.visibility = View.VISIBLE
             btn_fullscreen.visibility = View.VISIBLE
             title.visibility(false)
         }

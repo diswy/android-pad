@@ -45,7 +45,7 @@ class WebFragment : BaseFragment() {
             throw IllegalArgumentException("H5地址不能为空")
         }
         XLog.i(TAG,url)
-        Logger.d(url)
+        Logger.d("H5地址：$url")
         mWebView.loadUrl(url)
     }
 

@@ -17,6 +17,7 @@ import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.fragment.CourseListFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.VideoInfo
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_video_details.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator

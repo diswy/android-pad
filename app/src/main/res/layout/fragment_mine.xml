@@ -16,13 +16,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider_10dp"
-            android:orientation="vertical"
-            android:showDividers="middle|end">
+            android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp">
+                android:layout_height="200dp">
 
                 <ImageView
                     android:id="@+id/img_avatar"
@@ -51,6 +49,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
                     android:textColor="@color/color_mine_item"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
@@ -94,7 +93,20 @@
                     app:layout_constraintTop_toTopOf="@+id/text_flower3"
                     tools:text="3" />
 
+                <View
+                    android:id="@+id/holder_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/divider_10dp"
+                    app:layout_constraintBottom_toTopOf="@+id/text_flower3" />
+
             </android.support.constraint.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@drawable/divider_10dp" />
 
             <TextView
                 android:id="@+id/item_flower_list"
@@ -193,11 +205,11 @@
                 android:textSize="12sp" />
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_test_jump"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TEST" />
+                android:text="TEST"
+                android:visibility="gone" />
 
         </LinearLayout>
 

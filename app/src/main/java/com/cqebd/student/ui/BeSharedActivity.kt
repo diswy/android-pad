@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMD
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.ShareHomeworkViewModel
@@ -30,6 +31,9 @@ class BeSharedActivity : BaseActivity() {
     private var problemType: Int? = null
     private var day: Int? = null
 
+    private val pageProcess = PageProcess.build<ShareHomeworkItem> { it.Id }
+
+
     override fun setContentView() {
         setContentView(R.layout.activity_be_shared)
     }
@@ -38,7 +42,9 @@ class BeSharedActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         filterViewModel = ViewModelProviders.of(this).get(FilterViewModel::class.java)
-        shareHomeworkViewModel = ViewModelProviders.of(this).get(ShareHomeworkViewModel::class.java)
+        shareHomeworkViewModel = ViewModelProviders.of(this, ShareHomeworkViewModel.Factory(filterViewModel, pageProcess))
+                .get(ShareHomeworkViewModel::class.java)
+
 
         filterViewModel.subject.observe(this, Observer {
             tv_subject.text = it?.Name ?: "学科"

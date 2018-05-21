@@ -51,6 +51,15 @@ class MineFragment : BaseFragment() {
         mineViewModel.userAccount.observe(this, Observer {
             it?.apply {
                 text_name.text = Name
+                if (Gender == "女") {
+                    val mSexRes = resources.getDrawable(R.drawable.ic_sex_woman)
+                    mSexRes.setBounds(0, 0, mSexRes.minimumWidth, mSexRes.minimumHeight)
+                    text_name.setCompoundDrawables(null, null, mSexRes, null)
+                } else {
+                    val mSexRes = resources.getDrawable(R.drawable.ic_sex_man)
+                    mSexRes.setBounds(0, 0, mSexRes.minimumWidth, mSexRes.minimumHeight)
+                    text_name.setCompoundDrawables(null, null, mSexRes, null)
+                }
                 text_flower1.text = (Flower / 25).toString()
                 text_flower2.text = (Flower % 25 / 5).toString()
                 text_flower3.text = (Flower % 5).toString()

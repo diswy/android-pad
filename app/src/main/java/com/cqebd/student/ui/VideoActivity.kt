@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.cqebd.student.R
+import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
@@ -13,12 +14,15 @@ import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.fragment.RecommendFragment
 import com.cqebd.student.ui.fragment.WebFragment
+import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.PeriodResponse
 import com.cqebd.student.vo.entity.VodPlay
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_video.*
+import net.lucode.hackware.magicindicator.ViewPagerHelper
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import java.util.*
 
 /**
@@ -26,9 +30,11 @@ import java.util.*
  * Created by gorden on 2018/3/15.
  */
 class VideoActivity : BaseActivity() {
+    private val titles = listOf("课时", "详细", "评价")
 
     private var status: Int = 0
     private var id: Int = 0
+    private lateinit var listData:ArrayList<PeriodInfo>
 
     override fun setContentView() {
         setContentView(R.layout.activity_video)
@@ -49,57 +55,72 @@ class VideoActivity : BaseActivity() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        status = intent!!.getIntExtra("status", 0)
-        id = intent.getIntExtra("id", 0)
-        val isLiveMode= intent.getBooleanExtra("isLiveMode",false)
-        Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
-        videoView.setLiveMode(isLiveMode)
+        val commonNavigator = CommonNavigator(this)
+        commonNavigator.isAdjustMode = true
+        commonNavigator.adapter = TitleNavigatorAdapter(this, titles, viewPager)
+        video_player_indicator.navigator = commonNavigator
+        ViewPagerHelper.bind(video_player_indicator, viewPager)
 
-        toolbar.setNavigationOnClickListener { finish() }
-        toolbar_title.text = "点点直播"
+        intent?.let {
+            listData = it.getParcelableArrayListExtra("listData")
+            val mCurrentPos = it.getIntExtra("pos",0)
+            Logger.d(listData)
+            status = it.getIntExtra("status", 0)
+            id = it.getIntExtra("id", 0)
+            val isLiveMode= it.getBooleanExtra("isLiveMode",false)
+            Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
+            videoView.setLiveMode(isLiveMode)
 
-        initStatus()
-        loadVideo()
+            toolbar.setNavigationOnClickListener { finish() }
+            toolbar_title.text = "点点直播"
 
-        val mRecommendCourseFragment = RecommendFragment()
-        val web1 = WebFragment()
-        val web2 = WebFragment()
+            initStatus()
+            loadVideo()
 
-        tabLayout.setupWithViewPager(viewPager)
-        viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
-            override fun getItem(position: Int): Fragment {
-                return when (position) {
-                    0 -> mRecommendCourseFragment
-                    1 -> web1
-                    2 -> {
-                        if (status == 1)
-                            web2
-                        else
-                            web2
+            val mRecommendCourseFragment = RecommendFragment()
+            val mData = Bundle()
+            mData.putParcelableArrayList("listData", listData)
+            mData.putInt("pos", mCurrentPos)
+            mRecommendCourseFragment.arguments = mData
+            val web1 = WebFragment()
+            val web2 = WebFragment()
+
+            viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
+                override fun getItem(position: Int): Fragment {
+                    return when (position) {
+                        0 -> mRecommendCourseFragment
+                        1 -> web1
+                        2 -> {
+                            if (status == 1)
+                                web2
+                            else
+                                web2
+                        }
+                        else -> mRecommendCourseFragment
                     }
-                    else -> mRecommendCourseFragment
                 }
-            }
 
-            override fun getCount(): Int {
-                return 3
-            }
+                override fun getCount(): Int {
+                    return 3
+                }
 
-            override fun getPageTitle(position: Int): CharSequence? {
-                return when (position) {
-                    0 -> "推荐"
-                    1 -> "详细"
-                    2 -> {
-                        if (status == 1)
-                            "提问"
-                        else
-                            "评价"
+                override fun getPageTitle(position: Int): CharSequence? {
+                    return when (position) {
+                        0 -> "推荐"
+                        1 -> "详细"
+                        2 -> {
+                            if (status == 1)
+                                "提问"
+                            else
+                                "评价"
+                        }
+                        else -> "推荐"
                     }
-                    else -> "推荐"
                 }
-            }
 
+            }
         }
+
     }
 
     override fun bindEvents() {
@@ -135,8 +156,6 @@ class VideoActivity : BaseActivity() {
 
         val bundle = Bundle()
         bundle.putInt("id", id)
-
-
     }
 
 

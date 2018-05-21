@@ -29,8 +29,8 @@ import kotlinx.android.synthetic.main.merge_rv_refresh_layout.*
 
 class CourseListFragment : BaseFragment() {
     private lateinit var periodListViewModel: PeriodListViewModel
-//    private lateinit var adapter: BaseQuickAdapter<PeriodInfo, BaseViewHolder>
-    private lateinit var adapter: BaseSectionQuickAdapter<SectionPeriodInfo, BaseViewHolder>
+    //    private lateinit var adapter: BaseQuickAdapter<PeriodInfo, BaseViewHolder>
+    private lateinit var adapter: VideoCourseAdapter
     private var periodInfo: List<PeriodInfo>? = null
     private var courseId: Long = 0
 
@@ -55,7 +55,7 @@ class CourseListFragment : BaseFragment() {
             it?.let {
                 val list = ArrayList<SectionPeriodInfo>()
                 list.add(SectionPeriodInfo("全部课程"))
-                for (item in it){
+                for (item in it) {
                     list.add(SectionPeriodInfo(item))
                 }
                 adapter.setNewData(list)
@@ -94,19 +94,16 @@ class CourseListFragment : BaseFragment() {
 //            }
 //        }
         adapter.bindToRecyclerView(recyclerView)
-        adapter.setOnItemClickListener { adapter, _, position ->
-//            val mSectionPeriodInfo = adapter.data[position] as SectionPeriodInfo
+        adapter.setOnItemClickListener { _, _, position ->
+            //            val mSectionPeriodInfo = adapter.data[position] as SectionPeriodInfo
 //            if (mSectionPeriodInfo)
-//
 //            val mItem = mSectionPeriodInfo.t
-
-
 
             val itemDataParent = adapter.data[position] as SectionPeriodInfo
             val itemData = itemDataParent.t
             when {
-                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
-                itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
+                itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
                 else -> toast("视频未准备好哦~")
             }
         }
