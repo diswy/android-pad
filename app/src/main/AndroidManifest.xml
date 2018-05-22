@@ -141,7 +141,11 @@
         <activity android:name=".ui.AgentWebActivity" />
         <activity android:name=".test.TestTablayout" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".PersonalActivity"></activity>
+        <activity android:name=".PersonalActivity" />
+        <activity
+            android:name=".ui.LiveVideoActivity"
+            android:configChanges="orientation|screenSize|keyboard"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

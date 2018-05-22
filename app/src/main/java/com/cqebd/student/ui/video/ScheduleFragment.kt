@@ -13,6 +13,7 @@ import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.tools.toast
+import com.cqebd.student.ui.LiveVideoActivity
 import com.cqebd.student.ui.VideoActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.viewmodel.ClassScheduleViewModel
@@ -68,8 +69,8 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         adapter.setOnItemClickListener { adapter, _, position ->
             val itemData = adapter.data[position] as CourseInfo
             when {
-                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
-                itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+                itemData.Status == 1 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
+                itemData.Status == 3 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status)
                 else -> toast("视频未准备好哦~")
             }
         }

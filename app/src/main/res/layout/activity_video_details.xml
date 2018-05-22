@@ -27,7 +27,7 @@
 
     <ImageView
         android:id="@+id/iv_snapshot"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -39,31 +39,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/color_title"
         android:textSize="14sp"
-        android:maxLines="1"
-        android:ellipsize="end"
         app:layout_constraintLeft_toRightOf="@+id/iv_snapshot"
         app:layout_constraintTop_toTopOf="@+id/iv_snapshot"
         tools:text="2018级数学期末培优B卷（第20周）" />
 
     <ImageView
         android:id="@+id/holder_teacher"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        android:src="@drawable/ic_teacher"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_teacher"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <ImageView
         android:id="@+id/holder_time"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@+id/holder_teacher"
-        app:layout_constraintTop_toTopOf="@+id/tv_times"
-        android:src="@drawable/ic_clock"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_clock"
+        app:layout_constraintStart_toStartOf="@+id/holder_teacher"
+        app:layout_constraintTop_toTopOf="@+id/tv_times" />
 
     <TextView
         android:id="@+id/tv_teacher_count"
@@ -91,8 +91,8 @@
 
     <gorden.widget.selector.SelectorButton
         android:id="@+id/btn_subscribe"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
+        android:layout_width="65dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
         android:background="@color/colorPrimary"
@@ -104,66 +104,67 @@
 
 
     <LinearLayout
-        android:layout_margin="10dp"
         android:id="@+id/holder_bar"
-        android:orientation="vertical"
-        android:background="@color/color_bg_fa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/color_bg_fa"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/iv_snapshot">
-        
+
         <LinearLayout
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <ProgressBar
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:max="100"
-                android:progress="50"
                 android:id="@+id/progressBarHorizontal"
                 style="@style/MyProgressBar"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:progress="0" />
 
             <com.wuhangjia.firstlib.view.FancyButton
-                android:layout_marginEnd="10dp"
-                app:fb_shape="arc"
-                app:fb_bg_color="@color/colorPrimary"
-                app:fb_text="继续学习"
-                app:fb_text_size="12sp"
                 android:layout_width="70dp"
-                android:layout_height="25dp" />
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                app:fb_bg_color="@color/colorPrimary"
+                app:fb_hover_color="@color/colorPrimary"
+                app:fb_shape="arc"
+                app:fb_text="课程进度"
+                app:fb_text_size="12sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp">
 
             <TextView
-                android:textSize="12sp"
-                android:text="占位文字"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="占位文字"
+                android:textSize="12sp" />
 
             <Space
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <TextView
-                android:textSize="12sp"
-                android:text="占位文字"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="占位文字"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>

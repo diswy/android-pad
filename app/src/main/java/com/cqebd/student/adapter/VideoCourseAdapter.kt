@@ -24,6 +24,13 @@ class VideoCourseAdapter : BaseSectionQuickAdapter<SectionPeriodInfo, BaseViewHo
                 item_course_tv_title.text = mItem.Name
                 item_course_tv_time.text = formatTimeYMDHM(mItem.PlanStartDate)
 
+                when(mItem.Status){
+                    0 -> item_course_iv_status.setImageResource(R.drawable.ic_video_status_start)
+                    1 -> item_course_iv_status.setImageResource(R.drawable.ic_video_status_playing)
+                    2 -> item_course_iv_status.setImageResource(R.drawable.ic_video_status_end)
+                    3 -> item_course_iv_status.setImageResource(R.drawable.ic_video_status_end)
+                }
+
 
                 if (helper.layoutPosition == data.size-1){// 最后一项
                     item_course_line_end.visibility = View.GONE

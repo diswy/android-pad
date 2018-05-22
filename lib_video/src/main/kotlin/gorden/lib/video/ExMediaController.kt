@@ -104,6 +104,7 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                 definition_layout.removeAllViews()
                 val tv = TextView(context)
                 tv.text = "默认"
+                tv.setTextColor(Color.parseColor("#ffffff"))
                 tv.gravity = Gravity.CENTER
                 tv.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, dip(40f))
                 tv.setOnClickListener {

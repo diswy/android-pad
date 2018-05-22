@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.cqebd.student.ui.fragment.CourseListFragment">
 
-    <include layout="@layout/merge_rv_refresh_layout"/>
+    <!--<include layout="@layout/merge_rv_refresh_layout"/>-->
+    <include layout="@layout/merge_refresh_layout" />
 
 </FrameLayout>

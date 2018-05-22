@@ -1,5 +1,8 @@
 package com.cqebd.student.tools;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * 描述
  * Created by gorden on 2018/3/20.
@@ -37,5 +40,16 @@ public class StringUtils {
                 return buf.toString();
             }
         }
+    }
+
+
+    public static String getUnicodeString(String str) {
+        String ss = str;
+        try {
+            ss = URLEncoder.encode(str, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return ss;
     }
 }

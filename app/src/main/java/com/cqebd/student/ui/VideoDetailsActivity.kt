@@ -1,5 +1,6 @@
 package com.cqebd.student.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -18,6 +19,8 @@ import com.cqebd.student.ui.fragment.CourseListFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.VideoInfo
 import com.orhanobut.logger.Logger
+import gorden.rxbus.RxBus
+import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.activity_video_details.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -32,7 +35,14 @@ class VideoDetailsActivity : BaseActivity() {
         setContentView(R.layout.activity_video_details)
     }
 
+    override fun onDestroy() {
+        RxBus.get().unRegister(this)
+        super.onDestroy()
+    }
+
     override fun initialize(savedInstanceState: Bundle?) {
+        RxBus.get().register(this)
+
         data = intent.getParcelableExtra("data")
 
         val commonNavigator = CommonNavigator(this)
@@ -98,15 +108,22 @@ class VideoDetailsActivity : BaseActivity() {
                             data.IsFeedback = response.isSuccess
                             btn_subscribe.s_solid_color = if (data.IsFeedback)
                                 ContextCompat.getColor(this@VideoDetailsActivity, R.color.colorPrimary) else
-                                ContextCompat.getColor(this@VideoDetailsActivity, R.color.color_bg_d1)
+                                ContextCompat.getColor(this@VideoDetailsActivity, R.color.color_line)
                             btn_subscribe.text = if (data.IsFeedback) "一键订阅" else "取消订阅"
                         }
-
 
                         override fun onFailure() {
 
                         }
                     })
+        }
+    }
+
+    fun refreshProgress(mProgress: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            progressBarHorizontal.setProgress(mProgress, true)
+        } else {
+            progressBarHorizontal.progress = mProgress
         }
     }
 

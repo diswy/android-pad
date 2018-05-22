@@ -38,6 +38,7 @@ import com.cqebd.student.service.SubmitTask;
 import com.cqebd.student.tools.AlbumHelper;
 import com.cqebd.student.tools.JSONS;
 import com.cqebd.student.tools.KResKt;
+import com.cqebd.student.tools.StringUtils;
 import com.cqebd.student.tools.TimeConversion;
 import com.cqebd.student.tools.Toast;
 import com.cqebd.student.tools.UtilGson;
@@ -195,8 +196,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
      */
     private final String alertTitle = "本次测试剩余时间还有不到3分钟\n请抓紧时间!";
 
-    private NiftyDialog niftyDialog(){
-        if(niftyDialog==null){
+    private NiftyDialog niftyDialog() {
+        if (niftyDialog == null) {
             niftyDialog = new NiftyDialog(mContext);
         }
         return niftyDialog;
@@ -241,40 +242,40 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
         List<Attachment> attachmentList = questionInfo.getQuestionSubjectAttachment();
         if (attachmentList != null && attachmentList.size() > 0) {
 
-            if (attachmentList.size()==1&&attachmentList.get(0).getMediaTypeName().toLowerCase().contains("mp3")){
+            if (attachmentList.size() == 1 && attachmentList.get(0).getMediaTypeName().toLowerCase().contains("mp3")) {
                 Attachment attachment = attachmentList.get(0);
-               com.cqebd.student.db.dao.Attachment resource = mDaoSession.getAttachmentDao()
+                com.cqebd.student.db.dao.Attachment resource = mDaoSession.getAttachmentDao()
                         .queryBuilder().where(AttachmentDao.Properties.Id
                                 .eq(String.valueOf(taskInfo.getTaskId()) + attachment.getId())).build().unique();
                 int answerType = attachment.getAnswerType();
                 int count = 0;
-                if (resource!=null){
+                if (resource != null) {
                     answer.audioInfo(resource);
                     count = resource.getWatchCount();
-                }else{
+                } else {
                     String id = String.valueOf(taskInfo.getTaskId()) + attachment.getId();
-                    answer.audioInfo(new com.cqebd.student.db.dao.Attachment(id,(int) taskInfo.getTaskId(),attachment.getUrl(),
-                            attachment.getName(),0,attachment.getAnswerType(),attachment.getCanWatchTimes()));
+                    answer.audioInfo(new com.cqebd.student.db.dao.Attachment(id, (int) taskInfo.getTaskId(), attachment.getUrl(),
+                            attachment.getName(), 0, attachment.getAnswerType(), attachment.getCanWatchTimes()));
                 }
-                if (answerType==2&&count==0){
+                if (answerType == 2 && count == 0) {
                     answer.tipMessage("当前不能答题,请先听完音频文件");
                     answer.prohibitAnswer();//不满足附件查看条件
-                }else{
+                } else {
                     answer.tipMessage(null);
                     answer.allowAnswer();
                 }
                 return;
-            }else{
+            } else {
                 for (Attachment attachment : attachmentList) {
                     com.cqebd.student.db.dao.Attachment resource = mDaoSession.getAttachmentDao()
                             .queryBuilder().where(AttachmentDao.Properties.Id
                                     .eq(String.valueOf(taskInfo.getTaskId()) + attachment.getId())).build().unique();
                     int answerType = attachment.getAnswerType();
                     int count = 0;
-                    if (resource!=null){
+                    if (resource != null) {
                         count = resource.getWatchCount();
                     }
-                    if (answerType==2&&count==0){
+                    if (answerType == 2 && count == 0) {
                         answer.audioInfo(null);
                         answer.tipMessage("当前不能答题,请先观看视频");
                         answer.prohibitAnswer();//不满足附件查看条件
@@ -383,7 +384,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
         public Fragment getItem(int position) {
             AnswerFragment fragment = new AnswerFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("taskId",(int) taskInfo.getTaskId());
+            bundle.putInt("taskId", (int) taskInfo.getTaskId());
             bundle.putParcelableArrayList("attachment", questionInfoList.get(position).getQuestionSubjectAttachment());
             String urlFormat = "HomeWork/Question?id=%s&PapersID=%s&studentid=%s";
             bundle.putString("url", Constant.BASE_WEB_URL + String.format(urlFormat, questionInfoList.get(position).getId(), taskInfo.getPapersId(), userId));
@@ -393,7 +394,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
 
         @Override
         public int getCount() {
-            if (taskInfo!=null&&questionInfoList!=null){
+            if (taskInfo != null && questionInfoList != null) {
                 return taskInfo.getQuestionCount();
             }
             return 0;
@@ -509,8 +510,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
 
     //答案提交到服务器
     private void uploadAnswer(QuestionInfo info, boolean end, boolean autoSubmit) {
-        NetClient.createApi(NetApi.class).submitAnswer(userId, info.getId(),(int)  taskInfo.getPapersId(),(int)  taskInfo.getTaskId()
-                , info.getStudentsAnswer(), info.getQuestionTypeId(), PackageUtils.getVersionName(mContext), Build.MODEL).enqueue(new NetCallBack<BaseBean>() {
+        NetClient.createApi(NetApi.class).submitAnswer(userId, info.getId(), (int) taskInfo.getPapersId(), (int) taskInfo.getTaskId()
+                , StringUtils.getUnicodeString(info.getStudentsAnswer()), info.getQuestionTypeId(), PackageUtils.getVersionName(mContext), Build.MODEL).enqueue(new NetCallBack<BaseBean>() {
             @Override
             public void onSucceed(BaseBean response) {
                 if (response.isSuccess()) {
@@ -587,7 +588,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
         AnswerRequest requestBody = new AnswerRequest();
         requestBody.setData(answerInfo);
         NetClient.createApi(NetApi.class).SubmitAnswers((int) taskInfo.getTaskId(),
-                UtilGson.getInstance().convertObjectToJsonString(requestBody), 0, answer.submitMode()).enqueue(new Callback<BaseBean>() {
+                StringUtils.getUnicodeString(UtilGson.getInstance().convertObjectToJsonString(requestBody)),
+                0, answer.submitMode()).enqueue(new Callback<BaseBean>() {
             @Override
             public void onResponse(Call<BaseBean> call, Response<BaseBean> response) {
                 LoadingDialog.lock = false;
