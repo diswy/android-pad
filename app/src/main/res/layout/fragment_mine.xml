@@ -208,8 +208,7 @@
                 android:id="@+id/btn_test_jump"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TEST"
-                android:visibility="gone" />
+                android:text="TEST" />
 
         </LinearLayout>
 

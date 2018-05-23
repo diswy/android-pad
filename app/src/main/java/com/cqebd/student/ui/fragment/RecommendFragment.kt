@@ -38,7 +38,7 @@ class RecommendFragment : BaseFragment() {
 
             val itemData = adapter.data[position] as PeriodInfo
             if (itemData.Status == 1 || itemData.Status == 3) {
-                adapter.setCurrentPos(position)
+//                adapter.setCurrentPos(position)
                 startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.data, "pos" to position)
             } else {
                 toast("视频未准备好哦~")
@@ -50,6 +50,7 @@ class RecommendFragment : BaseFragment() {
             listData = it.getParcelableArrayList("listData")
             val mCurrentPos = it.getInt("pos", 0)
             adapter.setNewData(mCurrentPos, listData)
+            recyclerView.scrollToPosition(mCurrentPos)
         }
     }
 

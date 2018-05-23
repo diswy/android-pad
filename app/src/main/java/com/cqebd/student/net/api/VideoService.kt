@@ -5,6 +5,7 @@ import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.vo.entity.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -87,8 +88,24 @@ interface VideoService {
      * 获取收藏列表
      */
     @GET("api/CoursePeriod/GetCollectByStudentId")
-    fun getCollectList
-            (@Query("studentid") studentid: Long = loginId)
+    fun getCollectList(
+            @Query("studentid") studentId: Long = loginId)
             : Call<BaseResponse<List<VideoInfo>>>
+
+    /**
+     * 获取讨论列表
+     */
+    @GET("/api/Feedback/GetListByPeriodId")
+    fun getVideoEvaluate(
+            @Query("id") id: Int)
+            : Call<BaseResponse<List<VideoEvaluate>>>
+
+    @POST("/api/Feedback/Add")
+    fun addEvaluate(
+            @Query("PeriodId") periodId: Int,
+            @Query("NickName") nickName: String,
+            @Query("Comment") comment: String,
+            @Query("StudentId") studentId: Long = loginId)
+            : Call<ResponseBody>
 
 }

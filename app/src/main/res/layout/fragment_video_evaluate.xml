@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.VideoEvaluateFragment">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/mRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:srlEnableLoadMore="false">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/color_bg_fa"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <EditText
+            android:id="@+id/mEtEvaluate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:hint="请评论..."
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textSize="12sp" />
+
+        <com.wuhangjia.firstlib.view.FancyButton
+            android:id="@+id/mBtnSend"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            app:fb_bg_color="@color/transparent"
+            app:fb_hover_color="@color/transparent"
+            app:fb_shape="rect"
+            app:fb_text="发送"
+            app:fb_text_color="#9c9c9c" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

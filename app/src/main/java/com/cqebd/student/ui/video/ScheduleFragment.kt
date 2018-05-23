@@ -106,6 +106,8 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         smart_refresh_layout.setOnRefreshListener {
             viewModel.getPeriodListMonth(selectedDate).observe(this, this)
         }
+
+        schedule_calendar.setCurrentDate(currentDate)
     }
 
 

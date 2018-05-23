@@ -13,6 +13,7 @@ import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.fragment.RecommendFragment
+import com.cqebd.student.ui.fragment.VideoEvaluateFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.PeriodResponse
@@ -33,8 +34,7 @@ class VideoActivity : BaseActivity() {
     private val titles = listOf("课时", "详细", "评价")
 
     private var status: Int = 0
-    private var id: Int = 0
-    private lateinit var listData:ArrayList<PeriodInfo>
+    private lateinit var listData: ArrayList<PeriodInfo>
 
     override fun setContentView() {
         setContentView(R.layout.activity_video)
@@ -42,16 +42,10 @@ class VideoActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
         setIntent(intent)
-        status = intent!!.getIntExtra("status", 0)
-        id = intent.getIntExtra("id", 0)
-        val isLiveMode= intent.getBooleanExtra("isLiveMode",false)
-        Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
-        videoView.setLiveMode(isLiveMode)
-
-        initStatus()
-        loadVideo()
+        intent?.let {
+            initStatus(it)
+        }
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
@@ -61,69 +55,12 @@ class VideoActivity : BaseActivity() {
         video_player_indicator.navigator = commonNavigator
         ViewPagerHelper.bind(video_player_indicator, viewPager)
 
+        toolbar.setNavigationOnClickListener { finish() }
+        toolbar_title.text = "点点直播"
+
         intent?.let {
-            listData = it.getParcelableArrayListExtra("listData")
-            val mCurrentPos = it.getIntExtra("pos",0)
-            Logger.d(listData)
-            status = it.getIntExtra("status", 0)
-            id = it.getIntExtra("id", 0)
-            val isLiveMode= it.getBooleanExtra("isLiveMode",false)
-            Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
-            videoView.setLiveMode(isLiveMode)
-
-            toolbar.setNavigationOnClickListener { finish() }
-            toolbar_title.text = "点点直播"
-
-            initStatus()
-            loadVideo()
-
-            val mRecommendCourseFragment = RecommendFragment()
-            val mData = Bundle()
-            mData.putParcelableArrayList("listData", listData)
-            mData.putInt("pos", mCurrentPos)
-            mRecommendCourseFragment.arguments = mData
-            val web1 = WebFragment()
-            val web2 = WebFragment()
-
-            viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
-                override fun getItem(position: Int): Fragment {
-                    return when (position) {
-                        0 -> mRecommendCourseFragment
-                        1 -> web1
-                        2 -> {
-                            if (status == 1)
-                                web2
-                            else
-                                web2
-                        }
-                        else -> mRecommendCourseFragment
-                    }
-                }
-
-                override fun getCount(): Int {
-                    return 3
-                }
-
-                override fun getPageTitle(position: Int): CharSequence? {
-                    return when (position) {
-                        0 -> "推荐"
-                        1 -> "详细"
-                        2 -> {
-                            if (status == 1)
-                                "提问"
-                            else
-                                "评价"
-                        }
-                        else -> "推荐"
-                    }
-                }
-
-            }
+            initStatus(it)
         }
-
-    }
-
-    override fun bindEvents() {
 
     }
 
@@ -146,20 +83,49 @@ class VideoActivity : BaseActivity() {
         super.onBackPressed()
     }
 
-    private fun initStatus() {
-//        val item = tabLayout.getTabAt(2)
-//        if (status == 1){
-//            item?.text = "提问"
-//        }else{
-//            item?.text = "评价"
-//        }
+    private fun initStatus(i: Intent) {
+        listData = i.getParcelableArrayListExtra("listData")
+        val mCurrentPos = i.getIntExtra("pos", 0)
+        status = i.getIntExtra("status", 0)
+        val isLiveMode = i.getBooleanExtra("isLiveMode", false)
+        videoView.setLiveMode(isLiveMode)
+        val mId = i.getIntExtra("id", 0)
+        Logger.d("status = $status ；isLiveMode = $isLiveMode")
+        Logger.d(listData)
 
-        val bundle = Bundle()
-        bundle.putInt("id", id)
+        // 加载视频
+        loadVideo(mId)
+
+        val mData = Bundle()
+        mData.putParcelableArrayList("listData", listData)
+        mData.putInt("pos", mCurrentPos)
+        mData.putInt("id", mId)
+
+        val mRecommendCourseFragment = RecommendFragment()
+        mRecommendCourseFragment.arguments = mData
+        val web1 = WebFragment()
+        val mEvaluateFragment = VideoEvaluateFragment()
+        mEvaluateFragment.arguments = mData
+
+        viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
+            override fun getItem(position: Int): Fragment {
+                return when (position) {
+                    0 -> mRecommendCourseFragment
+                    1 -> web1
+                    2 -> mEvaluateFragment
+                    else -> mRecommendCourseFragment
+                }
+            }
+
+            override fun getCount(): Int {
+                return 3
+            }
+        }
+
     }
 
-
-    private fun loadVideo() {
+    // 获取视频地址，并加载视频
+    private fun loadVideo(id: Int) {
         NetClient.videoService()
                 .getPeriodByID(id)
                 .enqueue(object : NetCallBack<BaseResponse<PeriodResponse>>() {
@@ -167,7 +133,6 @@ class VideoActivity : BaseActivity() {
 
                         if (response?.data != null) {
                             Logger.json(Gson().toJson(response.data.VodPlayList))
-
                             val definitions = filterVideoUrl(response.data.VodPlayList)
 
                             if (definitions != null && definitions.isNotEmpty())
@@ -185,7 +150,6 @@ class VideoActivity : BaseActivity() {
                 }
                 )
     }
-
 
     /**
      * 取出视频文件中的m3u8文件

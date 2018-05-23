@@ -81,9 +81,8 @@ class CourseListFragment : BaseFragment() {
             if (item.Status == 2 || item.Status == 3)
                 ++finished
         }
-        val mProgress: Int = finished / totalSize * 100
-
-        (activity as VideoDetailsActivity).refreshProgress(mProgress)
+        val mProgress: Double = finished * 100.00/ totalSize
+        (activity as VideoDetailsActivity).refreshProgress(mProgress.toInt())
     }
 
     override fun bindEvents() {
