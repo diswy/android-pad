@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cqebd.student.R;
+import com.cqebd.student.net.NetClient;
 import com.cqebd.student.netease.NetEaseCache;
 import com.cqebd.student.netease.ui.ChatRoomActivity;
 import com.netease.nimlib.sdk.AbortableFuture;
@@ -21,10 +22,17 @@ import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TestNetEaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btn_login,btn_logOut,btn_join;
-    private TextView tv_status,tv_number;
+    private Button btn_login,btn_logOut,btn_join,btnGet;
+    private TextView tv_status,tv_number,tvGet;
     private EditText et_number;
 
     @Override
@@ -38,11 +46,16 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
         tv_status = findViewById(R.id.test_tv_status);
         tv_number = findViewById(R.id.test_tv_number);
         et_number = findViewById(R.id.test_et_number);
+        btnGet = findViewById(R.id.btnGet);
+        tvGet = findViewById(R.id.tvGet);
 
 
         btn_login.setOnClickListener(this);
         btn_logOut.setOnClickListener(this);
         btn_join.setOnClickListener(this);
+        btnGet.setOnClickListener(this);
+
+        et_number.setText("25154773");
     }
 
     @Override
@@ -75,7 +88,29 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
 
 
                 break;
+            case R.id.btnGet:
+                get();
+                break;
         }
+    }
+
+    private void get(){
+        NetClient.INSTANCE.videoService().getLive(49)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            tvGet.setText(response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
     }
 
 
@@ -90,6 +125,7 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
                 tv_status.setText("登录状态：已登录，登录账号jiangjunjuel");
                 NetEaseCache.setContext(TestNetEaseActivity.this);
                 NetEaseCache.setAccount("jiangjunjuel");
+
 
             }
 

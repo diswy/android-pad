@@ -5,16 +5,20 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.support.multidex.MultiDex
+import android.text.TextUtils
 import com.cqebd.student.BuildConfig
 import com.cqebd.student.R
 import com.cqebd.student.db.dao.DaoMaster
 import com.cqebd.student.db.dao.DaoSession
 import com.cqebd.student.netease.helper.ChatRoomHelper
 import com.cqebd.student.netease.modle.custom.CustomAttachParser
+import com.cqebd.student.tools.getNeteaseLoginInfo
+import com.cqebd.student.tools.getValue
 import com.cqebd.student.ui.StartActivity
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
+import com.netease.nimlib.sdk.auth.LoginInfo
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.util.NIMUtil
 import com.orhanobut.logger.AndroidLogAdapter
@@ -70,7 +74,7 @@ class App : Application() {
         XLog.init(false, "app_log")
 
         // 网易云信
-        NIMClient.init(this, null, null)
+        NIMClient.init(this, getNeteaseLoginInfo(), null)
         if (NIMUtil.isMainProcess(this)) {
             // 注册自定义消息附件解析器
             NIMClient.getService(MsgService::class.java).registerCustomAttachmentParser(CustomAttachParser())

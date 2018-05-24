@@ -13,49 +13,66 @@
 
         <Button
             android:id="@+id/test_btn_login"
-            android:text="登录"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="登录" />
 
         <Button
             android:id="@+id/test_btn_logout"
-            android:text="注销"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="注销" />
 
         <TextView
             android:id="@+id/test_tv_status"
-            android:text="登录状态：未登录"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="登录状态：未登录" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/test_btn_join"
-            android:text="加入房间"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="加入房间" />
 
         <EditText
             android:id="@+id/test_et_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
-            android:maxLines="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/test_tv_number"
-            android:layout_marginEnd="10dp"
-            android:text="房间号:"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="房间号:" />
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnGet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tvGet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true" />
+
+    </ScrollView>
 
 </LinearLayout>

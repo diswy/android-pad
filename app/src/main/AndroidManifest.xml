@@ -41,9 +41,12 @@
         <!-- <meta-data -->
         <!-- android:name="com.netease.nim.appKey" -->
         <!-- android:value="5da8d352cb58fe86adc5b2b16e313c1c" /> -->
+        <!--<meta-data-->
+            <!--android:name="com.netease.nim.appKey"-->
+            <!--android:value="1ee5a51b7d008254cd73b1d4369a9494" />-->
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="1ee5a51b7d008254cd73b1d4369a9494" />
+            android:value="5da8d352cb58fe86adc5b2b16e313c1c" />
 
         <!-- 云信后台服务，请使用独立进程。 -->
         <service

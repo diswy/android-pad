@@ -16,12 +16,10 @@ import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.net.api.WorkService
+import com.cqebd.student.test.TestChatRoomActivity
 import com.cqebd.student.test.TestNetEaseActivity
 import com.cqebd.student.test.TestTablayout
-import com.cqebd.student.tools.colorForRes
-import com.cqebd.student.tools.cropPath
-import com.cqebd.student.tools.loginId
-import com.cqebd.student.tools.toastError
+import com.cqebd.student.tools.*
 import com.cqebd.student.viewmodel.MineViewModel
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.widget.LoadingDialog
@@ -98,12 +96,16 @@ class MineFragment : BaseFragment() {
         item_exit.setOnClickListener {
             activity?.finish()
             UserAccount.clear()
+            logoutNetease()
             startActivity<LoginActivity>()
         }
 
         btn_test_jump.setOnClickListener {
             startActivity<TestNetEaseActivity>()
 //            startActivity<TestTablayout>()
+        }
+        btn_test_chat.setOnClickListener {
+            TestChatRoomActivity.start(activity,"25154773",false)
         }
 
     }

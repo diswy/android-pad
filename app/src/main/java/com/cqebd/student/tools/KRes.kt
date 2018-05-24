@@ -11,7 +11,8 @@ import java.io.File
 import com.cqebd.student.MainActivity
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
-
+import android.text.TextUtils
+import com.netease.nimlib.sdk.auth.LoginInfo
 
 
 /**
@@ -45,6 +46,34 @@ fun isLogin(): Boolean {
 }
 
 val loginId get() = getValue("id", -1L)
+
+fun savePassword(psd: String) {
+    setValue("password" to psd)
+}
+
+val password get() = getValue("password", "")
+
+fun saveNetease(account: String, token: String) {
+    setValue("netease_account" to account)
+    setValue("netease_token" to token)
+}
+
+fun getNeteaseLoginInfo(): LoginInfo? {
+    val account = getValue("netease_account", "")
+    val token = getValue("netease_token", "")
+    return if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
+        LoginInfo(account, token)
+    } else {
+        null
+    }
+}
+
+fun isNeteaseLogin() = getNeteaseLoginInfo() != null
+
+fun logoutNetease(){
+    setValue("netease_account" to "")
+    setValue("netease_token" to "")
+}
 
 private val packageInfo by lazy {
     App.mContext.packageManager.getPackageInfo(App.mContext.packageName, PackageManager.GET_PERMISSIONS)

@@ -108,4 +108,12 @@ interface VideoService {
             @Query("StudentId") studentId: Long = loginId)
             : Call<ResponseBody>
 
+    /**
+     * 获取互动直播
+     */
+    @GET("/api/PeriodLive/GetPeriodLiveByPerodId")
+    fun getLive(
+            @Query("periodId") id: Int = 49)
+            : Call<ResponseBody>
+
 }

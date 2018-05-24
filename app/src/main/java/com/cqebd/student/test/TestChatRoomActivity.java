@@ -73,16 +73,21 @@ public class TestChatRoomActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void param) {
                             // 成功
+                            Logger.e("onsuccess");
                         }
 
                         @Override
                         public void onFailed(int code) {
                             // 失败
+                            Logger.e("onFailed");
+
                         }
 
                         @Override
                         public void onException(Throwable exception) {
                             // 错误
+                            Logger.e("onException:"+exception.getMessage());
+
                         }
                     });
         });
@@ -104,6 +109,7 @@ public class TestChatRoomActivity extends AppCompatActivity {
         @Override
         public void onEvent(List<ChatRoomMessage> messages) {
             // 处理新收到的消息
+            Logger.d(messages);
             String ss = tv.getText().toString();
             for (int i = 0; i < messages.size(); i++) {
                 ss = ss +"\n" +messages.get(i).getContent();

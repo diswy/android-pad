@@ -360,7 +360,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
 //        boolean isOpen = Preferences.getRTSRecord();
         boolean isOpen = false;
         Logger.i("rts record is open->" + isOpen);
-        RTSManager2.getInstance().joinSession(roomInfo.getRoomId(), isOpen, new RTSCallback<RTSData>() {
+//        RTSManager2.getInstance().joinSession(roomInfo.getRoomId(), isOpen, new RTSCallback<RTSData>() {
+        RTSManager2.getInstance().joinSession("IWBRoomName_49", isOpen, new RTSCallback<RTSData>() {
             @Override
             public void onSuccess(RTSData rtsData) {
                 Logger.i("rts extra:" + rtsData.getExtra());
@@ -390,7 +391,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
     private void registerRTSObservers(String sessionName, boolean register) {
         this.sessionName = sessionName;
         RTSManager2.getInstance().observeChannelState(sessionName, channelStateObserver, register);
-        RTSManager2.getInstance().observeReceiveData(sessionName, receiveDataObserver, register);
+//        RTSManager2.getInstance().observeReceiveData(sessionName, receiveDataObserver, register);
+        RTSManager2.getInstance().observeReceiveData("IWBRoomName_49", receiveDataObserver, register);
     }
 
     private void endSession() {

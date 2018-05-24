@@ -3,8 +3,10 @@ package com.cqebd.student.http;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
+import com.cqebd.student.app.App;
 import com.cqebd.student.net.gateway.GatewayInterceptor;
 import com.orhanobut.logger.Logger;
+import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ public class NetClient {
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(300, TimeUnit.SECONDS)
+            .addInterceptor(new ChuckInterceptor(App.mContext))
             .addInterceptor(new GatewayInterceptor("23393048", "d0c983467d8ced6568e844c0b0a233ae"))
             .addInterceptor(new HttpLoggingInterceptor(message -> {
                 if (TextUtils.isEmpty(message)) return;

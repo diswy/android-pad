@@ -539,7 +539,7 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
         @Override
         public void onRoomMemberIn(ChatRoomMember member) {
             onMasterJoin(member.getAccount());
-
+            Logger.e(NetEaseCache.getAccount());
             if (NetEaseCache.getAccount().equals(roomInfo.getCreator())
                     && !member.getAccount().equals(NetEaseCache.getAccount())) {
                 // 主持人点对点通知有权限的成员列表

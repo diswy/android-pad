@@ -2,6 +2,7 @@ package com.cqebd.student.tools;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
 
 /**
  * 描述

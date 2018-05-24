@@ -1,5 +1,6 @@
 package com.cqebd.student.net
 
+import com.cqebd.student.app.App
 import com.cqebd.student.net.adapter.LiveDataCallAdapterFactory
 import com.cqebd.student.net.api.ApiService
 import com.cqebd.student.net.api.VideoService
@@ -7,6 +8,7 @@ import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.net.converter.ApiConverterFactory
 import com.cqebd.student.net.gateway.GatewayInterceptor
 import com.orhanobut.logger.Logger
+import com.readystatesoftware.chuck.ChuckInterceptor
 import gorden.lib.anko.static.logWarn
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +28,7 @@ object NetClient {
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .addInterceptor(ChuckInterceptor(App.mContext))
                 .addInterceptor(GatewayInterceptor("23393048", "d0c983467d8ced6568e844c0b0a233ae"))
                 .addInterceptor(HttpLoggingInterceptor { message ->
                     logWarn(message, "http_log")
@@ -38,6 +41,7 @@ object NetClient {
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .addInterceptor(ChuckInterceptor(App.mContext))
                 .addInterceptor(GatewayInterceptor("23776862", "b5ffc0cc02a74953ea9091338117feda"))
                 .addInterceptor(HttpLoggingInterceptor { message ->
                     logWarn(message, "http_log")

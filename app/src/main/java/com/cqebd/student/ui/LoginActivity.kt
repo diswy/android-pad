@@ -2,11 +2,11 @@ package com.cqebd.student.ui
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.text.InputFilter
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.net.NetClient
+import com.cqebd.student.tools.savePassword
 import com.cqebd.student.tools.toastError
 import com.cqebd.student.tools.versionName
 import com.cqebd.student.widget.LoadingDialog
@@ -47,6 +47,7 @@ class LoginActivity : BaseActivity() {
                         loadingDialog.dismiss()
                         if (it?.isSuccessful() == true) {
                             it.body?.save()
+                            savePassword(edit_pwd.text.toString())
                             startActivity<MainActivity>()
                             finish()
                         } else {

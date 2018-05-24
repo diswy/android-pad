@@ -3,6 +3,7 @@ package com.cqebd.student
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,9 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.event.*
+import com.cqebd.student.netease.NetEaseCache
+import com.cqebd.student.tools.*
+import com.cqebd.student.tools.string.MD5
 import com.cqebd.student.ui.HomeFragment
 import com.cqebd.student.ui.MineFragment
 import com.cqebd.student.ui.VideoFragment
@@ -18,6 +22,13 @@ import com.cqebd.student.ui.WorkFragment
 import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.ui.root.RootVideoFragment
 import com.cqebd.student.vo.entity.FilterData
+import com.cqebd.student.vo.entity.UserAccount
+import com.netease.nimlib.sdk.AbortableFuture
+import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.RequestCallback
+import com.netease.nimlib.sdk.auth.AuthService
+import com.netease.nimlib.sdk.auth.LoginInfo
+import com.orhanobut.logger.Logger
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import gorden.rxbus.RxBus
@@ -33,6 +44,7 @@ class MainActivity : BaseActivity() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         RxBus.get().register(this)
+        loginNetease()
         initDrawerView()
 
         val titles = resources.getStringArray(R.array.title)
@@ -333,6 +345,44 @@ class MainActivity : BaseActivity() {
                     subscribe_layout.visibility = View.VISIBLE
                     time_layout.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    private var loginRequest: AbortableFuture<LoginInfo>? = null
+    private fun loginNetease() {
+        if (isNeteaseLogin()){
+            NetEaseCache.setAccount(getNeteaseLoginInfo()?.account)
+            return
+        }
+
+        UserAccount.load()?.let {
+            if (!TextUtils.isEmpty(password) && isLogin()) {
+                val mAccount = "student_${it.ID}"
+                val token = MD5.getStringMD5(password)
+                loginRequest = NIMClient.getService(AuthService::class.java).login(LoginInfo(mAccount, token))
+                loginRequest?.setCallback(object : RequestCallback<LoginInfo> {
+                    override fun onSuccess(param: LoginInfo) {
+                        Logger.d("account = ${param.account} ; psd = ${param.token} ; appKey = ${param.appKey} ")
+                        loginRequest = null
+                        NetEaseCache.setContext(this@MainActivity)
+                        NetEaseCache.setAccount(mAccount)
+
+                        saveNetease(mAccount, token)
+                    }
+
+                    override fun onFailed(code: Int) {
+                        if (code == 302 || code == 404) {
+                            Logger.e("账号或密码错误")
+                        } else {
+                            Logger.e("登录失败: $code")
+                        }
+                    }
+
+                    override fun onException(exception: Throwable) {
+                        Logger.e("网易云信", exception)
+                    }
+                })
             }
         }
     }

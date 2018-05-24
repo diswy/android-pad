@@ -170,9 +170,8 @@
     <FrameLayout
         android:id="@+id/full_screen_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:visibility="gone">
+        android:layout_height="300dp"
+        android:background="@color/colorPrimary">
 
         <FrameLayout
             android:id="@+id/full_screen_view"
@@ -187,8 +186,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="7dp"
-            android:background="@drawable/ic_cancel_full_screen"
-            android:visibility="gone" />
+            android:background="@drawable/ic_cancel_full_screen" />
     </FrameLayout>
 
 </FrameLayout>
