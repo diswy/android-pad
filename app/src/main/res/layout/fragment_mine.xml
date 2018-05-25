@@ -215,6 +215,12 @@
                 android:layout_height="wrap_content"
                 android:text="聊天室ID：25154773" />
 
+            <Button
+                android:text="互动白板ID：IWBRoomName_49"
+                android:id="@+id/btn_rts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </ScrollView>

@@ -15,6 +15,7 @@ import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.live.VideoLiveActivity
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.test.TestChatRoomActivity
 import com.cqebd.student.test.TestNetEaseActivity
@@ -106,6 +107,9 @@ class MineFragment : BaseFragment() {
         }
         btn_test_chat.setOnClickListener {
             TestChatRoomActivity.start(activity,"25154773",false)
+        }
+        btn_rts.setOnClickListener {
+            startActivity<VideoLiveActivity>()
         }
 
     }

@@ -170,6 +170,7 @@
     <FrameLayout
         android:id="@+id/full_screen_layout"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="300dp"
         android:background="@color/colorPrimary">
 

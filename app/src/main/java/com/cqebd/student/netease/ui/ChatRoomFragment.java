@@ -352,7 +352,8 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
         } else {
             AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.AUDIENCE);
         }
-        AVChatManager.getInstance().joinRoom2(roomId, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+//        AVChatManager.getInstance().joinRoom2(roomId, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
+        AVChatManager.getInstance().joinRoom2("VchatRoomName_49", AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
             @Override
             public void onSuccess(AVChatData avChatData) {
                 Logger.d("join channel success, extra:" + avChatData.getExtra());

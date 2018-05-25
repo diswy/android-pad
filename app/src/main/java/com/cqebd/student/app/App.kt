@@ -14,7 +14,6 @@ import com.cqebd.student.netease.helper.ChatRoomHelper
 import com.cqebd.student.netease.modle.custom.CustomAttachParser
 import com.cqebd.student.tools.getNeteaseLoginInfo
 import com.cqebd.student.tools.getValue
-import com.cqebd.student.ui.StartActivity
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
@@ -97,7 +96,7 @@ class App : Application() {
 
         // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
         val config = StatusBarNotificationConfig()
-        config.notificationEntrance = StartActivity::class.java // 点击通知栏跳转到该Activity
+//        config.notificationEntrance = StartActivity::class.java // 点击通知栏跳转到该Activity
         config.notificationSmallIconId = R.mipmap.ic_launcher
         // 呼吸灯配置
         config.ledARGB = Color.GREEN

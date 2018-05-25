@@ -41,9 +41,9 @@
         <!-- <meta-data -->
         <!-- android:name="com.netease.nim.appKey" -->
         <!-- android:value="5da8d352cb58fe86adc5b2b16e313c1c" /> -->
-        <!--<meta-data-->
-            <!--android:name="com.netease.nim.appKey"-->
-            <!--android:value="1ee5a51b7d008254cd73b1d4369a9494" />-->
+        <!-- <meta-data -->
+        <!-- android:name="com.netease.nim.appKey" -->
+        <!-- android:value="1ee5a51b7d008254cd73b1d4369a9494" /> -->
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="5da8d352cb58fe86adc5b2b16e313c1c" />
@@ -112,9 +112,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.VideoActivity"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|keyboard"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.AnswerActivity"
             android:screenOrientation="portrait" />
@@ -150,6 +150,7 @@
             android:name=".ui.LiveVideoActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTask" />
+        <activity android:name=".live.VideoLiveActivity"></activity>
     </application>
 
 </manifest>

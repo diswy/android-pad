@@ -105,7 +105,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
         registerObservers(false);
         if (!TextUtils.isEmpty(sessionName)) {
             Logger.i("unregister rts observers");
-            registerRTSObservers(sessionName, false);
+//            registerRTSObservers(sessionName, false);
+            registerRTSObservers("IWBRoomName_49", false);
         }
 
         if (fragment != null) {
@@ -235,7 +236,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
                 initChatRoomFragment(roomInfo.getName());
                 initRTSFragment(roomInfo);
                 initRTSSession();
-                registerRTSObservers(roomInfo.getRoomId(), true);
+//                registerRTSObservers(roomInfo.getRoomId(), true);
+                registerRTSObservers("IWBRoomName_49", true);
             }
 
             @Override
@@ -301,7 +303,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
     private void initRTSFragment(final ChatRoomInfo roomInfo) {
         rtsFragment = (ChatRoomRTSFragment) getSupportFragmentManager().findFragmentById(R.id.chat_room_rts_fragment);
         if (rtsFragment != null) {
-            rtsFragment.initRTSView(roomInfo.getRoomId(), roomInfo);
+//            rtsFragment.initRTSView(roomInfo.getRoomId(), roomInfo);
+            rtsFragment.initRTSView("IWBRoomName_49", roomInfo);
         } else {
             getHandler().postDelayed(() -> initRTSFragment(roomInfo), 50);
         }
@@ -385,14 +388,15 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
             }
         });
 
-        sessionId = roomInfo.getRoomId();
+//        sessionId = roomInfo.getRoomId();
+        sessionId = "IWBRoomName_49";
     }
 
     private void registerRTSObservers(String sessionName, boolean register) {
         this.sessionName = sessionName;
         RTSManager2.getInstance().observeChannelState(sessionName, channelStateObserver, register);
-//        RTSManager2.getInstance().observeReceiveData(sessionName, receiveDataObserver, register);
-        RTSManager2.getInstance().observeReceiveData("IWBRoomName_49", receiveDataObserver, register);
+        RTSManager2.getInstance().observeReceiveData(sessionName, receiveDataObserver, register);
+//        RTSManager2.getInstance().observeReceiveData("IWBRoomName_49", receiveDataObserver, register);
     }
 
     private void endSession() {
@@ -506,7 +510,8 @@ public class ChatRoomActivity extends TActivity implements VideoListener {
                 e.printStackTrace();
             }
 
-            TransactionCenter.getInstance().onReceive(sessionId, rtsTunData.getAccount(), data);
+//            TransactionCenter.getInstance().onReceive(sessionId, rtsTunData.getAccount(), data);
+            TransactionCenter.getInstance().onReceive("IWBRoomName_49", rtsTunData.getAccount(), data);
         }
     };
 

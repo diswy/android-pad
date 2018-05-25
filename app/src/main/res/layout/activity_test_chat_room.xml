@@ -31,6 +31,16 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_send_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/test_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <!--<LinearLayout-->
         <!--android:id="@+id/messageActivityBottomLayout"-->
         <!--android:layout_width="match_parent"-->
