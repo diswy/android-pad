@@ -10,6 +10,18 @@
     <FrameLayout
         android:id="@+id/mRtsContainer"
         android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/mLiveIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite" />
+
+    <com.cqebd.student.netease.wedigt.NonScrollViewPager
+        android:id="@+id/mNonScrollVp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </LinearLayout>
