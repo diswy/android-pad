@@ -87,7 +87,6 @@ public class TestChatRoomActivity extends AppCompatActivity {
         btn.setOnClickListener(v -> {
             // 创建聊天室文本消息
             ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(roomId, et.getText().toString());
-
             // 将文本消息发送出去
             NIMClient.getService(ChatRoomService.class).sendMessage(message, false)
                     .setCallback(new RequestCallback<Void>() {
@@ -114,8 +113,7 @@ public class TestChatRoomActivity extends AppCompatActivity {
         });
 
 
-        NIMClient.getService(ChatRoomServiceObserver.class)
-                .observeReceiveMessage(incomingChatRoomMsg, true);
+        NIMClient.getService(ChatRoomServiceObserver.class).observeReceiveMessage(incomingChatRoomMsg, true);
 
 
         // 监听消息状态变化
@@ -134,7 +132,6 @@ public class TestChatRoomActivity extends AppCompatActivity {
             // 1、根据sessionId判断是否是自己的消息
             // 2、更改内存中消息的状态
             // 3、刷新界面
-
             com.cqebd.student.tools.Toast.show("回调成功");
             if (msg.getAttachment() instanceof ImageAttachment) {
 
@@ -348,8 +345,6 @@ public class TestChatRoomActivity extends AppCompatActivity {
 //                    ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(roomId, et.getText().toString());
                     Logger.d(pathList.get(0));
                     ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomImageMessage(roomId, new File(pathList.get(0)), "pic");
-
-                    // 将文本消息发送出去
                     NIMClient.getService(ChatRoomService.class).sendMessage(message, false)
                             .setCallback(new RequestCallback<Void>() {
                                 @Override
@@ -390,13 +385,7 @@ public class TestChatRoomActivity extends AppCompatActivity {
 
     // 下载之前判断一下是否已经下载。若重复下载，会报错误码414。（以SnapChatAttachment为例）
     private boolean isOriginImageHasDownloaded(final IMMessage message) {
-        if (message instanceof ImageAttachment) {
-            if (message.getAttachStatus() == AttachStatusEnum.transferred &&
-                    !TextUtils.isEmpty(((ImageAttachment) message.getAttachment()).getPath())) {
-                return true;
-            }
-        }
-        return false;
+        return message instanceof ImageAttachment && message.getAttachStatus() == AttachStatusEnum.transferred && !TextUtils.isEmpty(((ImageAttachment) message.getAttachment()).getPath());
     }
 
 }

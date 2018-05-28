@@ -21,7 +21,6 @@ class VideoLiveActivity : BaseActivity() {
     override fun initialize(savedInstanceState: Bundle?) {
         supportFragmentManager.beginTransaction().add(R.id.mRtsContainer, LiveRtsFragment()).commit()
         initView()
-
     }
 
     private fun initView() {
@@ -34,7 +33,7 @@ class VideoLiveActivity : BaseActivity() {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> BlankFragment()
-                    1 -> BlankFragment()
+                    1 -> ChatRoomFragment()
                     else -> BlankFragment()
                 }
             }
