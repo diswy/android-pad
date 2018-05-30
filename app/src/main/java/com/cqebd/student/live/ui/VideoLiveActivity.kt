@@ -1,4 +1,4 @@
-package com.cqebd.student.live
+package com.cqebd.student.live.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
+import com.cqebd.student.live.helper.MsgManager
 import com.cqebd.student.test.BlankFragment
 import kotlinx.android.synthetic.main.activity_video_live.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -21,6 +22,14 @@ class VideoLiveActivity : BaseActivity() {
     override fun initialize(savedInstanceState: Bundle?) {
         supportFragmentManager.beginTransaction().add(R.id.mRtsContainer, LiveRtsFragment()).commit()
         initView()
+
+    }
+
+    override fun bindEvents() {
+        mLiveToolbar.setNavigationOnClickListener { finish() }
+        mTestNotification.setOnClickListener {
+            MsgManager.instance().sendP2PCustomNotification("Teacher_499")
+        }
     }
 
     private fun initView() {

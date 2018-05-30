@@ -5,7 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".live.VideoLiveActivity">
+    tools:context=".live.ui.VideoLiveActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mLiveToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/ic_back">
+
+        <TextView
+            android:id="@+id/mLiveToolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            tools:text="云课堂" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:text="Notification"
+        android:id="@+id/mTestNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/mRtsContainer"

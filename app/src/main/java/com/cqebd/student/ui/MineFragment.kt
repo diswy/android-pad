@@ -15,11 +15,10 @@ import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.live.VideoLiveActivity
+import com.cqebd.student.live.ui.VideoLiveActivity
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.test.TestChatRoomActivity
 import com.cqebd.student.test.TestNetEaseActivity
-import com.cqebd.student.test.TestTablayout
 import com.cqebd.student.tools.*
 import com.cqebd.student.viewmodel.MineViewModel
 import com.cqebd.student.vo.entity.UserAccount
@@ -92,6 +91,10 @@ class MineFragment : BaseFragment() {
 
         item_my_share.setOnClickListener {
             startActivity<BeSharedActivity>()
+        }
+
+        item_settings.setOnClickListener {
+            startActivity<SettingActivity>()
         }
 
         item_exit.setOnClickListener {

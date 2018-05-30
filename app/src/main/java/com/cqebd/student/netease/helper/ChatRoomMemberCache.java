@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cqebd.student.netease.modle.MeetingOptCommand;
-import com.cqebd.student.netease.modle.custom.PermissionAttachment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
@@ -482,22 +481,22 @@ public class ChatRoomMemberCache {
 
     // 收到/发送成员权限缓存
     private boolean sendReceiveMemPermissions(IMMessage message) {
-        if (message.getAttachment() != null
-                && message.getAttachment() instanceof PermissionAttachment) {
-            Logger.d(TAG, "receive permission msg, return true");
-            PermissionAttachment attachment = (PermissionAttachment) message.getAttachment();
-            if (attachment.getMeetingOptCommand() == MeetingOptCommand.ALL_STATUS) {
-                for (MeetingControlObserver observer : meetingControlObservers) {
-                    observer.onStatusNotify(attachment.getRoomId(), attachment.getAccounts());
-                }
-            } else if (attachment.getMeetingOptCommand() == MeetingOptCommand.GET_STATUS) {
-                // 收到请求有权限的成员列表，如果自己有音视频权限，则发送消息告知对方
-                for (MeetingControlObserver observer : meetingControlObservers) {
-                    observer.onSendMyPermission(attachment.getRoomId(), message.getFromAccount());
-                }
-            }
-            return true;
-        }
+//        if (message.getAttachment() != null
+//                && message.getAttachment() instanceof PermissionAttachment) {
+//            Logger.d(TAG, "receive permission msg, return true");
+//            PermissionAttachment attachment = (PermissionAttachment) message.getAttachment();
+//            if (attachment.getMeetingOptCommand() == MeetingOptCommand.ALL_STATUS) {
+//                for (MeetingControlObserver observer : meetingControlObservers) {
+//                    observer.onStatusNotify(attachment.getRoomId(), attachment.getAccounts());
+//                }
+//            } else if (attachment.getMeetingOptCommand() == MeetingOptCommand.GET_STATUS) {
+//                // 收到请求有权限的成员列表，如果自己有音视频权限，则发送消息告知对方
+//                for (MeetingControlObserver observer : meetingControlObservers) {
+//                    observer.onSendMyPermission(attachment.getRoomId(), message.getFromAccount());
+//                }
+//            }
+//            return true;
+//        }
         return false;
     }
 
@@ -587,7 +586,7 @@ public class ChatRoomMemberCache {
         saveMember(member);
     }
 
-    private Observer<CustomNotification> customNotification = new Observer<CustomNotification>() {
+        private Observer<CustomNotification> customNotification = new Observer<CustomNotification>() {
         @Override
         public void onEvent(CustomNotification customNotification) {
             String content = customNotification.getContent();

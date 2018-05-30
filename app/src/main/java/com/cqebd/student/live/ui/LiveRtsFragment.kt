@@ -1,31 +1,31 @@
-package com.cqebd.student.live
+package com.cqebd.student.live.ui
 
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.netease.NetEaseCache
+import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.live.custom.DocAttachment
 import com.cqebd.student.netease.doodle.*
 import com.cqebd.student.netease.doodle.action.MyPath
-import com.cqebd.student.netease.helper.ChatRoomMemberCache
-import com.cqebd.student.netease.modle.Document
-import com.cqebd.student.netease.modle.FileDownloadStatusEnum
 import com.cqebd.student.netease.util.ScreenUtil
+import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
-import com.netease.nimlib.sdk.RequestCallback
-import com.netease.nimlib.sdk.document.DocumentManager
-import com.netease.nimlib.sdk.document.model.DMData
+import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.rts.RTSCallback
 import com.netease.nimlib.sdk.rts.RTSManager2
 import com.netease.nimlib.sdk.rts.model.RTSData
@@ -33,7 +33,6 @@ import com.netease.nimlib.sdk.rts.model.RTSTunData
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_live_rts.*
 import java.io.UnsupportedEncodingException
-import java.util.HashMap
 
 
 /**
@@ -52,41 +51,6 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
         if (transaction == null) {
             return
         }
-
-//        activity!!.runOnUiThread { showLoadingText() }
-//
-//        // 文档第0页，表示退出文档分享
-//        if (transaction.currentPageNum == 0) {
-//            isFileMode = false
-//            closeFileShare()
-//            hideLoadingText()
-//            return
-//        }
-//        // 如果文档信息已经下载过了，就不用载了。直接去载翻页图片
-//        isFileMode = true
-//
-//        if (docData != null && docData.getDocId() == transaction.docId) {
-//            doDownloadPage(document, transaction.currentPageNum)
-//            return
-//        }
-//        Logger.i(TAG, "doc id:" + transaction.docId)
-//        DocumentManager.getInstance().querySingleDocumentData(transaction.docId, object : RequestCallback<DMData> {
-//            override fun onSuccess(dmData: DMData) {
-//                Logger.i(TAG, "query doc success")
-//                docData = dmData
-//                document = Document(dmData, HashMap(), FileDownloadStatusEnum.NotDownload)
-//                doDownloadPage(document, transaction.currentPageNum)
-//            }
-//
-//            override fun onFailed(i: Int) {
-//                Logger.i(TAG, "query doc failed, code:$i")
-//                showRetryLoadingText()
-//            }
-//
-//            override fun onException(throwable: Throwable) {
-//                Logger.i(TAG, "query doc exception:" + throwable.toString())
-//            }
-//        })
     }
 
     override fun onNetWorkChange(isCreator: Boolean): Boolean {
@@ -112,16 +76,10 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
         RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
             override fun onSuccess(rtsData: RTSData) {
                 Logger.i("rts extra:" + rtsData.extra)
-                // 主播的白板默认为开启状态
-//                if (roomInfo.getCreator() == NetEaseCache.getAccount()) {
-//                    ChatRoomMemberCache.getInstance().isRTSOpen = true
-//                    updateRTSFragment()
-//                }
                 Toast.makeText(activity, "加入多人白板房间成功", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailed(i: Int) {
-                Logger.d("join rts session failed, code:$i")
                 Toast.makeText(activity, "join rts session failed, code:$i", Toast.LENGTH_SHORT).show()
             }
 
@@ -131,10 +89,14 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
         })
 
 
-        RTSManager2.getInstance().observeReceiveData(mSessionId, receiveDataObserver, true)
-
         initDoodleView(null)
         registerObservers(true)
+    }
+
+    //-------------------监听-------------------
+    private fun registerObserver(register: Boolean) {
+        RTSManager2.getInstance().observeReceiveData(mSessionId, receiveDataObserver, register)
+
     }
 
     /**
@@ -167,6 +129,7 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
 
 
     private fun registerObservers(register: Boolean) {
+        NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
 //        ChatRoomMemberCache.getInstance().registerMeetingControlObserver(meetingControlObserver, register)
         TransactionCenter.getInstance().registerOnlineStatusObserver(mSessionId, this)
     }
@@ -182,13 +145,11 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
 //        }
 
         mDoodleView.init(mSessionId, account, DoodleView.Mode.BOTH, Color.WHITE, Color.RED, context, this)
-
-
         mDoodleView.setPaintSize(3)
         mDoodleView.setPaintType(ActionTypeEnum.Path.value)
 
         // adjust paint offset
-        Handler(getMainLooper()).postDelayed(Runnable {
+        Handler(getMainLooper()).postDelayed({
             val frame = Rect()
             activity!!.window.decorView.getWindowVisibleDisplayFrame(frame)
             val statusBarHeight = frame.top
@@ -208,5 +169,32 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
         }, 50)
     }
 
+
+    private val incomingChatRoomMsg: Observer<List<ChatRoomMessage>> = Observer { messages ->
+        val mMsgSingle = messages[messages.size - 1]
+        when (mMsgSingle.msgType) {
+            MsgTypeEnum.custom -> {
+                if (mMsgSingle.attachment is DocAttachment) {
+                    val attachment = mMsgSingle.attachment as DocAttachment
+                    Logger.d(attachment.mPPTAddress)
+                    GlideApp.with(this@LiveRtsFragment)
+                            .load(attachment.mPPTAddress)
+                            .into(mPPT)
+
+                    GlideApp.with(this@LiveRtsFragment)
+                            .asBitmap()
+                            .load(attachment.mPPTAddress)
+                            .into(object :SimpleTarget<Bitmap>(){
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    mDoodleView.setBitmap(resource)
+                                    mPPT2.setImageBitmap(resource)
+                                }
+                            })
+                }
+            }
+            else -> {
+            }
+        }
+    }
 
 }

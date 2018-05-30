@@ -2,7 +2,6 @@ package com.cqebd.student.netease.helper;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cqebd.student.netease.modle.MeetingOptCommand;
-import com.cqebd.student.netease.modle.custom.PermissionAttachment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.chatroom.ChatRoomService;
@@ -48,11 +47,11 @@ public class MsgHelper {
 
     // 群发自定义消息
     public void sendCustomMsg(String roomId, MeetingOptCommand command) {
-        PermissionAttachment attachment = new PermissionAttachment(roomId,
-                command, ChatRoomMemberCache.getInstance().getPermissionMems(roomId));
-
-        ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomCustomMessage(roomId, attachment);
-        NIMClient.getService(ChatRoomService.class).sendMessage(message, false);
+//        PermissionAttachment attachment = new PermissionAttachment(roomId,
+//                command, ChatRoomMemberCache.getInstance().getPermissionMems(roomId));
+//
+//        ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomCustomMessage(roomId, attachment);
+//        NIMClient.getService(ChatRoomService.class).sendMessage(message, false);
     }
 
     /**

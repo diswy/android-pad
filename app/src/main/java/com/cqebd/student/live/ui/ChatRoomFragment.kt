@@ -1,31 +1,41 @@
-package com.cqebd.student.live
+package com.cqebd.student.live.ui
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.live.adapter.ChatRoomMultipleAdapter
+import com.cqebd.student.live.custom.DocAttachment
+import com.cqebd.student.live.entity.ChatRoomEntity
+import com.cqebd.student.utils.KeybordS
+import com.cqebd.student.vo.entity.UserAccount
 import com.netease.nimlib.sdk.*
-import com.netease.nimlib.sdk.auth.AuthServiceObserver
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder
 import com.netease.nimlib.sdk.chatroom.ChatRoomService
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver
 import com.netease.nimlib.sdk.chatroom.model.*
-import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.MsgServiceObserve
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.orhanobut.logger.Logger
+import gorden.library.Album
 import kotlinx.android.synthetic.main.fragment_chat_room2.*
 import org.jetbrains.anko.backgroundResource
+import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
 
 
@@ -69,9 +79,55 @@ class ChatRoomFragment : BaseFragment() {
 
         mBtnSend.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                val lp = mBtnSend.layoutParams
+                lp.width = dip(60)
+                mBtnSend.layoutParams = lp
                 buttonView.backgroundResource = R.color.color_schedule
             } else {
+                val lp = mBtnSend.layoutParams
+                lp.width = dip(38)
+                mBtnSend.layoutParams = lp
                 buttonView.backgroundResource = R.color.color_price
+            }
+        }
+
+        mBtnSend.setOnClickListener {
+            if (mBtnSend.isChecked) {// 发送图片
+                Album.create().single().start(this, Album.REQUEST_CODE)
+            } else {// 发送文本
+                sendTextMsg(mChatRoomEdit.text.toString().trim())
+                mChatRoomEdit.setText("")
+                KeybordS.closeKeybord(mChatRoomEdit, context)
+            }
+
+            mBtnSend.isChecked = mChatRoomEdit.text.toString().trim().isNotEmpty()
+        }
+
+        mChatRoomEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                mBtnSend.isChecked = s.toString().trim().isNotEmpty()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                Album.REQUEST_CODE -> {
+                    val pathList = data?.getStringArrayListExtra(Album.KEY_IMAGES)
+                    pathList?.let {
+                        compressImage(it[0])
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, it[0], true))
+                        mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+                    }
+                }
             }
         }
     }
@@ -143,10 +199,46 @@ class ChatRoomFragment : BaseFragment() {
 
     private val incomingChatRoomMsg: Observer<List<ChatRoomMessage>> = Observer { messages ->
         val mMsgSingle = messages[messages.size - 1]
-        if (mMsgSingle.msgType == MsgTypeEnum.text) {
-            mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, messages[messages.size - 1].content))
-            mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+        Logger.d(mMsgSingle)
+        when (mMsgSingle.msgType) {
+            MsgTypeEnum.text -> {// 处理文本消息
+                if (mMsgSingle.remoteExtension !== null
+                        && mMsgSingle.remoteExtension["avatar"] != null
+                        && mMsgSingle.remoteExtension["avatar"] is String) {
+                    val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
+                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, mAvatar))
+                } else {
+                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content))
+                }
+            }
+            MsgTypeEnum.image -> {// 处理图片
+                if (mMsgSingle.remoteExtension !== null
+                        && mMsgSingle.remoteExtension["avatar"] != null
+                        && mMsgSingle.remoteExtension["avatar"] is String) {
+                    val imgSrc = (mMsgSingle.attachment as ImageAttachment).thumbUrl
+                    if (mMsgSingle.remoteExtension["avatar"] != null
+                            && mMsgSingle.remoteExtension["avatar"] is String) {
+                        val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, mAvatar))
+                    } else {
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc))
+                    }
+                }
+            }
+            MsgTypeEnum.notification -> {
+
+            }
+
+            MsgTypeEnum.custom -> {
+                if (mMsgSingle.attachment is DocAttachment){
+                    val attachment = mMsgSingle.attachment as DocAttachment
+                    Logger.d(attachment.mPPTAddress)
+                }
+            }
+            else -> {
+            }
         }
+        mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
     }
 
     private val statusObserver = Observer<IMMessage> { msg ->
@@ -161,29 +253,29 @@ class ChatRoomFragment : BaseFragment() {
             Logger.d((msg.attachment as ImageAttachment).path)
         } else {
             Logger.d("这不属于图片")
-//            var ss = tv.getText().toString()
-//            ss = ss + "\n" + msg.content
-//            tv.setText(ss)
         }
     }
 
     // 创建聊天室文本消息并发送
     private fun sendTextMsg(content: String) {
         val message = ChatRoomMessageBuilder.createChatRoomTextMessage(roomId, content)
+        val mExtensionMap = HashMap<String, Any>()
+        mExtensionMap["avatar"] = UserAccount.load()?.Avatar ?: ""
+        message.remoteExtension = mExtensionMap
         NIMClient.getService(ChatRoomService::class.java).sendMessage(message, false)
                 .setCallback(object : RequestCallback<Void> {
-                    override fun onSuccess(param: Void) {
+                    override fun onSuccess(param: Void?) {
                         Logger.e("onTextSuccess")
                         mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, content, true))
-                        mChatRoomRv.scrollToPosition(mAdapter.data.size)
+                        mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
                     }
 
                     override fun onFailed(code: Int) {
                         Logger.e("onTextFailed")
                     }
 
-                    override fun onException(exception: Throwable) {
-                        Logger.e("onTextException:${exception.message}")
+                    override fun onException(exception: Throwable?) {
+                        Logger.e("onTextException:${exception?.message}")
                     }
                 })
     }
@@ -195,9 +287,12 @@ class ChatRoomFragment : BaseFragment() {
      */
     private fun sendImgMsg(file: File) {
         val message = ChatRoomMessageBuilder.createChatRoomImageMessage(roomId, file, file.name)
+        val mExtensionMap = HashMap<String, Any>()
+        mExtensionMap["avatar"] = UserAccount.load()?.Avatar ?: ""
+        message.remoteExtension = mExtensionMap
         NIMClient.getService(ChatRoomService::class.java).sendMessage(message, false)
                 .setCallback(object : RequestCallback<Void> {
-                    override fun onSuccess(param: Void) {
+                    override fun onSuccess(param: Void?) {
                         Logger.e("onSuccess Pic")
                     }
 
@@ -205,15 +300,57 @@ class ChatRoomFragment : BaseFragment() {
                         Logger.e("onFailed Pic")
                     }
 
-                    override fun onException(exception: Throwable) {
-                        Logger.e("onException Pic:${exception.message}")
+                    override fun onException(exception: Throwable?) {
+                        Logger.e("onException Pic:${exception?.message}")
                     }
                 })
+    }
+
+    /**
+     * 压缩图片
+     */
+    private fun compressImage(path: String) {
+        Luban.with(context)
+                .load(path)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .filter {
+                    return@filter !(TextUtils.isEmpty(it) || it.toLowerCase().endsWith(".gif"))
+                }
+                .setCompressListener(object : OnCompressListener {
+                    override fun onSuccess(file: File?) {
+                        file?.let {
+                            sendImgMsg(it)
+                        }
+                        if (file == null) {
+                            toast("图片发送失败，请重新尝试")
+                        }
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        toast("图片发送失败，请重新尝试")
+                        Logger.e("${e?.message}")
+                    }
+
+                    override fun onStart() {
+                    }
+                })
+                .launch()
+    }
+
+    private fun getPath(): String {
+        val path = "${Environment.getExternalStorageDirectory()}/cqebd/image/"
+        val file = File(path)
+        if (file.mkdirs()) {
+            return path
+        }
+        return path
     }
 
     // 下载之前判断一下是否已经下载。若重复下载，会报错误码414。（以SnapChatAttachment为例）
     private fun isOriginImageHasDownloaded(message: IMMessage) = message is ImageAttachment
             && message.attachStatus == AttachStatusEnum.transferred
             && !TextUtils.isEmpty((message.attachment as ImageAttachment).path)
+
 
 }

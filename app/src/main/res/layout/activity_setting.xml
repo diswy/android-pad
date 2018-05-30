@@ -63,4 +63,11 @@
         android:text="关于"
         android:textColor="@color/color_mine_item" />
 
+    <Space
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+
+
 </LinearLayout>

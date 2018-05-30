@@ -150,7 +150,7 @@
             android:name=".ui.LiveVideoActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTask" />
-        <activity android:name=".live.VideoLiveActivity"></activity>
+        <activity android:name=".live.ui.VideoLiveActivity"></activity>
     </application>
 
 </manifest>

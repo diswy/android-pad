@@ -1,4 +1,4 @@
-package com.cqebd.student.live
+package com.cqebd.student.live.entity
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
@@ -16,11 +16,26 @@ class ChatRoomEntity : MultiItemEntity {
 
     var content: String = ""
     var imgSrc: String = ""
+    var avatar: String = ""
     var isMyself = false
 
-    constructor(mType: Int, mContent: String, isMyself:Boolean = false) {
+    constructor(mType: Int, mContent: String, isMyself: Boolean = false) {
         this.itemType = mType
         this.isMyself = isMyself
+        when (itemType) {
+            TEXT -> {
+                this.content = mContent
+            }
+            IMG -> {
+                this.imgSrc = mContent
+            }
+        }
+    }
+
+    constructor(mType: Int, mContent: String, avatar: String, isMyself: Boolean = false) {
+        this.itemType = mType
+        this.isMyself = isMyself
+        this.avatar = avatar
         when (itemType) {
             TEXT -> {
                 this.content = mContent
