@@ -14,7 +14,7 @@ import com.cqebd.student.R
  *
  */
 abstract class BaseLazyFragment : Fragment() {
-    private lateinit var mViewContent: View
+    protected lateinit var mViewContent: View
     open var mIsVisible: Boolean = false
     open var mIsInit: Boolean = false// 是否初始化了界面
     private var mVisible:Boolean = false

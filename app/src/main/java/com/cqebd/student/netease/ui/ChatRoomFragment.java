@@ -41,6 +41,7 @@ import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole;
+import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
 import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatCameraCapturer;
@@ -138,6 +139,11 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
 //            }
 //        }, 5000);
 //        requestLivePermission();
+
+//        chooseSpeechType();
+
+        onVideoOn("sss");
+
     }
 
     @Override
@@ -350,7 +356,25 @@ public class ChatRoomFragment extends TFragment implements AVChatStateObserverLi
             AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.NORMAL);
             ChatRoomMemberCache.getInstance().savePermissionMemberbyId(roomId, roomInfo.getCreator());
         } else {
-            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.AUDIENCE);
+//            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.AUDIENCE);
+
+            AVChatSurfaceViewRenderer render = new AVChatSurfaceViewRenderer(getActivity());
+
+            AVChatManager.getInstance().setupLocalVideoRender(render, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED);
+            AVChatManager.getInstance().startVideoPreview();
+            AVChatParameters parameters = new AVChatParameters();
+            parameters.setBoolean(AVChatParameters.KEY_SESSION_LIVE_MODE, true);
+            parameters.setInteger(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.NORMAL);
+            parameters.setInteger(AVChatParameters.KEY_VIDEO_FIXED_CROP_RATIO, AVChatVideoCropRatio.CROP_RATIO_16_9);
+            AVChatManager.getInstance().setParameters(parameters);
+
+//            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.NORMAL);
+//            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_LIVE_MODE,AVChatUserRole.NORMAL);
+//            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_LIVE_MODE, AVChatUserRole.AUDIENCE);
+
+
+            addIntoPreviewLayout(render,viewLayouts[0]);
+
         }
 //        AVChatManager.getInstance().joinRoom2(roomId, AVChatType.VIDEO, new AVChatCallback<AVChatData>() {
         AVChatManager.getInstance().joinRoom2("VchatRoomName_49", AVChatType.VIDEO, new AVChatCallback<AVChatData>() {

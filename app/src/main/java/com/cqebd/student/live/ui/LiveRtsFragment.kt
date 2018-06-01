@@ -32,6 +32,7 @@ import com.netease.nimlib.sdk.rts.model.RTSData
 import com.netease.nimlib.sdk.rts.model.RTSTunData
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_live_rts.*
+import org.jetbrains.anko.support.v4.dip
 import java.io.UnsupportedEncodingException
 
 
@@ -91,6 +92,7 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
 
         initDoodleView(null)
         registerObservers(true)
+        registerObserver(true)
     }
 
     //-------------------监听-------------------
@@ -122,10 +124,18 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
     }
 
     override fun onDestroy() {
-        mDoodleView?.end()
         registerObservers(false)
         super.onDestroy()
     }
+
+    fun clearDoodleView() {
+        Logger.e("clear!!!!!")
+        mDoodleView?.end()
+    }
+//    override fun onDestroyView() {
+//        mDoodleView?.end()
+//        super.onDestroyView()
+//    }
 
 
     private fun registerObservers(register: Boolean) {
@@ -144,7 +154,7 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
 //            doodleView.init(sessionId, account, DoodleView.Mode.BOTH, Color.WHITE, colorMap.get(R.id.blue_color_image), context, this)
 //        }
 
-        mDoodleView.init(mSessionId, account, DoodleView.Mode.BOTH, Color.WHITE, Color.RED, context, this)
+        mDoodleView.init(mSessionId, account, DoodleView.Mode.BOTH, Color.WHITE, Color.BLACK, context, this)
         mDoodleView.setPaintSize(3)
         mDoodleView.setPaintType(ActionTypeEnum.Path.value)
 
@@ -162,10 +172,8 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
             Log.i("Doodle", "doodleView marginLeft =$marginLeft")
 
             val offsetX = marginLeft.toFloat()
-            val offsetY = (statusBarHeight + marginTop + ScreenUtil.dip2px(220f) + ScreenUtil.dip2px(40f)).toFloat()
-
-            mDoodleView.setPaintOffset(offsetX, offsetY)
-            Log.i("Doodle", "client1 offsetX = $offsetX, offsetY = $offsetY")
+            val offsetY = statusBarHeight + dip(265)
+            mDoodleView.setPaintOffset(offsetX, offsetY.toFloat())
         }, 50)
     }
 
@@ -176,18 +184,13 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
             MsgTypeEnum.custom -> {
                 if (mMsgSingle.attachment is DocAttachment) {
                     val attachment = mMsgSingle.attachment as DocAttachment
-                    Logger.d(attachment.mPPTAddress)
-                    GlideApp.with(this@LiveRtsFragment)
-                            .load(attachment.mPPTAddress)
-                            .into(mPPT)
 
                     GlideApp.with(this@LiveRtsFragment)
                             .asBitmap()
                             .load(attachment.mPPTAddress)
-                            .into(object :SimpleTarget<Bitmap>(){
+                            .into(object : SimpleTarget<Bitmap>() {
                                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                    mDoodleView.setBitmap(resource)
-                                    mPPT2.setImageBitmap(resource)
+                                    mDoodleView.setImageView(resource)
                                 }
                             })
                 }

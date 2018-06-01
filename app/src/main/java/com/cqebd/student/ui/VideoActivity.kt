@@ -9,6 +9,7 @@ import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.live.ui.ChatRoomFragment
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
@@ -25,13 +26,14 @@ import kotlinx.android.synthetic.main.activity_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 描述
  * Created by gorden on 2018/3/15.
  */
 class VideoActivity : BaseActivity() {
-    private val titles = listOf("课时", "详细", "评价")
+    private val titles: ArrayList<String> = arrayListOf("课时", "详细", "评价")
 
     private var status: Int = 0
     private lateinit var listData: ArrayList<PeriodInfo>
@@ -87,11 +89,17 @@ class VideoActivity : BaseActivity() {
         listData = i.getParcelableArrayListExtra("listData")
         val mCurrentPos = i.getIntExtra("pos", 0)
         status = i.getIntExtra("status", 0)
-        val isLiveMode = i.getBooleanExtra("isLiveMode", false)
+        val isLiveMode = i.getBooleanExtra("isLiveMode", false)// true 直播 false 回放
         videoView.setLiveMode(isLiveMode)
         val mId = i.getIntExtra("id", 0)
         Logger.d("status = $status ；isLiveMode = $isLiveMode")
         Logger.d(listData)
+
+        if (isLiveMode) {
+            titles[2] = "讨论"
+        } else {
+            titles[2] = "评价"
+        }
 
         // 加载视频
         loadVideo(mId)
@@ -106,13 +114,20 @@ class VideoActivity : BaseActivity() {
         val web1 = WebFragment()
         val mEvaluateFragment = VideoEvaluateFragment()
         mEvaluateFragment.arguments = mData
+        val mChatRoomFragment = ChatRoomFragment()
 
         viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> mRecommendCourseFragment
                     1 -> web1
-                    2 -> mEvaluateFragment
+                    2 -> {
+                        if (isLiveMode) {
+                            mChatRoomFragment
+                        } else {
+                            mEvaluateFragment
+                        }
+                    }
                     else -> mRecommendCourseFragment
                 }
             }

@@ -16,6 +16,7 @@ import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.live.adapter.ChatRoomMultipleAdapter
 import com.cqebd.student.live.custom.DocAttachment
 import com.cqebd.student.live.entity.ChatRoomEntity
+import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.utils.KeybordS
 import com.cqebd.student.vo.entity.UserAccount
 import com.netease.nimlib.sdk.*
@@ -43,7 +44,27 @@ import java.io.File
  * 聊天室.
  *
  */
-class ChatRoomFragment : BaseFragment() {
+class ChatRoomFragment : BaseLazyFragment() {
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_chat_room2
+    }
+
+    override fun lazyLoad() {
+        registerObservers(true)
+    }
+
+    fun onCurrentInit() {
+        parseIntent()
+        // 登录聊天室
+        enterRoom()
+        mChatRoomRv.adapter = mAdapter
+    }
+
+    override fun onInvisible() {
+        registerObservers(false)
+    }
+
     private val mAdapter = ChatRoomMultipleAdapter(null)
     /**
      * 聊天室基本信息
@@ -51,27 +72,16 @@ class ChatRoomFragment : BaseFragment() {
     private var roomId: String? = null
     private var roomInfo: ChatRoomInfo? = null
 
-    override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_chat_room2, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        onCurrentInit()
     }
 
-    override fun initialize(savedInstanceState: Bundle?) {
-        parseIntent()
-        registerObservers(true)
-        // 登录聊天室
-        enterRoom()
-        mChatRoomRv.adapter = mAdapter
-    }
-
-    override fun onDestroy() {
-        registerObservers(false)
-        super.onDestroy()
-    }
 
     override fun bindEvents() {
         mSwitchInputType.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                buttonView.backgroundResource = R.color.color_schedule
+                buttonView.backgroundResource = R.drawable.ic_chat_room_extra
             } else {
                 buttonView.backgroundResource = R.color.color_price
             }
@@ -82,12 +92,12 @@ class ChatRoomFragment : BaseFragment() {
                 val lp = mBtnSend.layoutParams
                 lp.width = dip(60)
                 mBtnSend.layoutParams = lp
-                buttonView.backgroundResource = R.color.color_schedule
+                buttonView.backgroundResource = R.color.colorPrimary
             } else {
                 val lp = mBtnSend.layoutParams
                 lp.width = dip(38)
                 mBtnSend.layoutParams = lp
-                buttonView.backgroundResource = R.color.color_price
+                buttonView.backgroundResource = R.drawable.ic_chat_room_extra
             }
         }
 
@@ -230,7 +240,7 @@ class ChatRoomFragment : BaseFragment() {
             }
 
             MsgTypeEnum.custom -> {
-                if (mMsgSingle.attachment is DocAttachment){
+                if (mMsgSingle.attachment is DocAttachment) {
                     val attachment = mMsgSingle.attachment as DocAttachment
                     Logger.d(attachment.mPPTAddress)
                 }
@@ -351,6 +361,5 @@ class ChatRoomFragment : BaseFragment() {
     private fun isOriginImageHasDownloaded(message: IMMessage) = message is ImageAttachment
             && message.attachStatus == AttachStatusEnum.transferred
             && !TextUtils.isEmpty((message.attachment as ImageAttachment).path)
-
 
 }

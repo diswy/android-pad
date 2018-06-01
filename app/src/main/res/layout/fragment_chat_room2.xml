@@ -48,7 +48,7 @@
             android:id="@+id/mBtnSend"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:background="@color/color_price"
+            android:background="@drawable/ic_chat_room_extra"
             android:textColor="@color/white"
             android:textOff=""
             android:textOn="发送" />
