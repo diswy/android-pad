@@ -20,6 +20,7 @@ import com.cqebd.student.viewmodel.ClassScheduleViewModel
 import com.cqebd.student.vo.Resource
 import com.cqebd.student.vo.entity.CourseInfo
 import com.cqebd.teacher.vo.Status
+import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -68,6 +69,7 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         adapter.bindToRecyclerView(recyclerView)
         adapter.setOnItemClickListener { adapter, _, position ->
             val itemData = adapter.data[position] as CourseInfo
+            Logger.d(Gson().toJson(itemData))
             when {
                 itemData.Status == 1 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
                 itemData.Status == 3 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status)

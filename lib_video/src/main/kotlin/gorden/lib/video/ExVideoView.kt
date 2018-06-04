@@ -263,7 +263,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         override fun onPlayerError(error: ExoPlaybackException?) {
             Toast.makeText(context, "视频播放错误", Toast.LENGTH_SHORT).show()
             error?.let {
-                Log.e("ExVideoView", it.message)
+//                Log.e("ExVideoView", it.message)
             }
             release(false)
         }

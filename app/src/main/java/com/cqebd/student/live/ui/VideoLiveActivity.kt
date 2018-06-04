@@ -7,9 +7,7 @@ import android.support.v4.view.ViewPager
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.live.helper.MsgManager
 import com.cqebd.student.test.BlankFragment
-import gorden.util.RxCounter
 import kotlinx.android.synthetic.main.activity_video_live.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator

@@ -29,5 +29,11 @@ data class PeriodInfo(
         val Snapshoot: String,
         val Status: Int,
         val Type: Int,
+        val LiveProvider: String,
+        val HasChannel: Int,
+        val HasChat: Int,
+        val HasVchat: Int,
+        val HasIWB: Int,
+        val SectionsId: Int,
         val IsFeedback: Boolean
 ) : Parcelable

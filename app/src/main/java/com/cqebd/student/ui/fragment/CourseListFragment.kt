@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.cqebd.student.R
 import com.cqebd.student.adapter.VideoCourseAdapter
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.live.ui.LiveActivity
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoActivity
 import com.cqebd.student.ui.VideoDetailsActivity
@@ -65,7 +66,11 @@ class CourseListFragment : BaseFragment() {
             val itemDataParent = adapter.data[position] as SectionPeriodInfo
             val itemData = itemDataParent.t
             when {
-                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
+            // status 0 未播 1直播中 2直播结束 3转码结束
+            // type 1 点播 2直播
+                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id,"hasChat" to itemData.HasChat,"hasIWB" to itemData.HasIWB,"hasVchat" to itemData.HasVchat)
+//                itemData.Status == 3 -> startActivity<LiveActivity>()
+//                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
                 itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
                 else -> toast("视频未准备好哦~")
             }
@@ -81,7 +86,7 @@ class CourseListFragment : BaseFragment() {
             if (item.Status == 2 || item.Status == 3)
                 ++finished
         }
-        val mProgress: Double = finished * 100.00/ totalSize
+        val mProgress: Double = finished * 100.00 / totalSize
         (activity as VideoDetailsActivity).refreshProgress(mProgress.toInt())
     }
 

@@ -95,22 +95,22 @@ public class TestNetEaseActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void get(){
-        NetClient.INSTANCE.videoService().getLive(49)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            tvGet.setText(response.body().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    }
-                });
+//        NetClient.INSTANCE.videoService().getLive(49)
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        try {
+//                            tvGet.setText(response.body().string());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                    }
+//                });
     }
 
 

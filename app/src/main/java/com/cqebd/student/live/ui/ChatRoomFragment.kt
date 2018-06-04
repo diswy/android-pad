@@ -62,6 +62,11 @@ class ChatRoomFragment : BaseLazyFragment() {
     }
 
     override fun onInvisible() {
+//        registerObservers(false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         registerObservers(false)
     }
 
@@ -69,7 +74,7 @@ class ChatRoomFragment : BaseLazyFragment() {
     /**
      * 聊天室基本信息
      */
-    private var roomId: String? = null
+    var roomId: String? = null
     private var roomInfo: ChatRoomInfo? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -143,13 +148,18 @@ class ChatRoomFragment : BaseLazyFragment() {
     }
 
     private fun parseIntent() {
-//        roomId = arguments?.getString(EXTRA_ROOM_ID)
-        roomId = "25154773"
+//        roomId = arguments?.getString("chat_room_id")
+//        roomId = "25154773"
     }
 
 
     private var enterRequest: AbortableFuture<EnterChatRoomResultData>? = null
     private fun enterRoom() {
+        if (TextUtils.isEmpty(roomId)) {
+            toast("聊天房间进入失败，请重新尝试")
+            return
+        }
+
         val data = EnterChatRoomData(roomId)
         enterRequest = NIMClient.getService(ChatRoomService::class.java).enterChatRoom(data)
         enterRequest?.setCallback(object : RequestCallback<EnterChatRoomResultData> {
@@ -248,7 +258,15 @@ class ChatRoomFragment : BaseLazyFragment() {
             else -> {
             }
         }
-        mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+        if (mChatRoomRv == null) {
+            Logger.e("mChatRoomRv null")
+        }
+        if (mAdapter.data == null) {
+            Logger.e("mAdapter null")
+        }
+        if (!mAdapter.data.isEmpty() && mChatRoomRv != null) {
+            mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+        }
     }
 
     private val statusObserver = Observer<IMMessage> { msg ->

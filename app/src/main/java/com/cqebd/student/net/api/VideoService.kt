@@ -1,6 +1,7 @@
 package com.cqebd.student.net.api
 
 import android.arch.lifecycle.LiveData
+import com.cqebd.student.live.entity.LiveByRemote
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
@@ -109,11 +110,11 @@ interface VideoService {
             : Call<ResponseBody>
 
     /**
-     * 获取互动直播
+     * 获取直播
      */
     @GET("/api/PeriodLive/GetPeriodLiveByPerodId")
     fun getLive(
-            @Query("periodId") id: Int = 49)
-            : Call<ResponseBody>
+            @Query("periodId") id: Int)
+            : Call<BaseResponse<LiveByRemote>>
 
 }

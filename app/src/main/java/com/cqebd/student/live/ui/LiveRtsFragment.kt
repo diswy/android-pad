@@ -81,7 +81,8 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
             }
 
             override fun onFailed(i: Int) {
-                Toast.makeText(activity, "join rts session failed, code:$i", Toast.LENGTH_SHORT).show()
+                Logger.i("join rts session failed, code:$i")
+
             }
 
             override fun onException(throwable: Throwable) {
@@ -98,7 +99,6 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
     //-------------------监听-------------------
     private fun registerObserver(register: Boolean) {
         RTSManager2.getInstance().observeReceiveData(mSessionId, receiveDataObserver, register)
-
     }
 
     /**
@@ -172,7 +172,7 @@ class LiveRtsFragment : BaseFragment(), OnlineStatusObserver, DoodleView.FlipLis
             Log.i("Doodle", "doodleView marginLeft =$marginLeft")
 
             val offsetX = marginLeft.toFloat()
-            val offsetY = statusBarHeight + dip(265)
+            val offsetY = statusBarHeight + dip(285)
             mDoodleView.setPaintOffset(offsetX, offsetY.toFloat())
         }, 50)
     }

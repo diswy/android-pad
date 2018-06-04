@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".live.ui.LiveActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/mToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_back">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                tools:text="云课堂" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <gorden.lib.video.ExVideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/mLiveIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/colorWhite" />
+
+        <com.cqebd.student.netease.wedigt.NonScrollViewPager
+            android:id="@+id/mNonScrollVp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <com.cqebd.student.widget.PageLoadView
+        android:id="@+id/pageLoadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+</FrameLayout>

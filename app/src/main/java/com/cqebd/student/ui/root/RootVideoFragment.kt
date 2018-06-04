@@ -22,7 +22,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
  * Video
  */
 class RootVideoFragment : BaseFragment() {
-    private val titles = listOf("视频", "订阅", "直播", "课表", "收藏")
+    private val titles = listOf("视频", "订阅", "课表", "收藏")
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_root_video, container, false)
@@ -37,9 +37,9 @@ class RootVideoFragment : BaseFragment() {
                 return when (position) {
                     0 -> VideoContentFragment()
                     1 -> MySubscribeFragment()
-                    2 -> LiveFragment()
-                    3 -> ScheduleFragment()
-                    4 -> MyVideoCollectFragment()
+//                    2 -> LiveFragment()
+                    2 -> ScheduleFragment()
+                    3 -> MyVideoCollectFragment()
                     else -> BlankFragment()
                 }
             }

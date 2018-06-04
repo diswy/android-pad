@@ -9,6 +9,9 @@ import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.live.entity.LiveByRemote
+import com.cqebd.student.live.entity.PullAddress
+import com.cqebd.student.live.ui.ChatRoomFragment
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
@@ -21,13 +24,21 @@ import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_live_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class LiveVideoActivity : BaseActivity() {
-    private val titles = listOf("课时", "详细", "评价")
+    private val titles = listOf("课时", "详细", "讨论")
 
     private var status: Int = 0
     private var id: Int = 0
+
+    val mRecommendCourseFragment = WebFragment()
+    val web1 = WebFragment()
+    val mChatRoomFragment = ChatRoomFragment()
 
     override fun setContentView() {
         setContentView(R.layout.activity_live_video)
@@ -39,7 +50,7 @@ class LiveVideoActivity : BaseActivity() {
         setIntent(intent)
         status = intent!!.getIntExtra("status", 0)
         id = intent.getIntExtra("id", 0)
-        val isLiveMode= intent.getBooleanExtra("isLiveMode",false)
+        val isLiveMode = intent.getBooleanExtra("isLiveMode", false)
         Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
         videoView.setLiveMode(isLiveMode)
 
@@ -57,7 +68,7 @@ class LiveVideoActivity : BaseActivity() {
         intent?.let {
             status = it.getIntExtra("status", 0)
             id = it.getIntExtra("id", 0)
-            val isLiveMode= it.getBooleanExtra("isLiveMode",false)
+            val isLiveMode = it.getBooleanExtra("isLiveMode", false)
             Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
             videoView.setLiveMode(isLiveMode)
 
@@ -67,20 +78,17 @@ class LiveVideoActivity : BaseActivity() {
             initStatus()
             loadVideo()
 
-            val mRecommendCourseFragment = WebFragment()
-            val web1 = WebFragment()
-            val web2 = WebFragment()
-
             viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
                 override fun getItem(position: Int): Fragment {
                     return when (position) {
                         0 -> mRecommendCourseFragment
                         1 -> web1
                         2 -> {
-                            if (status == 1)
-                                web2
-                            else
-                                web2
+                            mChatRoomFragment
+//                            if (status == 1)
+//                                web2
+//                            else
+//                                web2
                         }
                         else -> mRecommendCourseFragment
                     }
@@ -90,19 +98,19 @@ class LiveVideoActivity : BaseActivity() {
                     return 3
                 }
 
-                override fun getPageTitle(position: Int): CharSequence? {
-                    return when (position) {
-                        0 -> "推荐"
-                        1 -> "详细"
-                        2 -> {
-                            if (status == 1)
-                                "提问"
-                            else
-                                "评价"
-                        }
-                        else -> "推荐"
-                    }
-                }
+//                override fun getPageTitle(position: Int): CharSequence? {
+//                    return when (position) {
+//                        0 -> "推荐"
+//                        1 -> "详细"
+//                        2 -> {
+//                            if (status == 1)
+//                                "提问"
+//                            else
+//                                "评价"
+//                        }
+//                        else -> "推荐"
+//                    }
+//                }
 
             }
         }
@@ -142,30 +150,24 @@ class LiveVideoActivity : BaseActivity() {
 
 
     private fun loadVideo() {
+        Logger.d("id = $id")
         NetClient.videoService()
-                .getPeriodByID(id)
-                .enqueue(object : NetCallBack<BaseResponse<PeriodResponse>>() {
-                    override fun onSucceed(response: BaseResponse<PeriodResponse>?) {
-
-                        if (response?.data != null) {
-                            Logger.json(Gson().toJson(response.data.VodPlayList))
-
-                            val definitions = filterVideoUrl(response.data.VodPlayList)
-
-                            if (definitions != null && definitions.isNotEmpty())
-                                videoView.setVideoPath(definitions, 0, response.data.Name, R.drawable.ic_login_logo)
-                            else
-                                toast("视频未准备好~")
-                        } else {
-                            toast("视频未准备好~")
-                        }
-                    }
-
+                .getLive(id)
+                .enqueue(object : NetCallBack<BaseResponse<LiveByRemote>>() {
                     override fun onFailure() {
+                    }
+
+                    override fun onSucceed(response: BaseResponse<LiveByRemote>?) {
+                        response?.data?.let {
+                            val address = it.ChannelPullUrls
+                            val mPullAddress = Gson().fromJson(address,PullAddress::class.java)
+                            videoView.setVideoPath(mPullAddress.hlsPullUrl,"",R.drawable.ic_login_logo)
+                            Logger.e(mPullAddress.hlsPullUrl)
+                            mChatRoomFragment.roomId = it.ChatRoomId
+                        }
 
                     }
-                }
-                )
+                })
     }
 
 

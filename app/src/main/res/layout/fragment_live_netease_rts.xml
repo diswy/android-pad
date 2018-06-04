@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".test.BlankFragment">
+    tools:context=".live.ui.LiveNeteaseRtsFragment">
+
+    <com.cqebd.student.netease.doodle.DoodleView
+        android:id="@+id/mDoodleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>
