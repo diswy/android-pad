@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.db.entity.ClassSchedule
 import com.cqebd.student.glide.GlideApp
+import com.cqebd.student.live.ui.LiveActivity
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.tools.toast
@@ -71,7 +72,8 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
             val itemData = adapter.data[position] as CourseInfo
             Logger.d(Gson().toJson(itemData))
             when {
-                itemData.Status == 1 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
+//                itemData.Status == 1 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
+                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id,"hasChat" to itemData.HasChat,"hasIWB" to itemData.HasIWB,"hasVchat" to itemData.HasVchat)
                 itemData.Status == 3 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status)
                 else -> toast("视频未准备好哦~")
             }

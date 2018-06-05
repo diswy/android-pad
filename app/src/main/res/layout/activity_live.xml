@@ -29,10 +29,24 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <gorden.lib.video.ExVideoView
-            android:id="@+id/videoView"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="200dp">
+
+            <gorden.lib.video.ExVideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <Button
+                android:id="@+id/mBtnApplyVideo"
+                android:text="互动"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </android.support.constraint.ConstraintLayout>
+
 
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/mLiveIndicator"

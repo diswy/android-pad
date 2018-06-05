@@ -17,7 +17,13 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.dash.DashMediaSource
+import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
+import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser
+import com.google.android.exoplayer2.source.dash.manifest.RepresentationKey
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource
+import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
@@ -62,13 +68,14 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
      */
     var canPause: Boolean = true
 
-    fun setLiveMode(isLive : Boolean){
-        if (isLive){
+    fun setLiveMode(isLive: Boolean) {
+        if (isLive) {
             canSeek = false
             canPause = false
             mediaController.setLiveMode(isLive)
         }
     }
+
     /**
      * 是否保存播放进度
      * @saveProgress.first 是否保存
@@ -156,7 +163,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     fun setVideoPath(path: String, title: String, thumb: Int? = null) {
         if (path.endsWith(".mp3")) {
             renderView.getView().visibility = View.GONE
-        }else{
+        } else {
             renderView.getView().visibility = View.VISIBLE
         }
         setVideoPath(Uri.parse(path), title, thumb)
@@ -263,7 +270,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         override fun onPlayerError(error: ExoPlaybackException?) {
             Toast.makeText(context, "视频播放错误", Toast.LENGTH_SHORT).show()
             error?.let {
-//                Log.e("ExVideoView", it.message)
+                //                Log.e("ExVideoView", it.message)
             }
             release(false)
         }

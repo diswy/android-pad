@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".live.ui.LiveChatFragment">
+    android:orientation="vertical"
+    tools:context=".live.ui.ChatRoomFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/mTv"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mChatRoomRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#f1f2f7"
+        android:overScrollMode="never"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_bg_fa"
+        android:gravity="center_vertical"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp">
+
+        <ToggleButton
+            android:id="@+id/mSwitchInputType"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@color/color_price"
+            android:textOff=""
+            android:textOn=""
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/mChatRoomEdit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:imeOptions="actionSend" />
+
+        <ToggleButton
+            android:id="@+id/mBtnSend"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/ic_chat_room_extra"
+            android:textColor="@color/white"
+            android:textOff=""
+            android:textOn="发送" />
+
+    </LinearLayout>
+
+</LinearLayout>
