@@ -128,6 +128,10 @@ class LiveChatFragment : BaseFragment() {
         }
     }
 
+    fun onCurrent(){
+        mChatRoomRv.adapter = mAdapter
+    }
+
     private fun registerObservers(register: Boolean) {
         NIMClient.getService(ChatRoomServiceObserver::class.java).observeOnlineStatus(onlineStatus, register)
         NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
@@ -229,7 +233,9 @@ class LiveChatFragment : BaseFragment() {
                     override fun onSuccess(param: Void?) {
                         Logger.e("onTextSuccess")
                         mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, content, true))
-                        mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+                        if (!mAdapter.data.isEmpty() && mChatRoomRv != null) {
+                            mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
+                        }
                     }
 
                     override fun onFailed(code: Int) {

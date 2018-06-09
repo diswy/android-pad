@@ -53,7 +53,6 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         adapter = object : BaseQuickAdapter<CourseInfo, BaseViewHolder>(R.layout.item_new_schedule) {
             override fun convert(helper: BaseViewHolder?, item: CourseInfo) {
                 helper?.itemView?.apply {
-                    Logger.d(item.Snapshoot)
                     GlideApp.with(context)
                             .load(item.Snapshoot)
                             .centerCrop()

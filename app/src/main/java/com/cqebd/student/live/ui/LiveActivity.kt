@@ -6,26 +6,23 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
 import android.view.KeyEvent
+import android.view.SurfaceView
+import android.view.ViewGroup
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
-import com.cqebd.student.live.entity.CustomNoticifation
+import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.entity.LiveByRemote
 import com.cqebd.student.live.entity.PullAddress
-import com.cqebd.student.live.helper.MsgManager
-import com.cqebd.student.live.helper.VIDEO_IN
+import com.cqebd.student.live.helper.*
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
-import com.cqebd.student.netease.helper.MsgHelper
 import com.cqebd.student.test.BlankFragment
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.vo.entity.UserAccount
 import com.google.gson.Gson
-import com.netease.nimlib.sdk.AbortableFuture
-import com.netease.nimlib.sdk.NIMClient
-import com.netease.nimlib.sdk.RequestCallback
-import com.netease.nimlib.sdk.ResponseCode
+import com.netease.nimlib.sdk.*
 import com.netease.nimlib.sdk.avchat.AVChatCallback
 import com.netease.nimlib.sdk.avchat.AVChatManager
 import com.netease.nimlib.sdk.avchat.constant.AVChatType
@@ -36,6 +33,8 @@ import com.netease.nimlib.sdk.avchat.model.*
 import com.netease.nimlib.sdk.chatroom.ChatRoomService
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomData
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData
+import com.netease.nimlib.sdk.msg.MsgServiceObserve
+import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_live.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -58,30 +57,22 @@ class LiveActivity : BaseActivity() {
 
     override fun bindEvents() {
         mToolbar.setNavigationOnClickListener {
+            leaveRoom()
             exitRoom()
             this.finish()
         }
 
         mBtnApplyVideo.setOnClickListener {
-
-            applyVideo()
-
             mCreator?.let {
-                val mData = CustomNoticifation(
-                        "live",
-                        "1",
-                        VIDEO_IN,
-                        "STUDENT",
-                        loginId,
-                        "TEACHER",
-                        0,
-                        UserAccount.load()?.Name ?: "")// P2P自定义通知
+                val mData = EbdCustomNotification("live", "1", VIDEO_IN, "STUDENT", loginId,
+                        "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                 MsgManager.instance().sendP2PCustomNotification(it, mData)
             }
         }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        leaveRoom()
         exitRoom()
         return super.onKeyDown(keyCode, event)
     }
@@ -92,10 +83,34 @@ class LiveActivity : BaseActivity() {
         pageLoadView.hide()
 
         parseIntent()
-        videoSetting()
+//        initVideo()
         videoView.setLiveMode(true)// 该界面全部为直播界面
         initTag(true)
         getLiveInfo(id)
+        registerObservers(true)
+    }
+
+    override fun onDestroy() {
+        registerObservers(false)
+        videoView.onStop()
+        super.onDestroy()
+    }
+
+    private fun registerObservers(register: Boolean) {
+        NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
+//        NIMClient.getService(ChatRoomServiceObserver::class.java).observeKickOutEvent(kickOutObserver, register)
+//        NIMClient.getService(AuthServiceObserver::class.java).observeOnlineStatus(userStatusObserver, register)
+    }
+
+    private val customNotification: Observer<CustomNotification> = Observer { message ->
+        Logger.wtf(message.content)
+        val notification = Gson().fromJson(message.content, EbdCustomNotification::class.java)
+        when (notification.name) {
+            VIDEO_IN_CONFIRM -> upMic()
+            VIDEO_IN_REFUSE -> toast("老师拒绝了你的上麦请求")
+            VIDEO_OUT -> downMic()
+            VIDEO_IN -> upMic(true)
+        }
     }
 
     private fun parseIntent() {
@@ -139,20 +154,20 @@ class LiveActivity : BaseActivity() {
                 return mTitle.size
             }
         }
-//        mNonScrollVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrollStateChanged(state: Int) {
-//            }
-//
-//            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-//                when (position) {
-////                    0 -> mChat.onCurrentInit()
-//                }
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//
-//            }
-//        })
+        mNonScrollVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                when (position) {
+                    0 -> mChat.onCurrent()
+                }
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+        })
     }
 
     private fun getLiveInfo(id: Int) {
@@ -168,14 +183,14 @@ class LiveActivity : BaseActivity() {
                             Logger.json(Gson().toJson(it))
                             val address = it.ChannelPullUrls
                             val mPullAddress = Gson().fromJson(address, PullAddress::class.java)
-                            videoView.setVideoPath(mPullAddress.httpPullUrl, "", R.drawable.ic_login_logo)
+                            videoView.setVideoPath(mPullAddress.hlsPullUrl, "", R.drawable.ic_login_logo)
                             Logger.i(mPullAddress.httpPullUrl)
 
-                            mVChatId = it.VchatRoomName
                             mVChatId = it.VchatRoomName
                             initAdapter(it.ChatRoomId)
                             mChatRoomId = it.ChatRoomId
                             enterRoom(it.ChatRoomId)// 进入聊天室
+                            joinVideoRoom()
                         }
 
                     }
@@ -229,22 +244,22 @@ class LiveActivity : BaseActivity() {
     //--------------------------音视频模块--------------------------
     private var videoCapturer: AVChatCameraCapturer? = null // 视频采集模块
 
-
-    private fun videoSetting(){
+    private fun initVideo() {
         // 开启音视频引擎
         AVChatManager.getInstance().enableRtc()
         // 打开视频模块
         AVChatManager.getInstance().enableVideo()
-
         // 设置视频采集模块
         if (videoCapturer == null) {
             videoCapturer = AVChatVideoCapturerFactory.createCameraCapturer()
             AVChatManager.getInstance().setupVideoCapturer(videoCapturer)
         }
 
+//        AVChatManager.getInstance().setParameter(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.AUDIENCE)
 //        val render = AVChatSurfaceViewRenderer(this)
 //        AVChatManager.getInstance().setupLocalVideoRender(render, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
 //        AVChatManager.getInstance().startVideoPreview()
+
         val parameters = AVChatParameters()
         parameters.setBoolean(AVChatParameters.KEY_SESSION_LIVE_MODE, true)
         parameters.setInteger(AVChatParameters.KEY_SESSION_MULTI_MODE_USER_ROLE, AVChatUserRole.NORMAL)
@@ -252,9 +267,11 @@ class LiveActivity : BaseActivity() {
         AVChatManager.getInstance().setParameters(parameters)
     }
 
-    private fun applyVideo() {
+    private fun joinVideoRoom() {
         if (!hasVchat)
             return
+
+        initVideo()
 
         AVChatManager.getInstance().joinRoom2(mVChatId, AVChatType.VIDEO, object : AVChatCallback<AVChatData> {
             override fun onSuccess(avChatData: AVChatData) {
@@ -271,6 +288,93 @@ class LiveActivity : BaseActivity() {
 
             override fun onException(throwable: Throwable) {
 
+            }
+        })
+
+    }
+
+    /**
+     * 上麦
+     */
+    private fun upMic(sendCallback: Boolean = false) {
+        if (sendCallback){
+            mCreator?.let {
+                val mData = EbdCustomNotification("live", "1", VIDEO_IN_CONFIRM, "STUDENT", loginId,
+                        "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+                MsgManager.instance().sendP2PCustomNotification(it, mData)
+            }
+        }
+        videoView.onStop()
+        AVChatManager.getInstance().enableAudienceRole(false)
+        val render = AVChatSurfaceViewRenderer(this)
+        AVChatManager.getInstance().setupLocalVideoRender(render, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+        AVChatManager.getInstance().startVideoPreview()
+        addIntoPreviewLayout(render, mMyself)
+        mCreator?.let {
+            val remoteRender = AVChatSurfaceViewRenderer(this)
+            AVChatManager.getInstance().setupRemoteVideoRender(mCreator,remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+            addIntoPreviewLayout(remoteRender, mRemote)
+        }
+
+    }
+
+    /**
+     * 拒绝远端上麦请求
+     */
+    private fun refuseMic(){
+        mCreator?.let {
+            val mData = EbdCustomNotification("live", "1", VIDEO_IN_REFUSE, "STUDENT", loginId,
+                    "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+            MsgManager.instance().sendP2PCustomNotification(it, mData)
+        }
+    }
+
+
+    private fun downMic(){
+        toast("老师已将你踢下线")
+        AVChatManager.getInstance().enableAudienceRole(true)
+        removePreviewLayout()
+        mCreator?.let {
+            val mData = EbdCustomNotification("live", "1", VIDEO_OUT_CONFIRM, "STUDENT", loginId,
+                    "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+            MsgManager.instance().sendP2PCustomNotification(it, mData)
+        }
+    }
+
+    // 添加到成员显示的画布
+    private fun addIntoPreviewLayout(surfaceView: SurfaceView?, viewLayout: ViewGroup) {
+        if (surfaceView == null) {
+            return
+        }
+        if (surfaceView.parent != null)
+            (surfaceView.parent as ViewGroup).removeView(surfaceView)
+        viewLayout.addView(surfaceView)
+        surfaceView.setZOrderMediaOverlay(true)
+    }
+
+    // 移除成员的画布
+    private fun removePreviewLayout(){
+        mMyself.removeAllViews()
+    }
+
+    private fun leaveRoom() {
+        if (TextUtils.isEmpty(mVChatId))
+            return
+        //关闭视频预览
+        AVChatManager.getInstance().stopVideoPreview()
+        // 如果是视频通话，关闭视频模块
+        AVChatManager.getInstance().disableVideo()
+        //关闭音视频引擎
+        AVChatManager.getInstance().disableRtc()
+        //离开房间
+        AVChatManager.getInstance().leaveRoom2(mVChatId, object :AVChatCallback<Void>{
+            override fun onSuccess(t: Void?) {
+            }
+
+            override fun onFailed(code: Int) {
+            }
+
+            override fun onException(exception: Throwable?) {
             }
         })
 

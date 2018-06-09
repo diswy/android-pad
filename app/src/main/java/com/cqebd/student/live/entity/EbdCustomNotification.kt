@@ -1,7 +1,7 @@
 package com.cqebd.student.live.entity
 
 
-data class CustomNoticifation(
+data class EbdCustomNotification(
         val type: String,
         val ver: String,
         val name: String,

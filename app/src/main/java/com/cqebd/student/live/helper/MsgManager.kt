@@ -1,6 +1,5 @@
 package com.cqebd.student.live.helper
 
-import com.cqebd.student.live.entity.CustomNoticifation
 import com.google.gson.Gson
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
@@ -36,7 +35,7 @@ class MsgManager private constructor() {
     }
 
     // 发送点对点不推送不支持离线的自定义系统通知
-    fun sendP2PCustomNotification(account: String, mNotification: CustomNoticifation) {
+    fun sendP2PCustomNotification(account: String, mNotification: com.cqebd.student.live.entity.EbdCustomNotification) {
         val notification = CustomNotification()
         notification.sessionId = account// 指定接收者
         notification.sessionType = SessionTypeEnum.P2P
