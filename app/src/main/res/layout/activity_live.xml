@@ -1,83 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".live.ui.LiveActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/ic_back">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/mToolbar"
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            tools:text="云课堂" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/mVideoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <gorden.lib.video.ExVideoView
+            android:id="@+id/videoView"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/colorPrimary"
-            app:navigationIcon="@drawable/ic_back">
+            android:layout_height="200dp" />
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="16sp"
-                tools:text="云课堂" />
+        <Button
+            android:id="@+id/mBtnApplyVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="互动"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        </android.support.v7.widget.Toolbar>
-
-        <android.support.constraint.ConstraintLayout
+        <FrameLayout
+            android:id="@+id/mCreatorView"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="match_parent"/>
 
-            <gorden.lib.video.ExVideoView
-                android:id="@+id/videoView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+        <FrameLayout
+            android:id="@+id/mMyself"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <Button
-                android:id="@+id/mBtnApplyVideo"
-                android:text="互动"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+    </android.support.constraint.ConstraintLayout>
 
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/mLiveIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorWhite" />
 
-            <FrameLayout
-                android:id="@+id/mMyself"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
-
-            <FrameLayout
-                app:layout_constraintStart_toEndOf="@id/mMyself"
-                android:id="@+id/mRemote"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
-
-        </android.support.constraint.ConstraintLayout>
-
-
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/mLiveIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorWhite" />
-
-        <com.cqebd.student.netease.wedigt.NonScrollViewPager
-            android:id="@+id/mNonScrollVp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <com.cqebd.student.widget.PageLoadView
-        android:id="@+id/pageLoadView"
+    <com.cqebd.student.netease.wedigt.NonScrollViewPager
+        android:id="@+id/mNonScrollVp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
-
-</FrameLayout>
+</LinearLayout>

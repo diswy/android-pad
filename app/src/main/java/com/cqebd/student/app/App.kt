@@ -75,8 +75,8 @@ class App : Application() {
         if (NIMUtil.isMainProcess(this)) {
             // 注册自定义消息附件解析器
             NIMClient.getService(MsgService::class.java).registerCustomAttachmentParser(CustomAttachParser())
-            ChatRoomHelper.init()
-            MsgManager.instance().init()
+//            ChatRoomHelper.init()
+//            MsgManager.instance().init()
         }
 
         // 友盟

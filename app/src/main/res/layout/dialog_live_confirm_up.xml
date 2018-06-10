@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/mTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="老师让你上麦，你是否接受" />
+
+    <com.wuhangjia.firstlib.view.FancyButton
+        android:id="@+id/mBtnCancel"
+
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        app:fb_text="拒绝"
+        app:layout_constraintEnd_toStartOf="@id/mBtnConfirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mTitle" />
+
+    <com.wuhangjia.firstlib.view.FancyButton
+        android:id="@+id/mBtnConfirm"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        app:fb_text="同意"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mBtnCancel"
+        app:layout_constraintTop_toBottomOf="@id/mTitle" />
+
+
+</android.support.constraint.ConstraintLayout>
