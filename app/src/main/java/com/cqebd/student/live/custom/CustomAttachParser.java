@@ -18,8 +18,11 @@ public class CustomAttachParser implements MsgAttachmentParser {
             Gson gson = new Gson();
             CustomMsg msg = gson.fromJson(json, CustomMsg.class);
             switch (msg.getName()) {
-                case "PPT":
+                case "ppt":
                     attachment = new DocAttachment();
+                    break;
+                case "video":
+                    attachment = new VideoAttachment();
                     break;
 //                default:
 //                    attachment = new DefaultCustomAttachment();

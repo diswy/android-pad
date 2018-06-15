@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@color/color_f2f6f9"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingEnd="15dp"
+    android:paddingStart="15dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/mItem1"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="#43a3ef"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/mTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"
+            android:maxLines="2"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            tools:text="数学数学数学数学数学数学数学数学数学数学数学数学" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/mTeacher1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_root_home_teacher"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                tools:text="张老师" />
+
+            <TextView
+                android:id="@+id/mCount1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_root_home_book"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="1节" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="6dp"
+            android:src="@drawable/ic_root_home_1" />
+
+    </android.support.v7.widget.CardView>
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/mItem2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="#dd478f"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/mTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"
+            android:maxLines="2"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            tools:text="数学数学数学数学数学数学数学数学数学数学数学数学" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/mTeacher2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_root_home_teacher"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                tools:text="张老师" />
+
+            <TextView
+                android:id="@+id/mCount2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_root_home_book"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:text="1节" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="6dp"
+            android:src="@drawable/ic_root_home_2" />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

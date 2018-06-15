@@ -1,5 +1,6 @@
 package com.cqebd.student.live.ui
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -9,16 +10,22 @@ import android.view.KeyEvent
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
+import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.live.custom.DocAttachment
+import com.cqebd.student.live.custom.VideoAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.entity.LiveByRemote
 import com.cqebd.student.live.entity.PullAddress
 import com.cqebd.student.live.helper.*
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
+import com.cqebd.student.netease.NetEaseCache
 import com.cqebd.student.test.BlankFragment
 import com.cqebd.student.tools.RxCounter
 import com.cqebd.student.tools.loginId
@@ -33,9 +40,12 @@ import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType
 import com.netease.nimlib.sdk.avchat.model.*
 import com.netease.nimlib.sdk.chatroom.ChatRoomService
+import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomData
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData
 import com.netease.nimlib.sdk.msg.MsgServiceObserve
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.orhanobut.logger.Logger
 import com.wuhangjia.firstlib.view.FancyDialogFragment
@@ -56,12 +66,22 @@ class LiveActivity : BaseActivity() {
     private var mVChatId: String? = null// 互动直播房间ID
     private val mLiveAddress = ArrayList<String>()
     private var mHasPermission = false// 是否具备视频权限
+    val mChat = LiveChatFragment()
+    val mRts = LiveNeteaseRtsFragment()
+
 
     override fun setContentView() {
         setContentView(R.layout.activity_live)
     }
 
     override fun bindEvents() {
+        mTestBtn.setOnClickListener {
+            upMic()
+        }
+        mTestBtn2.setOnClickListener {
+            downMic(false)
+        }
+        //---------------
         mToolbar.setNavigationOnClickListener {
             leaveRoom()
             exitRoom()
@@ -70,14 +90,23 @@ class LiveActivity : BaseActivity() {
 
         mBtnApplyVideo.setOnClickListener {
             mCreator?.let {
-                mBtnApplyVideo.text = "取消"
-                mBtnApplyVideo.isEnabled = false
-                val mData = EbdCustomNotification("live", "1", VIDEO_IN, "STUDENT", loginId,
-                        "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
-                MsgManager.instance().sendP2PCustomNotification(it, mData)
-                btnTask()
+                if (mBtnApplyVideo.text.toString() == "互动") {
+                    mBtnApplyVideo.text = "取消"
+                    mBtnApplyVideo.isEnabled = false
+                    val mData = EbdCustomNotification("live", "1", VIDEO_IN, "STUDENT", loginId,
+                            "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+                    MsgManager.instance().sendP2PCustomNotification(it, mData)
+                    btnTask()
+                } else {
+                    mBtnApplyVideo.text = "互动"
+                    downMic(false)
+                    val mData = EbdCustomNotification("live", "1", VIDEO_CANCEL, "STUDENT", loginId,
+                            "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+                    MsgManager.instance().sendP2PCustomNotification(it, mData)
+                }
             }
         }
+
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -102,6 +131,8 @@ class LiveActivity : BaseActivity() {
 
     private fun registerObservers(register: Boolean) {
         NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
+        NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
+
 //        NIMClient.getService(ChatRoomServiceObserver::class.java).observeKickOutEvent(kickOutObserver, register)
 //        NIMClient.getService(AuthServiceObserver::class.java).observeOnlineStatus(userStatusObserver, register)
     }
@@ -115,10 +146,13 @@ class LiveActivity : BaseActivity() {
         when (notification.name) {
             VIDEO_IN_CONFIRM -> {
                 mHasPermission = true
+                mBtnApplyVideo.isEnabled = true
                 upMic()// 上麦确认
             }
             VIDEO_IN_REFUSE -> {
                 mHasPermission = false
+                mBtnApplyVideo.isEnabled = true
+                mBtnApplyVideo.text = "互动"
                 toast("老师拒绝了你的上麦请求")
             }
             VIDEO_OUT -> {
@@ -127,6 +161,76 @@ class LiveActivity : BaseActivity() {
             }
             VIDEO_IN -> {
                 showUpMicDialog()
+            }
+            IWB_IN -> {
+                toast("老师给予你白板权限")
+                mRts.setRtsEnable(true)
+            }
+            IWB_OUT -> {
+                toast("老师撤回了你白板权限")
+                mRts.setBtnChecked(false)
+                mRts.setRtsEnable(false)
+            }
+            IWB_IN_CONFIRM -> {
+                mRts.setRtsEnable(true)
+            }
+            IWB_IN_REFUSE -> {
+                toast("老师拒绝了你的请求")
+                mRts.setBtnChecked(false)
+                mRts.setRtsEnable(false)
+            }
+        }
+    }
+
+    private val incomingChatRoomMsg: Observer<List<ChatRoomMessage>> = Observer { messages ->
+        val mMsgSingle = messages[messages.size - 1]
+        when (mMsgSingle.msgType) {
+            MsgTypeEnum.custom -> {
+                if (mMsgSingle.attachment is VideoAttachment) {
+                    val attachment = mMsgSingle.attachment as VideoAttachment
+//                    val
+                    Logger.d("群发消息：本人ID = $loginId , ${attachment.hasPermissionList}")
+                    val names = attachment.hasPermissionList.split(",")
+                    if (names.contains(NetEaseCache.getAccount())) {
+                        val mList = ArrayList<String>()
+                        for (item in names){
+                            mList.add(item)
+//                            if (item != NetEaseCache.getAccount()){
+//                            }
+                        }
+
+                        mStudent1.removeAllViews()
+                        mStudent2.removeAllViews()
+                        mList.remove(NetEaseCache.getAccount())
+                        when (mList.size) {
+                            0 -> {
+                                mStudent1.visibility = View.GONE
+                                mStudent2.visibility = View.GONE
+                            }
+                            1 -> {
+                                mStudent1.visibility = View.VISIBLE
+                                mStudent2.visibility = View.GONE
+                                val remoteRender = AVChatSurfaceViewRenderer(this)
+                                AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                                addIntoPreviewLayout(remoteRender, mStudent1)
+                            }
+                            2 -> {
+                                mStudent1.visibility = View.VISIBLE
+                                mStudent2.visibility = View.VISIBLE
+
+                                val remoteRender = AVChatSurfaceViewRenderer(this)
+                                AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                                addIntoPreviewLayout(remoteRender, mStudent1)
+
+                                val remoteRender2 = AVChatSurfaceViewRenderer(this)
+                                AVChatManager.getInstance().setupRemoteVideoRender(mList[1], remoteRender2, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                                addIntoPreviewLayout(remoteRender2, mStudent2)
+                            }
+                        }
+                    }
+                }
+            }
+            else -> {
             }
         }
     }
@@ -138,7 +242,6 @@ class LiveActivity : BaseActivity() {
         hasVchat = intent.getIntExtra("hasVchat", 0) != 0// 是否是互动直播
         Logger.d("id = $id hasChat = $hasChat hasIWB = $hasIWB hasVchat = $hasIWB")
     }
-
 
     private fun initTag(hasRTS: Boolean = false) {
         mTitle.add("讨论")
@@ -152,12 +255,17 @@ class LiveActivity : BaseActivity() {
         ViewPagerHelper.bind(mLiveIndicator, mNonScrollVp)
     }
 
-    private fun initAdapter(roomId: String) {
-        val mChat = LiveChatFragment()
+    private fun initAdapter(roomId: String, rtsName: String) {
+//        val mChat = LiveChatFragment()
         val bundle = Bundle()
         bundle.putString("roomID", roomId)
         mChat.arguments = bundle
-        val mRts = LiveNeteaseRtsFragment()
+
+//        val mRts = LiveNeteaseRtsFragment()
+        val rtsBundle = Bundle()
+        rtsBundle.putString("rtsName", rtsName)
+        mRts.arguments = rtsBundle
+
         mNonScrollVp.offscreenPageLimit = 2
         mNonScrollVp.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
@@ -210,7 +318,7 @@ class LiveActivity : BaseActivity() {
                             Logger.i(mPullAddress.httpPullUrl)
 
                             mVChatId = it.VchatRoomName
-                            initAdapter(it.ChatRoomId)
+                            initAdapter(it.ChatRoomId, it.IWBRoomName)
 
                             mChatRoomId = it.ChatRoomId
                             enterRoom(it.ChatRoomId)// 进入聊天室
@@ -234,6 +342,7 @@ class LiveActivity : BaseActivity() {
             override fun onSuccess(result: EnterChatRoomResultData) {
                 enterRequest = null
                 mCreator = result.roomInfo.creator
+                mRts.setCreator(result.roomInfo.creator)// 设置创建者
                 toast("进入聊天室成功，聊天室ID：${result.roomInfo.roomId}教师ID：${result.roomInfo.creator}")
 //                roomInfo = result.roomInfo
 //                val member = result.member
@@ -296,7 +405,7 @@ class LiveActivity : BaseActivity() {
             return
 
         initVideo()
-
+        Logger.d("互动直播：$mVChatId")
         AVChatManager.getInstance().joinRoom2(mVChatId, AVChatType.VIDEO, object : AVChatCallback<AVChatData> {
             override fun onSuccess(avChatData: AVChatData) {
                 Logger.d("join channel success, extra:" + avChatData.extra)
@@ -311,12 +420,11 @@ class LiveActivity : BaseActivity() {
             }
 
             override fun onException(throwable: Throwable) {
-
+                Logger.e("互动直播异常：${throwable.message}")
             }
         })
 
     }
-
 
     /**
      * 离开互动直播房间
@@ -334,7 +442,6 @@ class LiveActivity : BaseActivity() {
         AVChatManager.getInstance().leaveRoom2(mVChatId, null)
     }
 
-
     // 添加到成员显示的画布
     private fun addIntoPreviewLayout(surfaceView: SurfaceView?, viewLayout: ViewGroup) {
         if (surfaceView == null) {
@@ -350,8 +457,11 @@ class LiveActivity : BaseActivity() {
     private fun removePreviewLayout() {
         mMyself.removeAllViews()
         mCreatorView.removeAllViews()
+        mStudent1.removeAllViews()
+        mStudent2.removeAllViews()
+        mStudent1.visibility = View.GONE
+        mStudent2.visibility = View.GONE
     }
-
 
     /**
      * 拒绝远端上麦请求
@@ -363,7 +473,6 @@ class LiveActivity : BaseActivity() {
             MsgManager.instance().sendP2PCustomNotification(it, mData)
         }
     }
-
 
     private fun downMic(isKickOut: Boolean = true) {
         if (isKickOut) {
@@ -440,6 +549,7 @@ class LiveActivity : BaseActivity() {
                 .setViewListener {
                     it.apply {
                         mBtnConfirm.setOnClickListener {
+                            mBtnApplyVideo.text = "取消"
                             upMic(true)
                             dialog.dismiss()
                         }
@@ -451,5 +561,6 @@ class LiveActivity : BaseActivity() {
                 }
                 .show(fragmentManager, "")
     }
+
 
 }

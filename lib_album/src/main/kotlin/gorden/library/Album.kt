@@ -22,6 +22,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.logging.Logger
 import kotlin.collections.ArrayList
 
 /**
@@ -123,6 +124,7 @@ class Album private constructor() {
         if (takePictureIntent.resolveActivity(context.packageManager) != null) {
             val file = createImageFile(context)
             val photoFile = if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                println("${context.packageName}.provider")
                 FileProvider.getUriForFile(context.applicationContext, context.packageName + ".provider", file)
             } else {
                 Uri.fromFile(file)

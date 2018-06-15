@@ -57,6 +57,17 @@ interface VideoService {
             : LiveData<ApiResponse<List<PeriodInfo>>>
 
     /**
+     * 获取推荐课程列表
+     */
+    @FormUrlEncoded
+    @POST("api/CoursePeriod/GetPeriodList")
+    fun getPeriodListTJ(
+            @Field("Status") status: Int = 10,
+            @Field("Type") type: Int = 2,
+            @Field("studentid") userId: Long = loginId)
+            : Call<BaseResponse<List<VideoInfo>>>
+
+    /**
      * 课程订阅
      * status 0订阅 1取消
      */
@@ -116,5 +127,13 @@ interface VideoService {
     fun getLive(
             @Query("periodId") id: Int)
             : Call<BaseResponse<LiveByRemote>>
+
+
+    @POST("api/Account/EditPwd")
+    fun modifyPwd(
+            @Query("Pwd") Pwd: String,
+            @Query("NewPwd") NewPwd: String,
+            @Query("UserId") UserId: Long = loginId)
+            : Call<BaseBean>
 
 }

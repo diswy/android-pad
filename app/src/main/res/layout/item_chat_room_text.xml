@@ -7,18 +7,17 @@
     android:padding="10dp">
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/mOtherAvatar"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:visibility="gone" />
 
     <Space
         android:id="@+id/mStartSpace"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/mChatRoomContent"
@@ -26,22 +25,22 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:background="@drawable/ic_chat_room_my_bg"
+        android:background="@drawable/chat_bg_me"
         android:textIsSelectable="true"
+        android:textColor="@color/colorWhite"
         tools:text="消息内容！！！" />
 
     <Space
         android:id="@+id/mEndSpace"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone" />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/mMyAvatar"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:visibility="gone" />
 
 </LinearLayout>

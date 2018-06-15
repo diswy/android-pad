@@ -36,6 +36,37 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
+        <FrameLayout
+            android:id="@+id/mCreatorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <FrameLayout
+                android:id="@+id/mMyself"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <FrameLayout
+                android:id="@+id/mStudent1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/mStudent2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/mBtnApplyVideo"
             android:layout_width="wrap_content"
@@ -43,17 +74,17 @@
             android:text="互动"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <FrameLayout
-            android:id="@+id/mCreatorView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <FrameLayout
-            android:id="@+id/mMyself"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:id="@+id/mTestBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直接上墙"/>
+        <Button
+            android:id="@+id/mTestBtn2"
+            app:layout_constraintTop_toBottomOf="@+id/mTestBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直接下墙"/>
 
     </android.support.constraint.ConstraintLayout>
 

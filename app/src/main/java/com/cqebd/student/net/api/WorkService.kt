@@ -6,6 +6,7 @@ import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.vo.entity.*
 import com.google.gson.JsonObject
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -115,7 +116,7 @@ interface WorkService {
     /**
      * 点点作业 获取验证码
      */
-    @GET("api/Account/GetTelCode")
+    @GET("api/Account/getTelCode")
     fun getPhoneCode(
             @Query("loginName") loginName: String,
             @Query("type") type: Int)
@@ -131,5 +132,27 @@ interface WorkService {
             @Query("Code") Code: String)
             : Call<BaseResponse<Unit>>
 
+    /**
+     * 检查更新
+     */
+    @GET("api/Setting/GetSetting")
+    fun checkUpdate(
+            @Query("keyName") keyName: String = "AndroidMergeUpdate")
+            : Call<BaseResponse<String>>
+
+    @GET("api/Account/getTelCode")
+    fun getTelCode(
+            @Query("loginName") loginName: String
+            , @Query("type") type: Int)
+            : Call<BaseResponse<Unit>>
+
+    @POST("api/Account/UpdatePhCode")
+    fun updatePhCode(
+            @Query("Status") status: Int,
+            @Query("Code") code: String,
+            @Query("Tel") tel: String,
+            @Query("Pwd") Pwd: String,
+            @Query("UserId") userId: Long = loginId)
+            : Call<BaseResponse<Unit>>
 
 }

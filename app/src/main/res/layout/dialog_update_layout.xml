@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_white_border"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp"
+        android:text="发现新版本"
+        android:textColor="@color/color_title"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/color_title" />
+
+    <TextView
+        android:id="@+id/mTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="36dp"
+        android:textColor="@color/color_subtitle_dark"
+        android:textSize="12sp"
+        tools:text="点点课堂v1.3" />
+
+    <TextView
+        android:id="@+id/mInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="14dp"
+        android:lineSpacingExtra="8dp"
+        android:textColor="@color/color_subtitle_dark"
+        android:textSize="12sp"
+        tools:text="1.修改已经BUG\n2.增加新课程" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/color_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <com.wuhangjia.firstlib.view.FancyButton
+            android:id="@+id/mBtnCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:fb_bg_color="@color/colorWhite"
+            app:fb_hover_color="@color/colorWhite"
+            app:fb_text="以后再说"
+            app:fb_text_bold="true"
+            app:fb_text_color="@color/color_title" />
+
+        <com.wuhangjia.firstlib.view.FancyButton
+            android:id="@+id/mBtnConfirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:fb_bg_color="@color/colorWhite"
+            app:fb_hover_color="@color/colorWhite"
+            app:fb_text="立刻升级"
+            app:fb_text_bold="true"
+            app:fb_text_color="@color/color_main" />
+
+    </LinearLayout>
+
+</LinearLayout>

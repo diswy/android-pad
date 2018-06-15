@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ModifyPwdActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/ic_back">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="修改密码" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_f2f6f9"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <EditText
+            android:id="@+id/mOldPwd"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@id/mOldPwd2"
+            android:singleLine="true"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_bg_white_border"
+            android:textSize="12sp"
+            android:textColor="@color/color_title"
+            android:textColorHint="#4d000000"
+            android:hint="请输入旧密码"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/mOldPwd2"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@id/mNewPwd"
+            android:singleLine="true"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_bg_white_border"
+            android:textSize="12sp"
+            android:textColor="@color/color_title"
+            android:textColorHint="#4d000000"
+            android:hint="请输入旧密码"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/mNewPwd"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_bg_white_border"
+            android:textSize="12sp"
+            android:textColor="@color/color_title"
+            android:textColorHint="#4d000000"
+            android:hint="请输入旧密码"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.wuhangjia.firstlib.view.FancyButton
+            android:id="@+id/mBtnCommit"
+            app:fb_text="提  交"
+            app:fb_text_bold="true"
+            app:fb_text_size="18sp"
+            app:fb_bg_color="@color/color_main"
+            app:fb_hover_color="@color/color_main"
+            app:fb_text_color="@color/white"
+            android:layout_marginTop="30dp"
+            app:fb_shape="arc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

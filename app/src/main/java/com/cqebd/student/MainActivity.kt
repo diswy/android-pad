@@ -17,9 +17,8 @@ import com.cqebd.student.tools.*
 import com.cqebd.student.tools.string.MD5
 import com.cqebd.student.ui.HomeFragment
 import com.cqebd.student.ui.MineFragment
-import com.cqebd.student.ui.VideoFragment
-import com.cqebd.student.ui.WorkFragment
 import com.cqebd.student.ui.root.HomeworkFragment
+import com.cqebd.student.ui.root.RootHomeFragment
 import com.cqebd.student.ui.root.RootVideoFragment
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.UserAccount
@@ -79,7 +78,8 @@ class MainActivity : BaseActivity() {
         if (targetFragment == null) {
             when (position) {
                 0 -> {
-                    targetFragment = HomeFragment()
+//                    targetFragment = HomeFragment()
+                    targetFragment = RootHomeFragment()
                 }
                 1 -> {
 //                    targetFragment = VideoFragment()
@@ -351,11 +351,10 @@ class MainActivity : BaseActivity() {
 
     private var loginRequest: AbortableFuture<LoginInfo>? = null
     private fun loginNetease() {
-        if (isNeteaseLogin()){
-            NetEaseCache.setAccount(getNeteaseLoginInfo()?.account)
-            return
-        }
-
+//        if (isNeteaseLogin()){
+//            NetEaseCache.setAccount(getNeteaseLoginInfo()?.account)
+//            return
+//        }
         UserAccount.load()?.let {
             if (!TextUtils.isEmpty(password) && isLogin()) {
                 val mAccount = "student_${it.ID}"
@@ -363,24 +362,23 @@ class MainActivity : BaseActivity() {
                 loginRequest = NIMClient.getService(AuthService::class.java).login(LoginInfo(mAccount, token))
                 loginRequest?.setCallback(object : RequestCallback<LoginInfo> {
                     override fun onSuccess(param: LoginInfo) {
-                        Logger.d("account = ${param.account} ; psd = ${param.token} ; appKey = ${param.appKey} ")
+                        Logger.d("网易云信:account = ${param.account} ; psd = ${param.token} ; appKey = ${param.appKey} ")
                         loginRequest = null
                         NetEaseCache.setContext(this@MainActivity)
                         NetEaseCache.setAccount(mAccount)
-
                         saveNetease(mAccount, token)
                     }
 
                     override fun onFailed(code: Int) {
                         if (code == 302 || code == 404) {
-                            Logger.e("账号或密码错误")
+                            Logger.e("网易云信:账号或密码错误")
                         } else {
-                            Logger.e("登录失败: $code")
+                            Logger.e("网易云信:登录失败: $code")
                         }
                     }
 
                     override fun onException(exception: Throwable) {
-                        Logger.e("网易云信", exception)
+                        Logger.e("网易云信:", exception)
                     }
                 })
             }

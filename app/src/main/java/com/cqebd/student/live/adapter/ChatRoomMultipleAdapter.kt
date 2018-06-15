@@ -9,6 +9,8 @@ import com.cqebd.student.live.entity.ChatRoomEntity
 import com.cqebd.student.vo.entity.UserAccount
 import kotlinx.android.synthetic.main.item_chat_room_img.view.*
 import kotlinx.android.synthetic.main.item_chat_room_text.view.*
+import org.jetbrains.anko.backgroundResource
+import org.jetbrains.anko.textColor
 
 class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickAdapter<ChatRoomEntity, BaseViewHolder>(data) {
 
@@ -26,6 +28,8 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
                     mStartSpace.visibility = if (item.isMyself) View.VISIBLE else View.GONE
                     mEndSpace.visibility = if (item.isMyself) View.GONE else View.VISIBLE
                     mChatRoomContent.text = item.content
+                    mChatRoomContent.textColor = if (item.isMyself) R.color.white else R.color.black
+                    mChatRoomContent.backgroundResource = if (item.isMyself) R.drawable.chat_bg_me else R.drawable.chat_bg_others
 
                     GlideApp.with(mContext)
                             .asBitmap()

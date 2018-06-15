@@ -6,20 +6,22 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.anko.static.dp
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.live.ui.LiveActivity
-import com.cqebd.student.live.ui.VideoLiveActivity
+import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.net.BaseResponse
+import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
-import com.cqebd.student.test.TestChatRoomActivity
-import com.cqebd.student.test.TestNetEaseActivity
 import com.cqebd.student.tools.*
 import com.cqebd.student.viewmodel.MineViewModel
 import com.cqebd.student.vo.entity.UserAccount
@@ -29,6 +31,8 @@ import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import gorden.lib.anko.static.startActivity
 import gorden.library.Album
+import gorden.util.RxCounter
+import gorden.widget.selector.SelectorButton
 import kotlinx.android.synthetic.main.fragment_mine.*
 import java.io.File
 
@@ -46,7 +50,7 @@ class MineFragment : BaseFragment() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         mineViewModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
-
+        initDialogPhone()
         mineViewModel.userAccount.observe(this, Observer {
             it?.apply {
                 text_name.text = Name
@@ -63,6 +67,8 @@ class MineFragment : BaseFragment() {
                 text_flower2.text = (Flower % 25 / 5).toString()
                 text_flower3.text = (Flower % 5).toString()
                 GlideApp.with(App.mContext).asBitmap().circleCrop().load(Avatar).placeholder(R.drawable.ic_avatar).into(img_avatar)
+                item_leader.visibility = if (it.IsGroup) View.VISIBLE else View.GONE
+                mBindPhone.text = if (TextUtils.isEmpty(it.Phone)) "手机：未绑定" else "手机：${it.Phone}"
             }
         })
 
@@ -94,8 +100,12 @@ class MineFragment : BaseFragment() {
             startActivity<BeSharedActivity>()
         }
 
-        item_settings.setOnClickListener {
-            startActivity<SettingActivity>()
+        item_leader.setOnClickListener {
+            startActivity<AgentWebActivity>("url" to "http://service.student.cqebd.cn/StudentGroup/task?GroupStudentId=$loginId")
+        }
+
+        item_modify_pwd.setOnClickListener {
+            startActivity<ModifyPwdActivity>()
         }
 
         item_exit.setOnClickListener {
@@ -105,16 +115,12 @@ class MineFragment : BaseFragment() {
             startActivity<LoginActivity>()
         }
 
-        btn_test_jump.setOnClickListener {
-            startActivity<TestNetEaseActivity>()
-//            startActivity<TestTablayout>()
-        }
-        btn_test_chat.setOnClickListener {
-            TestChatRoomActivity.start(activity,"25154773",false)
-        }
-        btn_rts.setOnClickListener {
-//            startActivity<VideoLiveActivity>()
-            startActivity<LiveActivity>()
+        mBindPhone.setOnClickListener {
+            if (mBindPhone.text.toString() == "手机：未绑定") {
+                bindPhone()
+            } else {
+                editPhone()
+            }
         }
 
     }
@@ -145,10 +151,6 @@ class MineFragment : BaseFragment() {
                     this.setToolbarColor(colorForRes(R.color.colorPrimary))
                     this.setHideBottomControls(true)
                     this.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL)
-//                    this.setCircleDimmedLayer(true)
-//                    this.setShowCropFrame(false)
-//                    this.setShowCropGrid(false)
-//                    this.setFreeStyleCropEnabled(true)
                     this.setCompressionFormat(android.graphics.Bitmap.CompressFormat.JPEG)
                 })
                 .withMaxResultSize(80.dp, 80.dp)
@@ -176,5 +178,140 @@ class MineFragment : BaseFragment() {
                 Status.LOADING -> loadingDialog.show(fragmentManager)
             }
         })
+    }
+
+
+    private lateinit var dialogPhone: AlertDialog
+    private lateinit var editPhone: EditText
+    private lateinit var editVerify: EditText
+    private lateinit var editPwd: EditText
+    private lateinit var btnVerify: SelectorButton
+
+
+    private fun initDialogPhone() {
+        val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_bindphone, null)
+        dialogPhone = AlertDialog.Builder(context!!)
+                .setTitle("绑定手机号").setView(dialogView)
+                .setPositiveButton("绑定", null)
+                .setNegativeButton("取消", null)
+                .create()
+        editPhone = dialogView.findViewById(R.id.edit_phone)
+        editVerify = dialogView.findViewById(R.id.edit_verify)
+        editPwd = dialogView.findViewById(R.id.edit_pwd)
+        btnVerify = dialogView.findViewById(R.id.btn_verify)
+        btnVerify.setOnClickListener {
+            if (TextUtils.isEmpty(editPhone.text.toString()) || editPhone.text.toString().length < 11) {
+                toast("请输入正确的手机号码")
+            } else {
+                getVerifyCode(editPhone.text.toString())
+            }
+        }
+    }
+
+    /**
+     * 获取验证码
+     *
+     * @param phone 手机号码
+     */
+    private fun getVerifyCode(phone: String) {
+        btnVerify.isEnabled = false
+        RxCounter.tick(59)
+                .doOnSubscribe { subscription ->
+                    NetClient.workService()
+                            .getTelCode(phone, 1)
+                            .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
+                                override fun onSucceed(response: BaseResponse<Unit>?) {
+                                    response?.let {
+                                        if (it.isSuccess) {
+                                            toast(it.message)
+                                            subscription.cancel()
+                                            btnVerify.isEnabled = true
+                                            btnVerify.text = "获取验证码"
+                                        }
+                                    }
+                                }
+
+                                override fun onFailure() {
+                                    subscription.cancel()
+                                    btnVerify.isEnabled = true
+                                    btnVerify.text = "获取验证码"
+                                }
+
+                            })
+                }
+                .doOnNext { time -> btnVerify.text = String.format("%s s", time) }
+                .doOnComplete {
+                    btnVerify.isEnabled = true
+                    btnVerify.text = "获取验证码"
+                }
+                .subscribe()
+    }
+
+    private fun bindPhone() {
+        dialogPhone.setTitle("绑定手机号")
+        editPwd.visibility = View.GONE
+        dialogPhone.show()
+        dialogPhone.getButton(AlertDialog.BUTTON_POSITIVE).text = "绑定"
+        dialogPhone.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (updatePhone(0))
+                dialogPhone.dismiss()
+        }
+    }
+
+    private fun editPhone(){
+        dialogPhone.setTitle("修改手机号")
+        editPwd.visibility = View.VISIBLE
+        dialogPhone.show()
+        dialogPhone.getButton(AlertDialog.BUTTON_POSITIVE).text = "修改"
+        dialogPhone.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (updatePhone(1))
+                dialogPhone.dismiss()
+        }
+    }
+
+    private fun updatePhone(status: Int): Boolean {
+        val code = editVerify.text.toString()
+        val phone = editPhone.text.toString()
+        val pwd = editPwd.text.toString()
+
+        if (TextUtils.isEmpty(phone) || phone.length < 11) {
+            toast("请输入正确的手机号码")
+            return false
+        }
+
+        if (TextUtils.isEmpty(code)) {
+            toast("请输入手机验证码")
+            return false
+        }
+
+        if (status == 1 && TextUtils.isEmpty(pwd)) {
+            toast("请输入用户密码")
+            return false
+        }
+
+        NetClient.workService().updatePhCode(status, code, phone, pwd)
+                .enqueue(object :NetCallBack<BaseResponse<Unit>>(){
+                    override fun onSucceed(response: BaseResponse<Unit>?) {
+                        response?.let {
+                            if (it.isSuccess){
+                                val mAccount = UserAccount.load()
+                                mAccount?.let {
+                                    mAccount.Phone = phone
+                                    it.save()
+                                }
+                                toast(if (status == 0) "绑定成功" else "修改成功")
+                                editPwd.text = null
+                                editPhone.text = null
+                                editVerify.text = null
+                                mBindPhone.text = phone
+                            }
+                        }
+                    }
+
+                    override fun onFailure() {
+
+                    }
+                })
+        return true
     }
 }

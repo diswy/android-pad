@@ -57,7 +57,6 @@ class App : Application() {
         }
         LeakCanary.install(this)
 
-        println("BuildConfig.SHOW_LOG = ${BuildConfig.SHOW_LOG}")
         val formatStrategy = PrettyFormatStrategy.newBuilder()
                 .tag("diswy")
                 .build()
@@ -71,7 +70,8 @@ class App : Application() {
         XLog.init(false, "app_log")
 
         // 网易云信
-        NIMClient.init(this, getNeteaseLoginInfo(), null)
+        // 每次都需要登录，这里不是用缓存登录getNeteaseLoginInfo()
+        NIMClient.init(this, null, null)
         if (NIMUtil.isMainProcess(this)) {
             // 注册自定义消息附件解析器
             NIMClient.getService(MsgService::class.java).registerCustomAttachmentParser(CustomAttachParser())

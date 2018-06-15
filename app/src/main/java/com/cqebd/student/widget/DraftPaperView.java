@@ -202,13 +202,18 @@ public class DraftPaperView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 touchMode = 1;
-                mDraftPath.move(event.getX(), event.getY());
+                if (mDraftPath != null){
+                    mDraftPath.move(event.getX(), event.getY());
+
+                }
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 if (touchMode == 1 && (mMode == MODE_PEN || revokedList.size() > 0)) {
                     restoreList.clear();
-                    revokedList.add(mDraftPath);
+                    if (mDraftPath != null){
+                        revokedList.add(mDraftPath);
+                    }
                     if (onDrawCallBack != null) {
                         onDrawCallBack.revokedSize(revokedList.size());
                         onDrawCallBack.restoreSize(restoreList.size());

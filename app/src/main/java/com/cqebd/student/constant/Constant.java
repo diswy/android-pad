@@ -14,6 +14,10 @@ public class Constant {
 
     public static final String LAST_USER_NAME = "LAST_USER_NAME";
 
+    public static final String USER_NAME_LIST = "USER_NAME_LIST";
+
+    public static final String LAST_USER_PASSWORD = "LAST_USER_PASSWORD";
+
 
     public static final int BUS_AVATAR_CHANGE = 1001;
     public static final int BUS_ANSWER_CHANGE = 1003;

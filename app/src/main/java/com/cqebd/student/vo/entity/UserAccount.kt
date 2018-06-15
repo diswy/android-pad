@@ -15,7 +15,7 @@ data class UserAccount(
         @SerializedName("LoginName")
         val Account: String,//用户名
         @SerializedName("Tel")
-        val Phone: String,//手机号
+        var Phone: String,//手机号
         @SerializedName("Photo")
         var Avatar: String,//头像
         val Gender: String,//性别
