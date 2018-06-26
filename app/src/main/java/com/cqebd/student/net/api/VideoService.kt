@@ -60,9 +60,9 @@ interface VideoService {
      * 获取推荐课程列表
      */
     @FormUrlEncoded
-    @POST("api/CoursePeriod/GetPeriodList")
+    @POST("api/CoursePeriod/GetCourseList")
     fun getPeriodListTJ(
-            @Field("Status") status: Int = 10,
+//            @Field("Status") status: Int = 10,
             @Field("Type") type: Int = 2,
             @Field("studentid") userId: Long = loginId)
             : Call<BaseResponse<List<VideoInfo>>>

@@ -18,6 +18,7 @@ import com.cqebd.student.viewmodel.PeriodListViewModel
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.SectionPeriodInfo
 import com.cqebd.teacher.vo.Status
+import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 
@@ -68,7 +69,7 @@ class CourseListFragment : BaseFragment() {
             when {
             // status 0 未播 1直播中 2直播结束 3转码结束
             // type 1 点播 2直播
-                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id,"hasChat" to itemData.HasChat,"hasIWB" to itemData.HasIWB,"hasVchat" to itemData.HasVchat)
+                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id,"hasChat" to itemData.HasChat,"hasIWB" to itemData.HasIWB,"hasVchat" to itemData.HasVchat,"title" to itemData.Name)
 //                itemData.Status == 3 -> startActivity<LiveActivity>()
 //                itemData.Status == 1 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)
                 itemData.Status == 3 -> startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.getDataNoHeader(), "pos" to position - 1)

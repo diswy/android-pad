@@ -1,6 +1,7 @@
 package com.cqebd.student.vo.entity
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 描述
@@ -11,7 +12,7 @@ data class FilterData(val status: Int, val Name: String) {
     companion object {
         //作业状态,default = null
         val jobStatus = listOf(
-                FilterData(10,"默认"),
+                FilterData(10, "默认"),
                 FilterData(-1, "新作业"),
                 FilterData(0, "答题中"),
                 FilterData(1, "已完成"),
@@ -56,19 +57,22 @@ data class FilterData(val status: Int, val Name: String) {
 
         val subjectAll: List<FilterData> by lazy {
             val mList = ArrayList<FilterData>()
-            mList.add(FilterData(-1,"全部"))
+            mList.add(FilterData(-1, "全部"))
             mList.addAll(subject)
             mList
         }
 
 
-
         //作业类型
         val jobType: List<FilterData> by lazy {
-            val typeList = UserAccount.load()?.JobTypeList
-            typeList?.map {
+            val typeList: ArrayList<UserAccount.JobType> = ArrayList()
+            typeList.add(UserAccount.JobType(-1, "全部"))
+            UserAccount.load()?.JobTypeList?.let {
+                typeList.addAll(it)
+            }
+            typeList.map {
                 FilterData(it.Id, it.Name)
-            } ?: listOf()
+            }
         }
         // 作业分享 年级筛选
         val gradeHomework = listOf(

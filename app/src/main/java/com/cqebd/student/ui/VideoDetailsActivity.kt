@@ -52,7 +52,7 @@ class VideoDetailsActivity : BaseActivity() {
         ViewPagerHelper.bind(video_details_indicator, viewPager)
 
         toolbar_title.text = data.Name
-        tv_title.text = data.Name
+//        tv_title.text = data.Name
         tv_teacher_count.text = getString(R.string.format_teacher_count, data.TeacherName, data.PeriodCount)
         tv_times.text = getString(R.string.format_times, formatTimeYMD(data.StartDate), formatTimeYMD(data.EndDateTime))
         GlideApp.with(App.mContext).load(data.Snapshoot)

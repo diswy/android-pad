@@ -12,6 +12,7 @@ import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
+import com.cqebd.student.tools.StringUtils
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.vo.entity.VideoEvaluate
@@ -104,7 +105,7 @@ class VideoEvaluateFragment : BaseLazyFragment(), TextWatcher {
         val mUser = UserAccount.load()
         mUser?.let {
             NetClient.videoService()
-                    .addEvaluate(videoId, it.Name, content)
+                    .addEvaluate(videoId, it.Name, StringUtils.getUnicodeString(content))
                     .enqueue(object :NetCallBack<ResponseBody>(){
                         override fun onSucceed(response: ResponseBody?) {
                             LoadingDialog.stop()

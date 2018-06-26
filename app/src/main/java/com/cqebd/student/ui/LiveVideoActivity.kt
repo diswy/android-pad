@@ -53,7 +53,7 @@ class LiveVideoActivity : BaseActivity() {
         val isLiveMode = intent.getBooleanExtra("isLiveMode", false)
         Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
         videoView.setLiveMode(isLiveMode)
-
+        toolbar_title.text = intent.getStringExtra("title")
         initStatus()
         loadVideo()
     }
@@ -71,6 +71,7 @@ class LiveVideoActivity : BaseActivity() {
             val isLiveMode = it.getBooleanExtra("isLiveMode", false)
             Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
             videoView.setLiveMode(isLiveMode)
+            toolbar_title.text = intent.getStringExtra("title")
 
             toolbar.setNavigationOnClickListener { finish() }
             toolbar_title.text = "点点直播"

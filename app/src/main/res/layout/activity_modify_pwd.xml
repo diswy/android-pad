@@ -29,15 +29,16 @@
         android:paddingEnd="15dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/color_f2f6f9"
+        android:background="@color/bg_theme"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <EditText
+            android:inputType="textPassword"
             android:id="@+id/mOldPwd"
             android:imeOptions="actionNext"
-            android:nextFocusForward="@id/mOldPwd2"
+            android:nextFocusForward="@id/mNewPwd"
             android:singleLine="true"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -53,9 +54,10 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/mOldPwd2"
+            android:inputType="textPassword"
+            android:id="@+id/mNewPwd"
             android:imeOptions="actionNext"
-            android:nextFocusForward="@id/mNewPwd"
+            android:nextFocusForward="@id/mNewPwd2"
             android:singleLine="true"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -66,12 +68,13 @@
             android:textSize="12sp"
             android:textColor="@color/color_title"
             android:textColorHint="#4d000000"
-            android:hint="请输入旧密码"
+            android:hint="请输入新密码"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/mNewPwd"
+            android:inputType="textPassword"
+            android:id="@+id/mNewPwd2"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:paddingStart="12dp"
@@ -83,7 +86,7 @@
             android:textSize="12sp"
             android:textColor="@color/color_title"
             android:textColorHint="#4d000000"
-            android:hint="请输入旧密码"
+            android:hint="请再次输入新密码"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

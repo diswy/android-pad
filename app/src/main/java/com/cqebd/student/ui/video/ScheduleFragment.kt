@@ -72,8 +72,8 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
             Logger.d(Gson().toJson(itemData))
             when {
 //                itemData.Status == 1 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "isLiveMode" to true)
-                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id,"hasChat" to itemData.HasChat,"hasIWB" to itemData.HasIWB,"hasVchat" to itemData.HasVchat)
-                itemData.Status == 3 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status)
+                itemData.Status == 1 -> startActivity<LiveActivity>("id" to itemData.Id, "hasChat" to itemData.HasChat, "hasIWB" to itemData.HasIWB, "hasVchat" to itemData.HasVchat, "title" to itemData.Name)
+                itemData.Status == 3 -> startActivity<LiveVideoActivity>("id" to itemData.Id, "status" to itemData.Status, "title" to itemData.Name)
                 else -> toast("视频未准备好哦~")
             }
         }

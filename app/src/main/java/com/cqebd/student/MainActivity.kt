@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -105,6 +106,22 @@ class MainActivity : BaseActivity() {
             transaction.add(R.id.frame_content, targetFragment, "tag$position").commitAllowingStateLoss()
         }
         currentFragment = targetFragment
+    }
+
+    private var exitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                toast("再按一次退出点点课")
+                exitTime = System.currentTimeMillis()
+            } else {
+                finish()
+                System.exit(0)
+            }
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 
     /**

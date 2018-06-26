@@ -27,34 +27,34 @@
 
     <ImageView
         android:id="@+id/iv_snapshot"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/extra_video_toolbar" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/color_title"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@+id/iv_snapshot"
-        app:layout_constraintTop_toTopOf="@+id/iv_snapshot"
-        tools:text="2018级数学期末培优B卷（第20周）" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:ellipsize="end"-->
+        <!--android:maxLines="1"-->
+        <!--android:textColor="@color/color_title"-->
+        <!--android:textSize="14sp"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/iv_snapshot"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/iv_snapshot"-->
+        <!--tools:text="2018级数学期末培优B卷（第20周）" />-->
 
     <ImageView
+        android:layout_marginStart="8dp"
         android:id="@+id/holder_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:src="@drawable/ic_teacher"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintStart_toEndOf="@+id/iv_snapshot"
+        app:layout_constraintTop_toTopOf="@+id/iv_snapshot" />
 
     <ImageView
         android:id="@+id/holder_time"
@@ -141,31 +141,31 @@
                 app:fb_text_size="12sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingEnd="10dp"-->
+            <!--android:paddingStart="10dp"-->
+            <!--android:paddingTop="10dp">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="占位文字"
-                android:textSize="12sp" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="占位文字"-->
+                <!--android:textSize="12sp" />-->
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+            <!--<Space-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="占位文字"
-                android:textSize="12sp" />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="占位文字"-->
+                <!--android:textSize="12sp" />-->
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 

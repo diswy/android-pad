@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.CallbackActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/ic_back">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="反馈信息"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/type_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:button="@null"
+            android:gravity="center"
+            android:textColor="@color/feedbk_text_selector"
+            android:background="@drawable/feedbk_radio_left_selector"
+            android:padding="10dp"
+            android:text="问题"/>
+
+        <RadioButton
+            android:id="@+id/type_advise"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:textColor="@color/feedbk_text_selector"
+            android:background="@drawable/feedbk_radio_middle_selector"
+            android:padding="10dp"
+            android:text="建议"/>
+
+        <RadioButton
+            android:id="@+id/type_other"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:textColor="@color/feedbk_text_selector"
+            android:background="@drawable/feedbk_radio_right_selector"
+            android:padding="10dp"
+            android:text="其他"/>
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_bg_white_border"
+        android:gravity="start|top"
+        android:padding="20dp" />
+
+    <gorden.widget.selector.SelectorButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:padding="10dp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:s_radius="25dp"
+        app:s_solid_color="@color/colorPrimary"
+        app:s_solid_pressed_color="@color/colorPrimary" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/text_feedback_see"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:drawablePadding="3dp"
+        android:drawableStart="@drawable/ic_fdb"
+        android:padding="10dp"
+        android:text="查看反馈回复"
+        android:textColor="#f28f1d"
+        android:textSize="15sp" />
+
+</LinearLayout>

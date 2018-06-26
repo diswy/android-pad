@@ -67,24 +67,27 @@
         </LinearLayout>
 
 
-        <Button
+        <ImageButton
             android:id="@+id/mBtnApplyVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="互动"
+            android:background="@color/transparent"
+            android:padding="15dp"
+            android:src="@drawable/ic_hand_up"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/mTestBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="直接上墙"/>
-        <Button
-            android:id="@+id/mTestBtn2"
-            app:layout_constraintTop_toBottomOf="@+id/mTestBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="直接下墙"/>
+        <!--<Button-->
+        <!--android:id="@+id/mTestBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="直接上墙"/>-->
+        <!--<Button-->
+        <!--android:id="@+id/mTestBtn2"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/mTestBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="直接下墙"/>-->
 
     </android.support.constraint.ConstraintLayout>
 

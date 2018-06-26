@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.FileProvider
+import android.view.View
+import android.view.WindowManager
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
@@ -34,6 +36,9 @@ import java.io.File
  */
 class StartActivity : BaseActivity() {
     override fun setContentView() {
+        //取消状态栏
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start)
     }
 
@@ -93,20 +98,23 @@ class StartActivity : BaseActivity() {
         dialog.isCancelable = false
         dialog.setCanCancelOutside(false)
                 .setLayoutRes(R.layout.dialog_update_layout)
-                .setWidth(this,260)
+                .setWidth(this, 260)
                 .setViewListener { v ->
                     v.apply {
+                        mDivider.visibility = if (data.force_update) View.GONE else View.VISIBLE
+                        mBtnCancel.visibility = if (data.force_update) View.GONE else View.VISIBLE
                         mTitle.text = data.name
                         mInfo.text = data.info
                         mBtnCancel.setOnClickListener {
                             dialog.dismiss()
                             startActivity<LoginActivity>()
+                            finish()
                         }
                         mBtnConfirm.setOnClickListener {
                             dialog.dismiss()
                             //下载路径
                             val path = Environment.getExternalStorageDirectory().absolutePath.plus("/cqebd/")
-                            download("http://ebdexstyle.oss-cn-hangzhou.aliyuncs.com/exlive_v1.4.apk", path, data.file_name)
+                            download(data.download_url, path, data.file_name)
                         }
                     }
                 }
@@ -118,6 +126,7 @@ class StartActivity : BaseActivity() {
         val dialog = FancyDialogFragment.create()
                 .setCanCancelOutside(false)
                 .setLayoutRes(R.layout.dialog_download_layout)
+                .setWidth(this, 260)
                 .setViewListener {
                     mDownloadProgress = it.findViewById(R.id.mDownloadProgress)
                 }
@@ -131,16 +140,16 @@ class StartActivity : BaseActivity() {
                         mDownloadProgress?.let {
                             val mProgress: Int = (progress * 100).toInt()
                             it.progress = mProgress
-                            if (mProgress == 100){
+                            if (mProgress == 100) {
                                 dialog.dismiss()
                                 val i = Intent(Intent.ACTION_VIEW)
                                 val data: Uri
-                                val filePath = path+fileName
+                                val filePath = path + fileName
                                 val file = File(filePath)
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){// 大于7.0
-                                    data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName  }.provider", file)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {// 大于7.0
+                                    data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
                                     i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                }else{
+                                } else {
                                     data = Uri.fromFile(file)
                                 }
                                 i.setDataAndType(data, "application/vnd.android.package-archive")

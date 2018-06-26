@@ -77,6 +77,10 @@ class MineFragment : BaseFragment() {
 
 
     override fun bindEvents() {
+        mBtnMsg.setOnClickListener {
+            startActivity<MessageActivity>()
+        }
+
         item_flower_list.setOnClickListener {
             val flowerFormat = "Report/ReportFlower?ID=$loginId"
             val url = WorkService.BASE_WEB_URL.plus(flowerFormat)
@@ -93,7 +97,8 @@ class MineFragment : BaseFragment() {
             Album.create().single().start(this)
         }
         item_about.setOnClickListener {
-            startActivity<AboutActivity>()
+//            startActivity<AboutActivity>()
+//            startActivity<CallbackActivity>()
         }
 
         item_my_share.setOnClickListener {
@@ -222,12 +227,10 @@ class MineFragment : BaseFragment() {
                             .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
                                 override fun onSucceed(response: BaseResponse<Unit>?) {
                                     response?.let {
-                                        if (it.isSuccess) {
-                                            toast(it.message)
-                                            subscription.cancel()
-                                            btnVerify.isEnabled = true
-                                            btnVerify.text = "获取验证码"
-                                        }
+                                        toast(it.message)
+                                        subscription.cancel()
+                                        btnVerify.isEnabled = true
+                                        btnVerify.text = "获取验证码"
                                     }
                                 }
 

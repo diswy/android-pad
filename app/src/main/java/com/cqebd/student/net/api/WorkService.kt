@@ -140,7 +140,10 @@ interface WorkService {
             @Query("keyName") keyName: String = "AndroidMergeUpdate")
             : Call<BaseResponse<String>>
 
-    @GET("api/Account/getTelCode")
+    /**
+     * 获取验证码
+     */
+    @GET("api/Account/GetTelCode")
     fun getTelCode(
             @Query("loginName") loginName: String
             , @Query("type") type: Int)
@@ -154,5 +157,27 @@ interface WorkService {
             @Query("Pwd") Pwd: String,
             @Query("UserId") userId: Long = loginId)
             : Call<BaseResponse<Unit>>
+
+    /**
+     * 获取消息列表
+     */
+    @GET("/api/Account/GetMsgList")
+    fun getMsgList(
+            @Query("index") index: Int,
+//            @Query("type") type: Int,
+            @Query("day") day: Int? = null,
+            @Query("status") status: Int? = null,
+            @Query("studentid") studentid: Long = loginId)
+            : Call<BaseResponse<MessageData>>
+
+    /**
+     * 消息阅读反馈
+     */
+    @GET("/api/Account/ReadrMsg")
+    fun readMsg(
+            @Query("type") type: Int,
+            @Query("id") id: Int,
+            @Query("studentid") studentid: Long = loginId)
+            : Call<ResponseBody>
 
 }

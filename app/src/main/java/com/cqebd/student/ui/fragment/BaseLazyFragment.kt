@@ -51,6 +51,7 @@ abstract class BaseLazyFragment : Fragment() {
     override fun onDestroyView() {
         mIsVisible = false
         mIsInit = false
+        onInvisible()
         super.onDestroyView()
     }
 

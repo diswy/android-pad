@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -36,6 +37,8 @@ import java.util.HashSet
 class LoginActivity : BaseActivity() {
     private val loadingDialog by lazy { LoadingDialog() }
     override fun setContentView() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_login)
     }
 

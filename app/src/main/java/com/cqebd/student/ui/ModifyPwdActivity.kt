@@ -24,7 +24,7 @@ class ModifyPwdActivity : BaseActivity() {
         mBtnCommit.setOnClickListener {
             if (check()){
                 NetClient.videoService()
-                        .modifyPwd(mOldPwd.text.toString(), mOldPwd2.text.toString())
+                        .modifyPwd(mOldPwd.text.toString(), mNewPwd.text.toString())
                         .enqueue(object : NetCallBack<BaseBean>() {
                             override fun onSucceed(response: BaseBean?) {
                                 response?.let {
@@ -50,16 +50,15 @@ class ModifyPwdActivity : BaseActivity() {
             toast("新密码不能为空")
             return false
         }
-        if (TextUtils.isEmpty(mOldPwd2.text.toString())){
+        if (TextUtils.isEmpty(mNewPwd2.text.toString())){
             toast("请再次确认密码")
             return false
         }
-        if (mOldPwd.text.toString() != mOldPwd2.text.toString()){
+        if (mNewPwd2.text.toString() != mNewPwd.text.toString()){
             toast("两次密码不一致")
             return false
         }
         return true
     }
-
 
 }

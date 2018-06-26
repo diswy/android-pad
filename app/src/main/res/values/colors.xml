@@ -103,6 +103,17 @@
     <color name="color_bg_d1">#d1d1d1</color>
     <color name="color_333a42">#333a42</color>
     <color name="color_616161">#616161</color>
-    <color name="color_f2f6f9">#f2f6f9</color>
+    <color name="bg_theme">#f2f6f9</color>
+    <color name="color_716f6f">#716f6f</color>
+    <color name="tv33">#333333</color>
+
+    <color name="sub_math">#df2272</color>
+    <color name="sub_en">#dd9a25</color>
+    <color name="sub_wuli">#43a3ef</color>
+    <color name="sub_cn">#dd478f</color>
+    <color name="sub_huaxue">#24ca99</color>
+    <color name="sub_music">#19cce6</color>
+
+
 
 </resources>

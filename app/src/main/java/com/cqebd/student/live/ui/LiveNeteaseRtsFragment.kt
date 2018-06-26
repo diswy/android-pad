@@ -39,8 +39,6 @@ import com.netease.nimlib.sdk.rts.model.RTSData
 import com.netease.nimlib.sdk.rts.model.RTSTunData
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_live_netease_rts.*
-import org.jetbrains.anko.backgroundColorResource
-import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.support.v4.dip
 import java.io.UnsupportedEncodingException
 
@@ -52,6 +50,7 @@ import java.io.UnsupportedEncodingException
 class LiveNeteaseRtsFragment : BaseFragment() {
     private var mSessionId: String? = null
     private var mCreator: String? = null
+    private var hasRtsPermission = false
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mSessionId = arguments?.getString("rtsName")
@@ -78,27 +77,28 @@ class LiveNeteaseRtsFragment : BaseFragment() {
     }
 
     override fun bindEvents() {
-        mBtnApply.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {// 默认为true
+        mBtnApply.setOnClickListener {
+            if (!hasRtsPermission) {
                 mCreator?.let {
                     val mData = EbdCustomNotification("live", "1", IWB_IN, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                     MsgManager.instance().sendP2PCustomNotification(it, mData)
                     mBtnApply.isEnabled = false
-                    mBtnApply.setBackgroundResource(R.color.colorPrimary)
                 }
             } else {
                 mCreator?.let {
                     val mData = EbdCustomNotification("live", "1", IWB_CANCEL, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                     MsgManager.instance().sendP2PCustomNotification(it, mData)
-                    mBtnApply.setBackgroundResource(R.color.status_run)
-
                 }
             }
         }
 
+        mBtnClear.setOnClickListener {
+            mDoodleView.clear()
+        }
 
+        //paintback()
     }
 
     override fun onDestroy() {
@@ -181,7 +181,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
         mBtnApply.isEnabled = true
     }
 
-    fun setBtnChecked(isChecked: Boolean){
+    fun setBtnChecked(isChecked: Boolean) {
         mBtnApply.isEnabled = isChecked
     }
 

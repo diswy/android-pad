@@ -3,20 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorWhite"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="24dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:layout_marginTop="10dp"
+    android:paddingTop="24dp">
 
     <TextView
         android:id="@+id/text_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:textColor="@color/color_716f6f"
         android:textSize="12sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/text_subject"
+        app:layout_constraintTop_toTopOf="@+id/text_count"
         tools:text="2017.12.05" />
 
     <TextView
@@ -50,8 +52,9 @@
         android:id="@+id/text_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:textSize="12sp"
+        android:textColor="@color/color_716f6f"
         app:layout_constraintLeft_toLeftOf="@id/text_name"
         app:layout_constraintTop_toBottomOf="@id/text_name"
         tools:text="做错21题" />
@@ -60,8 +63,10 @@
         android:id="@+id/text_job_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="38dp"
+        android:textColor="@color/color_716f6f"
         android:textSize="12sp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_count"
         app:layout_constraintTop_toTopOf="@id/text_count"
         tools:text="期末复习" />
 </android.support.constraint.ConstraintLayout>

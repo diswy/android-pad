@@ -11,6 +11,7 @@ import com.cqebd.student.R
 import com.cqebd.student.`interface`.CustomCallback
 import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.event.STATUS_TYPE
+import com.cqebd.student.fix_system_bug.WrapContentLinearLayoutManager
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.repository.NetworkResource
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_wrong_question.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import org.jetbrains.anko.backgroundResource
 
 /**
  * 错题本
@@ -77,20 +79,30 @@ class WrongQuestionFragment : BaseLazyFragment() {
         filterViewModel.subject.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             getWrongQuestionList()
         })
 
         filterViewModel.jobType.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             getWrongQuestionList()
         })
-
+        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
         adapter = object : BaseQuickAdapter<WrongQuestion, BaseViewHolder>(R.layout.item_wrong_question, pageProcess.data) {
             override fun convert(helper: BaseViewHolder?, item: WrongQuestion) {
                 helper?.itemView?.apply {
                     text_name.text = item.Name
                     text_subject.text = item.SubjectTypeName.take(1)
+                    when(text_subject.text.toString()){
+                        "数"-> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
+                        "英"-> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
+                        "语"-> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
+                        "化"-> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
+                        "物"-> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
+                        "音"-> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
+                    }
                     text_count.text = "做错%s题".format(item.ErrorCount)
                     text_time.text = formatTimeYMD(item.DateTime)
                     text_job_type.text = item.PapersTypeName

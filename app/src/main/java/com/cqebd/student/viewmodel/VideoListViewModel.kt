@@ -23,7 +23,7 @@ class VideoListViewModel(private val filterViewModel: FilterViewModel) : ViewMod
         val month1 = 30 * 24 * 60 * 60 * 1000L
         val month2 = 60 * 24 * 60 * 60 * 1000L
         videoList.value = data?.filter {
-            val timeDif = Math.abs(System.currentTimeMillis() - formatTime(it.StartDate))
+            val timeDif = Math.abs(System.currentTimeMillis() - formatTime(it.StartDate!!))
             val dateId = if (timeDif < day7) 1 else if (timeDif < month1) 2 else if (timeDif < month2) 3 else 4
             val status = if (it.IsFeedback) 2 else 1
             formatTime(it.StartDate)

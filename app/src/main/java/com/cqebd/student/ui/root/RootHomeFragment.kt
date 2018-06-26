@@ -16,6 +16,7 @@ import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoDetailsActivity
+import com.cqebd.student.vo.entity.CourseInfo
 import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.RootHomeEntity
 import com.cqebd.student.vo.entity.VideoInfo
@@ -36,6 +37,7 @@ class RootHomeFragment : BaseFragment() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        smart_refresh_layout.isEnableRefresh = false
         headerView = initHeaderView()
         headerView.apply {
             mADPager.setImagesUrl(arrayListOf(
@@ -62,8 +64,7 @@ class RootHomeFragment : BaseFragment() {
                     override fun onSucceed(response: BaseResponse<List<VideoInfo>>?) {
                         Logger.json(Gson().toJson(response?.data))
                         response?.data?.let {
-                            adapter.setNewData(excuseData(it))
-
+                            adapter.setNewData(excuseData(it.take(5)))
                         }
                     }
 
@@ -95,5 +96,4 @@ class RootHomeFragment : BaseFragment() {
         }
         return mData
     }
-
 }

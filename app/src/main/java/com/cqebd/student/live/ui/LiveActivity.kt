@@ -1,6 +1,5 @@
 package com.cqebd.student.live.ui
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -10,14 +9,10 @@ import android.view.KeyEvent
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.http.NetCallBack
-import com.cqebd.student.live.custom.DocAttachment
 import com.cqebd.student.live.custom.VideoAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.entity.LiveByRemote
@@ -68,6 +63,7 @@ class LiveActivity : BaseActivity() {
     private var mHasPermission = false// 是否具备视频权限
     val mChat = LiveChatFragment()
     val mRts = LiveNeteaseRtsFragment()
+    var mApply = false // false 可以申请 true 申请中
 
 
     override fun setContentView() {
@@ -75,12 +71,12 @@ class LiveActivity : BaseActivity() {
     }
 
     override fun bindEvents() {
-        mTestBtn.setOnClickListener {
-            upMic()
-        }
-        mTestBtn2.setOnClickListener {
-            downMic(false)
-        }
+//        mTestBtn.setOnClickListener {
+//            upMic()
+//        }
+//        mTestBtn2.setOnClickListener {
+//            downMic(false)
+//        }
         //---------------
         mToolbar.setNavigationOnClickListener {
             leaveRoom()
@@ -90,32 +86,40 @@ class LiveActivity : BaseActivity() {
 
         mBtnApplyVideo.setOnClickListener {
             mCreator?.let {
-                if (mBtnApplyVideo.text.toString() == "互动") {
-                    mBtnApplyVideo.text = "取消"
+                if (!mApply){
+                    mBtnApplyVideo.setImageResource(R.drawable.ic_cancel_hand_up)
                     mBtnApplyVideo.isEnabled = false
                     val mData = EbdCustomNotification("live", "1", VIDEO_IN, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                     MsgManager.instance().sendP2PCustomNotification(it, mData)
                     btnTask()
-                } else {
-                    mBtnApplyVideo.text = "互动"
+                }else{
+                    mBtnApplyVideo.setImageResource(R.drawable.ic_hand_up)
                     downMic(false)
                     val mData = EbdCustomNotification("live", "1", VIDEO_CANCEL, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                     MsgManager.instance().sendP2PCustomNotification(it, mData)
                 }
+                mApply = !mApply
             }
         }
 
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onBackPressed() {
         leaveRoom()
         exitRoom()
-        return super.onKeyDown(keyCode, event)
+        super.onBackPressed()
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        mToolbar.inflateMenu(R.menu.live_video_refresh)
+        mToolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.mBtnRefresh && mLiveAddress.size > 0) {
+                videoView.setVideoPath(mLiveAddress[0], "", R.drawable.ic_login_logo)
+            }
+            return@setOnMenuItemClickListener false
+        }
         parseIntent()
         videoView.setLiveMode(true)// 该界面全部为直播界面
         initTag(hasVchat)
@@ -152,7 +156,7 @@ class LiveActivity : BaseActivity() {
             VIDEO_IN_REFUSE -> {
                 mHasPermission = false
                 mBtnApplyVideo.isEnabled = true
-                mBtnApplyVideo.text = "互动"
+                mBtnApplyVideo.setImageResource(R.drawable.ic_hand_up)
                 toast("老师拒绝了你的上麦请求")
             }
             VIDEO_OUT -> {
@@ -193,7 +197,7 @@ class LiveActivity : BaseActivity() {
                     val names = attachment.hasPermissionList.split(",")
                     if (names.contains(NetEaseCache.getAccount())) {
                         val mList = ArrayList<String>()
-                        for (item in names){
+                        for (item in names) {
                             mList.add(item)
 //                            if (item != NetEaseCache.getAccount()){
 //                            }
@@ -240,7 +244,14 @@ class LiveActivity : BaseActivity() {
         hasChat = intent.getIntExtra("hasChat", 0) != 0 // 暂时对我来说没有用
         hasIWB = intent.getIntExtra("hasIWB", 0) != 0
         hasVchat = intent.getIntExtra("hasVchat", 0) != 0// 是否是互动直播
+        toolbar_title.text = intent.getStringExtra("title")
         Logger.d("id = $id hasChat = $hasChat hasIWB = $hasIWB hasVchat = $hasIWB")
+
+        if (hasVchat) {
+            mBtnApplyVideo.visibility = View.VISIBLE
+        } else {
+            mBtnApplyVideo.visibility = View.GONE
+        }
     }
 
     private fun initTag(hasRTS: Boolean = false) {
@@ -343,7 +354,7 @@ class LiveActivity : BaseActivity() {
                 enterRequest = null
                 mCreator = result.roomInfo.creator
                 mRts.setCreator(result.roomInfo.creator)// 设置创建者
-                toast("进入聊天室成功，聊天室ID：${result.roomInfo.roomId}教师ID：${result.roomInfo.creator}")
+//                toast("进入聊天室成功，聊天室ID：${result.roomInfo.roomId}教师ID：${result.roomInfo.creator}")
 //                roomInfo = result.roomInfo
 //                val member = result.member
 //                member.roomId = roomInfo?.roomId
@@ -358,6 +369,7 @@ class LiveActivity : BaseActivity() {
                     ResponseCode.RES_ENONEXIST.toInt() -> toast("该聊天室不存在")
                     else -> toast("enter chat room failed, code = $code")
                 }
+                finish()
             }
 
             override fun onException(exception: Throwable) {
@@ -531,7 +543,7 @@ class LiveActivity : BaseActivity() {
         RxCounter.tick(30).doOnComplete {
             if (!mHasPermission) {
                 mBtnApplyVideo.isEnabled = true
-                mBtnApplyVideo.text = "互动"
+                mBtnApplyVideo.setImageResource(R.drawable.ic_hand_up)
                 mCreator?.let {
                     val mData = EbdCustomNotification("live", "1", VIDEO_CANCEL, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
@@ -549,7 +561,7 @@ class LiveActivity : BaseActivity() {
                 .setViewListener {
                     it.apply {
                         mBtnConfirm.setOnClickListener {
-                            mBtnApplyVideo.text = "取消"
+                            mBtnApplyVideo.setImageResource(R.drawable.ic_cancel_hand_up)
                             upMic(true)
                             dialog.dismiss()
                         }
@@ -561,6 +573,5 @@ class LiveActivity : BaseActivity() {
                 }
                 .show(fragmentManager, "")
     }
-
 
 }

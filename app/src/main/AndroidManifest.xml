@@ -84,13 +84,12 @@
             android:authorities="com.cqebd.student.ipc.provider"
             android:exported="false"
             android:process=":core" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            tools:replace="android:authorities"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/download_file_paths"
@@ -167,7 +166,9 @@
             android:name=".live.ui.LiveActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTask" />
-        <activity android:name=".ui.ModifyPwdActivity"></activity>
+        <activity android:name=".ui.ModifyPwdActivity" />
+        <activity android:name=".ui.MessageActivity" />
+        <activity android:name=".ui.CallbackActivity"></activity>
     </application>
 
 </manifest>

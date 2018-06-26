@@ -3,7 +3,6 @@ package com.cqebd.student.ui.work
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
@@ -13,6 +12,7 @@ import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.constant.Constant
 import com.cqebd.student.event.STATUS_SUBJECT
 import com.cqebd.student.event.STATUS_TYPE
+import com.cqebd.student.fix_system_bug.WrapContentLinearLayoutManager
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.colorForRes
@@ -25,6 +25,7 @@ import com.cqebd.student.viewmodel.WorkListViewModel
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.WorkInfo
 import com.cqebd.teacher.vo.Status
+import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
@@ -32,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_work_content.*
 import kotlinx.android.synthetic.main.item_work.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import org.jetbrains.anko.backgroundResource
 
 /**
  * 作业内容
@@ -84,22 +86,31 @@ class HomeworkContentFragment : BaseLazyFragment() {
         filterViewModel.jobStatus.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             workListViewModel.getWorkList()
         })
 
         filterViewModel.jobType.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             workListViewModel.getWorkList()
         })
-
+        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
         adapter = object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work, pageProcess.data) {
             override fun convert(helper: BaseViewHolder?, item: WorkInfo) {
                 helper?.itemView?.apply {
                     text_name.text = item.Name
                     text_subject.text = item.SubjectName.take(1)
+                    when(text_subject.text.toString()){
+                        "数"-> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
+                        "英"-> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
+                        "语"-> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
+                        "化"-> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
+                        "物"-> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
+                        "音"-> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
+                    }
                     text_count.text = "共%s题".format(item.QuestionCount)
-                    text_start_time.text = "布置时间: ".plus(formatTimeYMDHM(item.publishTime))
                     text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
                     when (item.Status) {
                         -1 -> {
@@ -138,12 +149,10 @@ class HomeworkContentFragment : BaseLazyFragment() {
 
         adapter.setOnLoadMoreListener({
             if (pageProcess.data.isNotEmpty() && pageProcess.data.size >= 20){
-                println("--->>>4")
                 workListViewModel.getWorkList()
             }
         }, recyclerView)
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
         workListViewModel.workInfoList.observe(this, Observer {
@@ -206,6 +215,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
 
     @Subscribe(code = STATUS_SUBJECT)
     fun filterSubject(status: FilterData) {
+        Logger.wtf(status.Name)
         filterViewModel.filterSubject(status)
     }
 
@@ -213,6 +223,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
     fun refreshData() {
         pageLoadView.show = true
         pageProcess.data.clear()
+        adapter.notifyDataSetChanged()
         workListViewModel.getWorkList()
     }
 

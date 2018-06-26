@@ -33,6 +33,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:id="@+id/mBtnMsg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
@@ -104,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:drawableEnd="@drawable/ic_mine_bind_phone"
+                    android:drawableEnd="@mipmap/ic_mine_bind_phone"
                     android:drawablePadding="8dp"
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="@+id/text_name"
@@ -205,6 +206,7 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/item_about"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"

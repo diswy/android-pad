@@ -17,6 +17,7 @@ import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.event.STATUS_DATE
 import com.cqebd.student.event.STATUS_QUESTION_TYPE
 import com.cqebd.student.event.STATUS_SUBJECT
+import com.cqebd.student.fix_system_bug.WrapContentLinearLayoutManager
 import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMDHM
@@ -85,15 +86,17 @@ class BeSharedFragment : BaseLazyFragment() {
         filterViewModel.shareHomeworkGrade.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             shareHomeworkViewModel.getShareHomeworkList()
         })
 
         filterViewModel.shareHomeworkDate.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
+            adapter.notifyDataSetChanged()
             shareHomeworkViewModel.getShareHomeworkList()
         })
-
+        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
         adapter = object : BaseQuickAdapter<ShareHomeworkItem, BaseViewHolder>(R.layout.item_share_homework, pageProcess.data) {
             @SuppressLint("SetTextI18n")
             override fun convert(helper: BaseViewHolder?, item: ShareHomeworkItem) {
