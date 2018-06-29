@@ -15,6 +15,7 @@ import android.widget.*
 import com.anko.static.dp
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
@@ -481,7 +482,13 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         val type: Int = Util.inferContentType(uri)
         return when (type) {
             C.TYPE_HLS -> HlsMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
-            else -> ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
+            else -> {
+                if (uri.toString().contains("rtmp")) {
+                    ExtractorMediaSource.Factory(RtmpDataSourceFactory()).createMediaSource(mUri)
+                } else {
+                    ExtractorMediaSource.Factory(mediaDataSourceFactory).createMediaSource(mUri)
+                }
+            }
         }
     }
 

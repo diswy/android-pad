@@ -161,14 +161,13 @@
             android:name=".ui.LiveVideoActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTask" />
-        <activity android:name=".live.ui.VideoLiveActivity" />
         <activity
             android:name=".live.ui.LiveActivity"
             android:configChanges="orientation|screenSize|keyboard"
             android:launchMode="singleTask" />
         <activity android:name=".ui.ModifyPwdActivity" />
         <activity android:name=".ui.MessageActivity" />
-        <activity android:name=".ui.CallbackActivity"></activity>
+        <activity android:name=".ui.CallbackActivity" />
     </application>
 
 </manifest>

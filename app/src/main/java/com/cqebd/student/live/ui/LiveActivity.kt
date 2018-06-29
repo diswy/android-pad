@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
-import com.cqebd.student.live.custom.VideoAttachment
+import com.cqebd.student.live.custom.NormalAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.entity.LiveByRemote
 import com.cqebd.student.live.entity.PullAddress
@@ -71,13 +70,6 @@ class LiveActivity : BaseActivity() {
     }
 
     override fun bindEvents() {
-//        mTestBtn.setOnClickListener {
-//            upMic()
-//        }
-//        mTestBtn2.setOnClickListener {
-//            downMic(false)
-//        }
-        //---------------
         mToolbar.setNavigationOnClickListener {
             leaveRoom()
             exitRoom()
@@ -86,14 +78,14 @@ class LiveActivity : BaseActivity() {
 
         mBtnApplyVideo.setOnClickListener {
             mCreator?.let {
-                if (!mApply){
+                if (!mApply) {
                     mBtnApplyVideo.setImageResource(R.drawable.ic_cancel_hand_up)
                     mBtnApplyVideo.isEnabled = false
                     val mData = EbdCustomNotification("live", "1", VIDEO_IN, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
                     MsgManager.instance().sendP2PCustomNotification(it, mData)
                     btnTask()
-                }else{
+                } else {
                     mBtnApplyVideo.setImageResource(R.drawable.ic_hand_up)
                     downMic(false)
                     val mData = EbdCustomNotification("live", "1", VIDEO_CANCEL, "STUDENT", loginId,
@@ -136,7 +128,6 @@ class LiveActivity : BaseActivity() {
     private fun registerObservers(register: Boolean) {
         NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
         NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
-
 //        NIMClient.getService(ChatRoomServiceObserver::class.java).observeKickOutEvent(kickOutObserver, register)
 //        NIMClient.getService(AuthServiceObserver::class.java).observeOnlineStatus(userStatusObserver, register)
     }
@@ -190,47 +181,15 @@ class LiveActivity : BaseActivity() {
         val mMsgSingle = messages[messages.size - 1]
         when (mMsgSingle.msgType) {
             MsgTypeEnum.custom -> {
-                if (mMsgSingle.attachment is VideoAttachment) {
-                    val attachment = mMsgSingle.attachment as VideoAttachment
-//                    val
-                    Logger.d("群发消息：本人ID = $loginId , ${attachment.hasPermissionList}")
-                    val names = attachment.hasPermissionList.split(",")
-                    if (names.contains(NetEaseCache.getAccount())) {
-                        val mList = ArrayList<String>()
-                        for (item in names) {
-                            mList.add(item)
-//                            if (item != NetEaseCache.getAccount()){
-//                            }
+                if (mMsgSingle.attachment is NormalAttachment) {
+                    val attachment = mMsgSingle.attachment as NormalAttachment
+                    if (attachment.mCustomMsg?.name == "video") {
+                        if (attachment.mCustomMsg?.parameter == "periodover") {
+
+                        } else {
+                            addOtherPeople(attachment.mCustomMsg?.content!!)
                         }
 
-                        mStudent1.removeAllViews()
-                        mStudent2.removeAllViews()
-                        mList.remove(NetEaseCache.getAccount())
-                        when (mList.size) {
-                            0 -> {
-                                mStudent1.visibility = View.GONE
-                                mStudent2.visibility = View.GONE
-                            }
-                            1 -> {
-                                mStudent1.visibility = View.VISIBLE
-                                mStudent2.visibility = View.GONE
-                                val remoteRender = AVChatSurfaceViewRenderer(this)
-                                AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
-                                addIntoPreviewLayout(remoteRender, mStudent1)
-                            }
-                            2 -> {
-                                mStudent1.visibility = View.VISIBLE
-                                mStudent2.visibility = View.VISIBLE
-
-                                val remoteRender = AVChatSurfaceViewRenderer(this)
-                                AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
-                                addIntoPreviewLayout(remoteRender, mStudent1)
-
-                                val remoteRender2 = AVChatSurfaceViewRenderer(this)
-                                AVChatManager.getInstance().setupRemoteVideoRender(mList[1], remoteRender2, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
-                                addIntoPreviewLayout(remoteRender2, mStudent2)
-                            }
-                        }
                     }
                 }
             }
@@ -267,12 +226,10 @@ class LiveActivity : BaseActivity() {
     }
 
     private fun initAdapter(roomId: String, rtsName: String) {
-//        val mChat = LiveChatFragment()
         val bundle = Bundle()
         bundle.putString("roomID", roomId)
         mChat.arguments = bundle
 
-//        val mRts = LiveNeteaseRtsFragment()
         val rtsBundle = Bundle()
         rtsBundle.putString("rtsName", rtsName)
         mRts.arguments = rtsBundle
@@ -354,12 +311,6 @@ class LiveActivity : BaseActivity() {
                 enterRequest = null
                 mCreator = result.roomInfo.creator
                 mRts.setCreator(result.roomInfo.creator)// 设置创建者
-//                toast("进入聊天室成功，聊天室ID：${result.roomInfo.roomId}教师ID：${result.roomInfo.creator}")
-//                roomInfo = result.roomInfo
-//                val member = result.member
-//                member.roomId = roomInfo?.roomId
-                //ChatRoomMemberCache.getInstance().saveMyMember(member);
-                //creator = roomInfo.getCreator()
             }
 
             override fun onFailed(code: Int) {
@@ -374,7 +325,6 @@ class LiveActivity : BaseActivity() {
 
             override fun onException(exception: Throwable) {
                 enterRequest = null
-//                toast("enter chat room exception,$exception.message")
             }
         })
     }
@@ -384,7 +334,6 @@ class LiveActivity : BaseActivity() {
             NIMClient.getService(ChatRoomService::class.java).exitChatRoom(it)
         }
     }
-
 
     //--------------------------音视频模块--------------------------
     private var videoCapturer: AVChatCameraCapturer? = null // 视频采集模块
@@ -572,6 +521,46 @@ class LiveActivity : BaseActivity() {
                     }
                 }
                 .show(fragmentManager, "")
+    }
+
+    private fun addOtherPeople(hasPermissionList: String) {
+        Logger.d("群发消息：本人ID = $loginId , $hasPermissionList")
+        val names = hasPermissionList.split(",")
+        if (names.contains(NetEaseCache.getAccount())) {
+            val mList = ArrayList<String>()
+            for (item in names) {
+                mList.add(item)
+            }
+
+            mStudent1.removeAllViews()
+            mStudent2.removeAllViews()
+            mList.remove(NetEaseCache.getAccount())
+            when (mList.size) {
+                0 -> {
+                    mStudent1.visibility = View.GONE
+                    mStudent2.visibility = View.GONE
+                }
+                1 -> {
+                    mStudent1.visibility = View.VISIBLE
+                    mStudent2.visibility = View.GONE
+                    val remoteRender = AVChatSurfaceViewRenderer(this)
+                    AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                    addIntoPreviewLayout(remoteRender, mStudent1)
+                }
+                2 -> {
+                    mStudent1.visibility = View.VISIBLE
+                    mStudent2.visibility = View.VISIBLE
+
+                    val remoteRender = AVChatSurfaceViewRenderer(this)
+                    AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                    addIntoPreviewLayout(remoteRender, mStudent1)
+
+                    val remoteRender2 = AVChatSurfaceViewRenderer(this)
+                    AVChatManager.getInstance().setupRemoteVideoRender(mList[1], remoteRender2, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
+                    addIntoPreviewLayout(remoteRender2, mStudent2)
+                }
+            }
+        }
     }
 
 }

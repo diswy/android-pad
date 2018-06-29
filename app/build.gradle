@@ -49,7 +49,7 @@ android {
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // 输出apk名称为cqebd_merge_android_v1.0.apk
-                        outputFileName = "diandian_point_android_v${defaultConfig.versionName}.apk"
+                        outputFileName = "diandian_android_v${defaultConfig.versionName}.apk"
                     }
                 }
             }

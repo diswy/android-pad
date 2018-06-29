@@ -234,7 +234,6 @@
                 android:textColor="@color/color_mine_item"
                 android:textSize="12sp" />
 
-
         </LinearLayout>
 
     </ScrollView>

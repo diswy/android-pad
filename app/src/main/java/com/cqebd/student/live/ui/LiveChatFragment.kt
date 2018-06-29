@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.live.adapter.ChatRoomMultipleAdapter
-import com.cqebd.student.live.custom.DocAttachment
 import com.cqebd.student.live.entity.ChatRoomEntity
 import com.cqebd.student.utils.KeybordS
 import com.cqebd.student.vo.entity.UserAccount
@@ -128,7 +127,7 @@ class LiveChatFragment : BaseFragment() {
         }
     }
 
-    fun onCurrent(){
+    fun onCurrent() {
         mChatRoomRv.adapter = mAdapter
     }
 
@@ -191,13 +190,6 @@ class LiveChatFragment : BaseFragment() {
             }
             MsgTypeEnum.notification -> {
 
-            }
-
-            MsgTypeEnum.custom -> {
-                if (mMsgSingle.attachment is DocAttachment) {
-                    val attachment = mMsgSingle.attachment as DocAttachment
-                    Logger.d(attachment.mPPTAddress)
-                }
             }
             else -> {
             }

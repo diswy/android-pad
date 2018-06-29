@@ -8,13 +8,10 @@ import android.os.Environment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.cqebd.student.R
-import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.live.adapter.ChatRoomMultipleAdapter
-import com.cqebd.student.live.custom.DocAttachment
+import com.cqebd.student.live.custom.NormalAttachment
 import com.cqebd.student.live.entity.ChatRoomEntity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.utils.KeybordS
@@ -55,7 +52,6 @@ class ChatRoomFragment : BaseLazyFragment() {
     }
 
     fun onCurrentInit() {
-        parseIntent()
         // 登录聊天室
         enterRoom()
         mChatRoomRv.adapter = mAdapter
@@ -146,12 +142,6 @@ class ChatRoomFragment : BaseLazyFragment() {
             }
         }
     }
-
-    private fun parseIntent() {
-//        roomId = arguments?.getString("chat_room_id")
-//        roomId = "25154773"
-    }
-
 
     private var enterRequest: AbortableFuture<EnterChatRoomResultData>? = null
     private fun enterRoom() {
@@ -248,21 +238,11 @@ class ChatRoomFragment : BaseLazyFragment() {
             MsgTypeEnum.notification -> {
 
             }
-
-            MsgTypeEnum.custom -> {
-                if (mMsgSingle.attachment is DocAttachment) {
-                    val attachment = mMsgSingle.attachment as DocAttachment
-                    Logger.d(attachment.mPPTAddress)
-                }
-            }
             else -> {
             }
         }
         if (mChatRoomRv == null) {
             Logger.e("mChatRoomRv null")
-        }
-        if (mAdapter.data == null) {
-            Logger.e("mAdapter null")
         }
         if (!mAdapter.data.isEmpty() && mChatRoomRv != null) {
             mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)

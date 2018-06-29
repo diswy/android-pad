@@ -16,7 +16,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.glide.GlideApp
-import com.cqebd.student.live.custom.DocAttachment
+import com.cqebd.student.live.custom.NormalAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.helper.IWB_CANCEL
 import com.cqebd.student.live.helper.IWB_IN
@@ -142,17 +142,19 @@ class LiveNeteaseRtsFragment : BaseFragment() {
         val mMsgSingle = messages[messages.size - 1]
         when (mMsgSingle.msgType) {
             MsgTypeEnum.custom -> {
-                if (mMsgSingle.attachment is DocAttachment) {
-                    val attachment = mMsgSingle.attachment as DocAttachment
-                    Logger.wtf(attachment.mPPTAddress)
-                    GlideApp.with(this@LiveNeteaseRtsFragment)
-                            .asBitmap()
-                            .load(attachment.mPPTAddress)
-                            .into(object : SimpleTarget<Bitmap>() {
-                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                    mDoodleView.setImageView(resource)
-                                }
-                            })
+                if (mMsgSingle.attachment is NormalAttachment) {
+                    val attachment = mMsgSingle.attachment as NormalAttachment
+                    if (attachment.mCustomMsg?.name == "ppt") {
+                        Logger.d(attachment.mCustomMsg?.content)
+                        GlideApp.with(this@LiveNeteaseRtsFragment)
+                                .asBitmap()
+                                .load(attachment.mCustomMsg?.content)
+                                .into(object : SimpleTarget<Bitmap>() {
+                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                        mDoodleView.setImageView(resource)
+                                    }
+                                })
+                    }
                 }
             }
             else -> {

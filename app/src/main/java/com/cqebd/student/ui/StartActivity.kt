@@ -52,11 +52,11 @@ class StartActivity : BaseActivity() {
 
         RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE
                 , Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.RECORD_AUDIO
                 , Manifest.permission.CAMERA)
                 .subscribe { granted ->
                     if (!granted)
                         toast("您拒绝了必要权限")
-
                     appUpdate()
                 }
     }
