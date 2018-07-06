@@ -16,7 +16,8 @@ import retrofit2.http.*
  */
 interface WorkService {
     companion object {
-        const val BASE_WEB_URL = "http://service.student.cqebd.cn/"
+//        const val BASE_WEB_URL = "http://service.student.cqebd.cn/"
+        const val BASE_WEB_URL = "https://service-student.cqebd.cn/"
     }
 
     /**
@@ -179,5 +180,17 @@ interface WorkService {
             @Query("id") id: Int,
             @Query("studentid") studentid: Long = loginId)
             : Call<ResponseBody>
+
+
+    @POST("api/Feedback/SubmitFeedback")
+    fun submitFeedBk(
+            @Query("WriteUserId") WriteUserId: Long,
+            @Query("WriteUserName") WriteUserName: String,
+            @Query("Title") Title: String,
+            @Query("Countent") Countent: String,
+            @Query("Classify") Classify: String,
+            @Query("Type") type: Int,
+            @Query("SourceType") SourceType: String)
+            : Call<BaseResponse<Unit>>
 
 }

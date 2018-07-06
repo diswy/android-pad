@@ -63,7 +63,7 @@ class MessageActivity : BaseActivity() {
                 it.Status = 1
                 adapter.notifyItemChanged(position)
                 sendReader(it.Type,it.Id)
-                startActivity<AgentWebActivity>("url" to "http://service.student.cqebd.cn/homework/msgdetails?id=${it.Id}")
+                startActivity<AgentWebActivity>("url" to "https://service.student.cqebd.cn/homework/msgdetails?id=${it.Id}")
             }
         }
     }

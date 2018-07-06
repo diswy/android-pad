@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.item_work.view.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import org.jetbrains.anko.backgroundResource
+import org.jetbrains.anko.dip
 
 /**
  * 作业内容
@@ -102,13 +103,13 @@ class HomeworkContentFragment : BaseLazyFragment() {
                 helper?.itemView?.apply {
                     text_name.text = item.Name
                     text_subject.text = item.SubjectName.take(1)
-                    when(text_subject.text.toString()){
-                        "数"-> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
-                        "英"-> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
-                        "语"-> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
-                        "化"-> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
-                        "物"-> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
-                        "音"-> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
+                    when (text_subject.text.toString()) {
+                        "数" -> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
+                        "英" -> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
+                        "语" -> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
+                        "化" -> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
+                        "物" -> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
+                        "音" -> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
                     }
                     text_count.text = "共%s题".format(item.QuestionCount)
                     text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
@@ -128,6 +129,15 @@ class HomeworkContentFragment : BaseLazyFragment() {
                         2 -> {
                             text_status.text = "已批阅"
                             text_status.setTextColor(colorForRes(R.color.status_read))
+                            if (item.IsMedal) {
+                                val medal = resources.getDrawable(R.drawable.ic_medal)
+                                medal.setBounds(0, 0, medal.minimumWidth, medal.minimumHeight)
+                                text_name.setCompoundDrawables(null, null, medal, null)
+                                text_name.compoundDrawablePadding = dip(4)
+                            } else {
+                                text_name.setCompoundDrawables(null, null, null, null)
+                                text_name.compoundDrawablePadding = dip(0)
+                            }
                         }
                     }
 
@@ -139,7 +149,11 @@ class HomeworkContentFragment : BaseLazyFragment() {
                                     "info" to item)
                         } else {
                             val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
-                            startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                            if (item.Status == 2){
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "medal" to item.IsMedal)
+                            }else{
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                            }
                         }
                     }
                 }
@@ -148,7 +162,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
         }
 
         adapter.setOnLoadMoreListener({
-            if (pageProcess.data.isNotEmpty() && pageProcess.data.size >= 20){
+            if (pageProcess.data.isNotEmpty() && pageProcess.data.size >= 20) {
                 workListViewModel.getWorkList()
             }
         }, recyclerView)

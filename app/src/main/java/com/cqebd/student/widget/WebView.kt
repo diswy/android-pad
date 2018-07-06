@@ -48,13 +48,18 @@ class WebView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : WebV
                 super.onReceivedError(view, request, error)
                 loadCallback?.onError()
             }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                loadCallback?.onComplete()
+            }
         }
 
 
         webChromeClient = object :WebChromeClient(){
             override fun onProgressChanged(view: WebView?, progress: Int) {
                 if (progress==100){
-                    loadCallback?.onComplete()
+//                    loadCallback?.onComplete()
                 }else{
                     loadCallback?.onProgress(progress)
                 }

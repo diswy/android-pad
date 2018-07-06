@@ -214,7 +214,7 @@ class BeSharedFragment : BaseLazyFragment() {
     }
 
     private fun toWebActivity(id: Int) {
-        val url = "http://service.student.cqebd.cn/HomeWork/TaskShare?id=%s"// 跳转详情的URL
+        val url = "https://service.student.cqebd.cn/HomeWork/TaskShare?id=%s"// 跳转详情的URL
         startActivity<WebActivity>("url" to url.format(id))
     }
 

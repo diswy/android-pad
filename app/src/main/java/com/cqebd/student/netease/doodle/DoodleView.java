@@ -18,6 +18,7 @@ import com.cqebd.student.netease.NetEaseCache;
 import com.cqebd.student.netease.doodle.action.Action;
 import com.cqebd.student.netease.doodle.action.MyFillCircle;
 import com.cqebd.student.netease.doodle.action.MyPath;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -36,5 +36,6 @@ data class WorkInfo(
         @SerializedName("PuchDateTime")
         var publishTime: String,
         @SerializedName("ExaminationPapersAttachment")
-        val attachments: List<Attachment>?
+        val attachments: List<Attachment>?,
+        val IsMedal: Boolean
 ) : Parcelable

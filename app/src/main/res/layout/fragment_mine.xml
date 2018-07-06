@@ -221,6 +221,20 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/item_send_back"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawablePadding="20dp"
+                android:drawableStart="@drawable/ic_callback"
+                android:gravity="center_vertical"
+                android:paddingEnd="0dp"
+                android:paddingStart="22dp"
+                android:text="一键反馈"
+                android:textColor="@color/color_mine_item"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/item_exit"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"

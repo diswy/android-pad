@@ -19,7 +19,7 @@ import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_wrong_question_details.*
 
 class WrongQuestionDetailsActivity : BaseActivity(), ViewPager.OnPageChangeListener {
-    val mistakeUrl = "http://service.student.cqebd.cn/HomeWork/ErrorQustionAnswer?QuestionID=%s&StudentQuestionsTasksId=%s"
+    val mistakeUrl = "https://service.student.cqebd.cn/HomeWork/ErrorQustionAnswer?QuestionID=%s&StudentQuestionsTasksId=%s"
 
     private val mTaskId by lazy { intent.getIntExtra("taskId", -1) }
     private var mIsScrolled: Boolean = false    // viewpager是否处于惯性滑动

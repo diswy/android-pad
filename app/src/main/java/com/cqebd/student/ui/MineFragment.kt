@@ -105,11 +105,15 @@ class MineFragment : BaseFragment() {
         }
 
         item_leader.setOnClickListener {
-            startActivity<AgentWebActivity>("url" to "http://service.student.cqebd.cn/StudentGroup/task?GroupStudentId=$loginId")
+            startActivity<AgentWebActivity>("url" to "https://service.student.cqebd.cn/StudentGroup/task?GroupStudentId=$loginId")
         }
 
         item_modify_pwd.setOnClickListener {
             startActivity<ModifyPwdActivity>()
+        }
+
+        item_send_back.setOnClickListener {
+            startActivity<CallbackActivity>()
         }
 
         item_exit.setOnClickListener {

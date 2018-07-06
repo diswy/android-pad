@@ -173,6 +173,7 @@ public class TransactionCenter {
     }
 
     private List<Transaction> unpack(String data) {
+        Logger.d("-----data:"+data);
         if (TextUtils.isEmpty(data)) {
             return null;
         }
@@ -182,6 +183,7 @@ public class TransactionCenter {
         for (String p : pieces) {
             Transaction t = Transaction.unpack(p);
             if (t != null) {
+                Logger.d("X = "+t.getX() +"; Y = "+t.getY());
                 transactions.add(t);
             }
         }

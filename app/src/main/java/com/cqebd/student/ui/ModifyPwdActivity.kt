@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.vo.entity.BaseBean
 import kotlinx.android.synthetic.main.activity_modify_pwd.*
@@ -25,8 +26,8 @@ class ModifyPwdActivity : BaseActivity() {
             if (check()){
                 NetClient.videoService()
                         .modifyPwd(mOldPwd.text.toString(), mNewPwd.text.toString())
-                        .enqueue(object : NetCallBack<BaseBean>() {
-                            override fun onSucceed(response: BaseBean?) {
+                        .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
+                            override fun onSucceed(response: BaseResponse<Unit>?) {
                                 response?.let {
                                     toast(it.message)
                                     if (it.isSuccess)

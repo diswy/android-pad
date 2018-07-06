@@ -7,7 +7,8 @@ package com.cqebd.student.constant;
 
 public class Constant {
     public static final String SHARE_PRE_USER_ACCOUNT = "SHARE_PRE_USER_ACCOUNT";
-    public static final String BASE_WEB_URL = "http://service.student.cqebd.cn/";
+//    public static final String BASE_WEB_URL = "http://service.student.cqebd.cn/";
+    public static final String BASE_WEB_URL = "https://service.student.cqebd.cn/";
 
     public static final String TASK_INFO = "TASK_INFO";
     public static final String QUESTION_INFO = "QUESTION_INFO";

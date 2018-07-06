@@ -134,6 +134,6 @@ interface VideoService {
             @Query("Pwd") Pwd: String,
             @Query("NewPwd") NewPwd: String,
             @Query("UserId") UserId: Long = loginId)
-            : Call<BaseBean>
+            : Call<BaseResponse<Unit>>
 
 }

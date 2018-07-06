@@ -35,6 +35,8 @@ public class FancyDialogFragment extends DialogFragment {
     private boolean canCancelOutside = true;
     private boolean isBottom;
     private int width = -1;
+    private int height = -1;
+    private int themeId = -1;
     private Context context;
 
     private ViewListener mViewListener;
@@ -65,6 +67,15 @@ public class FancyDialogFragment extends DialogFragment {
                 params.width = width;
             else
                 params.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+            if (height != -1)
+                params.height = height;
+
+        }
+
+        if (themeId != -1){
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.windowAnimations = themeId;
         }
 
         window.setAttributes(params);
@@ -108,6 +119,26 @@ public class FancyDialogFragment extends DialogFragment {
 
     public FancyDialogFragment setWidth(Context context, int widthDp) {
         width = (int) MeasureUtils.dp2px(context, widthDp);
+        return this;
+    }
+
+    public FancyDialogFragment setHeight(Context context, int heightDp) {
+        height = (int) MeasureUtils.dp2px(context, heightDp);
+        return this;
+    }
+
+    public FancyDialogFragment setWidth(int widthPx) {
+        width = widthPx;
+        return this;
+    }
+
+    public FancyDialogFragment setHeight(int heightPx) {
+        height = heightPx;
+        return this;
+    }
+
+    public FancyDialogFragment setAnimation(int themeId){
+        this.themeId = themeId;
         return this;
     }
 }
