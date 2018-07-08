@@ -187,13 +187,19 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
      */
     protected fun showErrorPage() {
         isError = true
-        webView!!.visibility = View.GONE
-        web_error_layout!!.visibility = View.VISIBLE
+        webView?.let {
+            it.visibility = View.GONE
+        }
+        web_error_layout?.let {
+            it.visibility = View.VISIBLE
+        }
     }
 
     protected fun hideErrorPage() {
         isError = false
-        web_error_layout!!.visibility = View.GONE
+        web_error_layout?.let {
+            it.visibility = View.GONE
+        }
     }
 
     override fun onClick(view: View) {

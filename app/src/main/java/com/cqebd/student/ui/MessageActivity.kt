@@ -10,10 +10,8 @@ import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.formatTimeYMDHM
-import com.cqebd.student.tools.toast
 import com.cqebd.student.vo.entity.Data
 import com.cqebd.student.vo.entity.MessageData
-import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.merge_refresh_layout.*
@@ -63,7 +61,7 @@ class MessageActivity : BaseActivity() {
                 it.Status = 1
                 adapter.notifyItemChanged(position)
                 sendReader(it.Type,it.Id)
-                startActivity<AgentWebActivity>("url" to "https://service.student.cqebd.cn/homework/msgdetails?id=${it.Id}")
+                startActivity<AgentWebActivity>("url" to "https://service-student.cqebd.cn/homework/msgdetails?id=${it.Id}")
             }
         }
     }

@@ -50,8 +50,16 @@ class LoadingDialog : DialogFragment() {
 
 
     fun show(manager: FragmentManager?) {
-        super.show(manager, "loading")
+        show(manager, "loading")
+    }
 
+    override fun show(manager: FragmentManager?, tag: String?) {
+        try {
+            manager?.beginTransaction()?.remove(this)?.commit()
+            super.show(manager, tag)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

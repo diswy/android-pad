@@ -105,7 +105,7 @@ class MineFragment : BaseFragment() {
         }
 
         item_leader.setOnClickListener {
-            startActivity<AgentWebActivity>("url" to "https://service.student.cqebd.cn/StudentGroup/task?GroupStudentId=$loginId")
+            startActivity<AgentWebActivity>("url" to "https://service-student.cqebd.cn/StudentGroup/task?GroupStudentId=$loginId")
         }
 
         item_modify_pwd.setOnClickListener {

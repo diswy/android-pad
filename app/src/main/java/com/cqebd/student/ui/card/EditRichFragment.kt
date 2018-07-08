@@ -1,42 +1,33 @@
 package com.cqebd.student.ui.card
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-
 import com.bumptech.glide.Glide
 import com.cqebd.student.R
 import com.cqebd.student.app.App
+import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.tools.AlbumHelper
 import com.cqebd.student.vo.DataChangeListener
 import com.cqebd.student.vo.entity.AnswerCardDetailInfo
 import com.cqebd.student.vo.entity.AnswerType
 import com.cqebd.student.vo.entity.StudentAnswer
 import com.cqebd.student.widget.AvatarImageView
-
-import java.io.File
-import java.util.HashMap
-
-import butterknife.BindView
-import butterknife.OnClick
-import com.cqebd.student.app.BaseFragment
 import gorden.album.AlbumPicker
 import gorden.lib.anko.static.logError
 import gorden.util.XLog
 import gorden.widget.dialog.BottomMenuDialog
 import kotlinx.android.synthetic.main.item_answer_edit_pager.*
+import java.io.File
+import java.util.*
 
 /**
  * document
@@ -229,7 +220,7 @@ class EditRichFragment : BaseFragment() {
         }
 
         img_pic.setOnClickListener {
-            var filePath = img_pic.getTag(R.id.image_file_path) as? String
+            var filePath: String? = img_pic.getTag(R.id.image_file_path) as? String
             if (TextUtils.isEmpty(filePath) || !File(filePath).exists())
                 filePath = img_pic.getTag(R.id.image_url) as String
 

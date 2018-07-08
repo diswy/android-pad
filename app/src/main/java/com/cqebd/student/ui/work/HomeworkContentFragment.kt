@@ -44,8 +44,8 @@ class HomeworkContentFragment : BaseLazyFragment() {
     private lateinit var filterViewModel: FilterViewModel
     private lateinit var workListViewModel: WorkListViewModel
     private val pageProcess = PageProcess.build<WorkInfo> { it.TaskId }
-    private lateinit var adapter: BaseQuickAdapter<WorkInfo, BaseViewHolder>
-
+    //    private lateinit var adapter: BaseQuickAdapter<WorkInfo, BaseViewHolder>
+    private val adapter by lazy { initAdapter() }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_work_content
@@ -98,68 +98,6 @@ class HomeworkContentFragment : BaseLazyFragment() {
             workListViewModel.getWorkList()
         })
         recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
-        adapter = object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work, pageProcess.data) {
-            override fun convert(helper: BaseViewHolder?, item: WorkInfo) {
-                helper?.itemView?.apply {
-                    text_name.text = item.Name
-                    text_subject.text = item.SubjectName.take(1)
-                    when (text_subject.text.toString()) {
-                        "数" -> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
-                        "英" -> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
-                        "语" -> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
-                        "化" -> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
-                        "物" -> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
-                        "音" -> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
-                    }
-                    text_count.text = "共%s题".format(item.QuestionCount)
-                    text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
-                    when (item.Status) {
-                        -1 -> {
-                            text_status.text = "新作业"
-                            text_status.setTextColor(colorForRes(R.color.status_new))
-                        }
-                        0 -> {
-                            text_status.text = "答题中"
-                            text_status.setTextColor(colorForRes(R.color.status_run))
-                        }
-                        1 -> {
-                            text_status.text = "已完成"
-                            text_status.setTextColor(colorForRes(R.color.status_complete))
-                        }
-                        2 -> {
-                            text_status.text = "已批阅"
-                            text_status.setTextColor(colorForRes(R.color.status_read))
-                            if (item.IsMedal) {
-                                val medal = resources.getDrawable(R.drawable.ic_medal)
-                                medal.setBounds(0, 0, medal.minimumWidth, medal.minimumHeight)
-                                text_name.setCompoundDrawables(null, null, medal, null)
-                                text_name.compoundDrawablePadding = dip(4)
-                            } else {
-                                text_name.setCompoundDrawables(null, null, null, null)
-                                text_name.compoundDrawablePadding = dip(0)
-                            }
-                        }
-                    }
-
-                    text_status.text = FilterData.jobStatus.find { it.status == item.Status }?.Name
-                    setOnClickListener {
-                        if (item.Status <= 0) {
-                            val urlFormat = "HomeWork/ExaminationPapers?id=%s&taskid=%s"
-                            startActivity<JobPreviewActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.PapersId, item.TaskId)),
-                                    "info" to item)
-                        } else {
-                            val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
-                            if (item.Status == 2){
-                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "medal" to item.IsMedal)
-                            }else{
-                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
 
         adapter.setOnLoadMoreListener({
             if (pageProcess.data.isNotEmpty() && pageProcess.data.size >= 20) {
@@ -239,6 +177,71 @@ class HomeworkContentFragment : BaseLazyFragment() {
         pageProcess.data.clear()
         adapter.notifyDataSetChanged()
         workListViewModel.getWorkList()
+    }
+
+    private fun initAdapter(): BaseQuickAdapter<WorkInfo, BaseViewHolder> {
+        return object : BaseQuickAdapter<WorkInfo, BaseViewHolder>(R.layout.item_work, pageProcess.data) {
+            override fun convert(helper: BaseViewHolder?, item: WorkInfo) {
+                helper?.itemView?.apply {
+                    text_name.text = item.Name
+                    text_subject.text = item.SubjectName.take(1)
+                    when (text_subject.text.toString()) {
+                        "数" -> text_subject.backgroundResource = R.drawable.shape_subject_math_bg
+                        "英" -> text_subject.backgroundResource = R.drawable.shape_subject_en_bg
+                        "语" -> text_subject.backgroundResource = R.drawable.shape_subject_cn_bg
+                        "化" -> text_subject.backgroundResource = R.drawable.shape_subject_huaxue_bg
+                        "物" -> text_subject.backgroundResource = R.drawable.shape_subject_wuli_bg
+                        "音" -> text_subject.backgroundResource = R.drawable.shape_subject_music_bg
+                    }
+                    text_count.text = "共%s题".format(item.QuestionCount)
+                    text_end_time.text = "截止时间: ".plus(formatTimeYMDHM(item.CanEndDateTime))
+                    when (item.Status) {
+                        -1 -> {
+                            text_status.text = "新作业"
+                            text_status.setTextColor(colorForRes(R.color.status_new))
+                        }
+                        0 -> {
+                            text_status.text = "答题中"
+                            text_status.setTextColor(colorForRes(R.color.status_run))
+                        }
+                        1 -> {
+                            text_status.text = "已完成"
+                            text_status.setTextColor(colorForRes(R.color.status_complete))
+                        }
+                        2 -> {
+                            text_status.text = "已批阅"
+                            text_status.setTextColor(colorForRes(R.color.status_read))
+                            if (item.IsMedal) {
+                                val medal = resources.getDrawable(R.drawable.ic_medal)
+                                medal.setBounds(0, 0, medal.minimumWidth, medal.minimumHeight)
+                                text_name.setCompoundDrawables(null, null, medal, null)
+                                text_name.compoundDrawablePadding = dip(4)
+                            } else {
+                                text_name.setCompoundDrawables(null, null, null, null)
+                                text_name.compoundDrawablePadding = dip(0)
+                            }
+                        }
+                    }
+
+                    text_status.text = FilterData.jobStatus.find { it.status == item.Status }?.Name
+                    setOnClickListener {
+                        if (item.Status <= 0) {
+                            val urlFormat = "HomeWork/ExaminationPapers?id=%s&taskid=%s"
+                            startActivity<JobPreviewActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.PapersId, item.TaskId)),
+                                    "info" to item)
+
+                        } else {
+                            val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
+                            if (item.Status == 2) {
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "medal" to item.IsMedal)
+                            } else {
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
