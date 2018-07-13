@@ -91,7 +91,6 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         currentDate.set(Calendar.MILLISECOND, 0)
         selectedDate = currentDate
         schedule_calendar.selectedDate = CalendarDay.from(selectedDate)
-        viewModel.getPeriodListMonth(selectedDate).observe(this, this)
 
         schedule_calendar.setOnMonthChangedListener { widget, date ->
             date?.calendar?.apply {
@@ -113,6 +112,10 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         schedule_calendar.setCurrentDate(currentDate)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getPeriodListMonth(selectedDate).observe(this, this)
+    }
 
     override fun onInvisible() {
 

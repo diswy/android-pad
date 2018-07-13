@@ -17,8 +17,8 @@ class ClassScheduleViewModel : ViewModel() {
     /**
      * 获取课程表
      */
-    fun getPeriodListMonth(date:Calendar): LiveData<Resource<ClassSchedule>> {
-        val dateStr = "${date.get(Calendar.YEAR)}-${date.get(Calendar.MONTH)+1}"
+    fun getPeriodListMonth(date: Calendar): LiveData<Resource<ClassSchedule>> {
+        val dateStr = "${date.get(Calendar.YEAR)}-${date.get(Calendar.MONTH) + 1}"
         return repository.getPeriodListMonth(dateStr)
     }
 }

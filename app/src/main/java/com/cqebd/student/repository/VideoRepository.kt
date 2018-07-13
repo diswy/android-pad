@@ -16,7 +16,7 @@ import com.cqebd.student.vo.entity.VideoInfo
  * Created by gorden on 2018/3/5.
  */
 class VideoRepository {
-    private val rateLimiter:RateLimiter<String> = RateLimiter(30)
+    private val rateLimiter: RateLimiter<String> = RateLimiter(30)
     private val courseDao by lazy { ExDataBase.getInstance().courseDao() }
 
     fun getCourseList(): LiveData<Resource<List<VideoInfo>>> {
@@ -32,14 +32,15 @@ class VideoRepository {
      * 获取课程表
      * @param date date is yyyy-MM
      */
-    fun getPeriodListMonth(date:String):LiveData<Resource<ClassSchedule>> {
-        return object :NetworkBoundResource<ClassSchedule,List<CourseInfo>>(){
+    fun getPeriodListMonth(date: String): LiveData<Resource<ClassSchedule>> {
+        return object : NetworkBoundResource<ClassSchedule, List<CourseInfo>>() {
             override fun shouldFetch(data: ClassSchedule?): Boolean {
-                return data==null||rateLimiter.shouldFetch(date)
+//                return data == null || rateLimiter.shouldFetch(date)
+                return true
             }
 
             override fun saveCallResult(item: List<CourseInfo>) {
-                courseDao.insertCourses(ClassSchedule(date,item))
+                courseDao.insertCourses(ClassSchedule(date, item))
             }
 
             override fun loadFromDb(): LiveData<ClassSchedule> {

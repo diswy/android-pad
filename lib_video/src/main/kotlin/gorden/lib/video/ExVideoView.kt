@@ -277,6 +277,15 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         }
     }
 
+    open fun waitPlay(thumb: Int?) {
+        loadingView.visibility = View.GONE
+        mediaController.hide()
+        thumb?.let {
+            thumbImageView.visibility = View.VISIBLE
+            thumbImageView.setImageResource(it)
+        }
+    }
+
     /**
      * 获取音频焦点
      */

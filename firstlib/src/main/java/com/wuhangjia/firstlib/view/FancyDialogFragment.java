@@ -3,6 +3,7 @@ package com.wuhangjia.firstlib.view;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -80,7 +81,7 @@ public class FancyDialogFragment extends DialogFragment {
 
         window.setAttributes(params);
         // 这里用透明颜色替换掉系统自带背景
-        int color = ContextCompat.getColor(getActivity(), android.R.color.transparent);
+        int color = Color.parseColor("#00000000");
         window.setBackgroundDrawable(new ColorDrawable(color));
     }
 

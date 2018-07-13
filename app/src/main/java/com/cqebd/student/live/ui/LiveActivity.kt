@@ -115,6 +115,7 @@ class LiveActivity : BaseActivity() {
         parseIntent()
         videoView.setLiveMode(true)// 该界面全部为直播界面
         initTag(hasVchat)
+//        videoView.waitPlay(R.drawable.ic_no_video)
         getLiveInfo(id)
         registerObservers(true)
     }
@@ -183,12 +184,17 @@ class LiveActivity : BaseActivity() {
             MsgTypeEnum.custom -> {
                 if (mMsgSingle.attachment is NormalAttachment) {
                     val attachment = mMsgSingle.attachment as NormalAttachment
-                    if (attachment.mCustomMsg?.name == "video") {
-                        if (attachment.mCustomMsg?.parameter == "periodover") {
+                    when (attachment.mCustomMsg?.name) {
+                        "video" -> {
+                            if (attachment.mCustomMsg?.parameter == "periodover") {
 
-                        } else {
-                            addOtherPeople(attachment.mCustomMsg?.content!!)
+                            } else if (attachment.mCustomMsg?.parameter == "init") {
+
+                            } else {
+                                addOtherPeople(attachment.mCustomMsg?.content!!)
+                            }
                         }
+
 
                     }
                 }

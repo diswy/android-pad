@@ -304,7 +304,7 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback, T
      */
     public void clear() {
         clearAll();
-        transactionManager.sendClearSelfTransaction();
+//        transactionManager.sendClearSelfTransaction();
     }
 
     /**
