@@ -1,0 +1,92 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api project(':lib_anko')
+    api project(':lib_album')
+    api project(':lib_video')
+    api project(':firstlib')
+    api project(':Album')
+    api deps.kotlin.stdlib
+    api deps.support.app_compat
+    api deps.support.design
+    api deps.support.v4
+    api deps.support.cardview
+    api deps.support.constraint_layout
+    api deps.support.gridlayout
+    api deps.support.vector_drawable
+    api deps.lifecycle.extensions
+    api 'com.android.support.constraint:constraint-layout:1.1.2'
+    kapt deps.lifecycle.compiler
+    api deps.room.runtime
+    kapt deps.room.compiler
+    api deps.glide.core
+    kapt deps.glide.compiler
+    // RxJava
+    api deps.rx_android
+    api deps.rxjava2
+    //Retrofit
+    api deps.retrofit.runtime
+    api deps.retrofit.gson
+    api deps.retrofit.rxjava2
+    api deps.retrofit.logging
+    // NetEase
+    api deps.netease.base_im
+    api deps.netease.nrtc
+    api deps.netease.chatroom
+    api deps.netease.avchat
+    api deps.netease.rts
+    api 'org.greenrobot:greendao:3.2.0'
+    api 'com.jakewharton:butterknife:8.5.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+    api 'gorden.refresh:refresh-kotlin:1.32'
+    api 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    api 'com.prolificinteractive:material-calendarview:1.4.3'
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    api 'com.orhanobut:logger:2.2.0'
+    api 'com.just.agentweb:agentweb:4.0.2'
+    api 'com.github.hackware1993:MagicIndicator:1.5.0'
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    api 'com.hyman:flowlayout-lib:1.1.2'
+    //Umeng
+    api 'com.umeng.sdk:common:1.5.0'
+    api 'com.umeng.sdk:analytics:7.5.0'
+    api 'com.umeng.sdk:debug:1.0.0'
+    //leakcanary
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //Chuck
+    debugApi 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseApi 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+    //Luban
+    api 'top.zibin:Luban:1.1.5'
+    api "com.android.support:exifinterface:27.1.1"
+    // (必选)
+    api 'com.android.support:multidex:1.0.3'
+    api 'com.zhy:okhttputils:2.6.2'
+    api 'com.daimajia.numberprogressbar:library:1.4@aar'
+}
