@@ -22,16 +22,20 @@ import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.*
+import com.cqebd.student.utils.DateUtils
 import com.cqebd.student.viewmodel.MineViewModel
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.widget.LoadingDialog
 import com.cqebd.teacher.vo.Status
+import com.wuhangjia.firstlib.view.FancyDialogFragment
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import gorden.lib.anko.static.startActivity
 import gorden.library.Album
+import gorden.util.PackageUtils.getPackageName
 import gorden.util.RxCounter
 import gorden.widget.selector.SelectorButton
+import kotlinx.android.synthetic.main.dialog_clear_cache.view.*
 import kotlinx.android.synthetic.main.fragment_mine.*
 import java.io.File
 
@@ -96,7 +100,7 @@ class MineFragment : BaseFragment() {
             Album.create().single().start(this)
         }
         item_about.setOnClickListener {
-//            startActivity<AboutActivity>()
+            //            startActivity<AboutActivity>()
 //            startActivity<CallbackActivity>()
         }
 
@@ -121,6 +125,10 @@ class MineFragment : BaseFragment() {
             UserAccount.clear()
             logoutNetease()
             startActivity<LoginActivity>()
+        }
+
+        item_clear_cache.setOnClickListener {
+            showClearDialog()
         }
 
         mBindPhone.setOnClickListener {
@@ -264,7 +272,7 @@ class MineFragment : BaseFragment() {
         }
     }
 
-    private fun editPhone(){
+    private fun editPhone() {
         dialogPhone.setTitle("修改手机号")
         editPwd.visibility = View.VISIBLE
         dialogPhone.show()
@@ -296,10 +304,10 @@ class MineFragment : BaseFragment() {
         }
 
         NetClient.workService().updatePhCode(status, code, phone, pwd)
-                .enqueue(object :NetCallBack<BaseResponse<Unit>>(){
+                .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
                     override fun onSucceed(response: BaseResponse<Unit>?) {
                         response?.let {
-                            if (it.isSuccess){
+                            if (it.isSuccess) {
                                 val mAccount = UserAccount.load()
                                 mAccount?.let {
                                     mAccount.Phone = phone
@@ -320,4 +328,35 @@ class MineFragment : BaseFragment() {
                 })
         return true
     }
+
+
+    private fun showClearDialog() {
+        val dialog = FancyDialogFragment.create()
+        dialog.setCanCancelOutside(false)
+                .setLayoutRes(R.layout.dialog_clear_cache)
+                .setWidth(activity, 230)
+                .setViewListener {
+                    it.apply {
+                        mBtnConfirm.setOnClickListener {
+                            try {
+                                context?.let {
+                                    val cache = File("data/data/"+getPackageName(it))
+                                    DateUtils.DeleteFile(cache)
+                                    dialog.dismiss()
+                                    activity?.finish()
+                                    System.exit(0)
+                                }
+                            } catch (e: Exception) {
+                                toast("清理异常error:${e.message}")
+                            }
+
+                        }
+                        mBtnCancel.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+                .show(activity?.fragmentManager, "")
+    }
+
 }

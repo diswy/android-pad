@@ -1,5 +1,6 @@
 package com.cqebd.student.live.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -8,6 +9,7 @@ import android.text.TextUtils
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
@@ -28,6 +30,7 @@ import com.google.gson.Gson
 import com.netease.nimlib.sdk.*
 import com.netease.nimlib.sdk.avchat.AVChatCallback
 import com.netease.nimlib.sdk.avchat.AVChatManager
+import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite
 import com.netease.nimlib.sdk.avchat.constant.AVChatType
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio
@@ -43,6 +46,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.orhanobut.logger.Logger
 import com.wuhangjia.firstlib.view.FancyDialogFragment
+import gorden.lib.video.ExVideoView
 import kotlinx.android.synthetic.main.activity_live.*
 import kotlinx.android.synthetic.main.dialog_live_confirm_up.view.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -63,6 +67,7 @@ class LiveActivity : BaseActivity() {
     val mChat = LiveChatFragment()
     val mRts = LiveNeteaseRtsFragment()
     var mApply = false // false 可以申请 true 申请中
+    var mVideoErrorCount = 0 //　视频重试次数
 
 
     override fun setContentView() {
@@ -114,6 +119,17 @@ class LiveActivity : BaseActivity() {
         }
         parseIntent()
         videoView.setLiveMode(true)// 该界面全部为直播界面
+        videoView.setOnVideoErrorListener(object : ExVideoView.onVideoError {
+            override fun onVideoError() {
+                mVideoErrorCount++
+                if (mLiveAddress.size > 0 && mVideoErrorCount < 4) {
+                    videoView.setVideoPath(mLiveAddress[0], "", R.drawable.ic_login_logo)
+                }
+                if (mVideoErrorCount == 4) {
+                    toast("请稍后尝试手动刷新视频")
+                }
+            }
+        })
         initTag(hasVchat)
 //        videoView.waitPlay(R.drawable.ic_no_video)
         getLiveInfo(id)
@@ -129,8 +145,76 @@ class LiveActivity : BaseActivity() {
     private fun registerObservers(register: Boolean) {
         NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
         NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
+//        AVChatManager.getInstance().observeAVChatState(avChatListener, register)
 //        NIMClient.getService(ChatRoomServiceObserver::class.java).observeKickOutEvent(kickOutObserver, register)
 //        NIMClient.getService(AuthServiceObserver::class.java).observeOnlineStatus(userStatusObserver, register)
+    }
+
+    private val avChatListener: AVChatStateObserverLite = object : AVChatStateObserverLite {
+        override fun onUserLeave(account: String?, event: Int) {
+            Logger.w("用户离开的ID = $account")
+        }
+
+        override fun onCallEstablished() {
+        }
+
+        override fun onLiveEvent(event: Int) {
+        }
+
+        override fun onAudioFrameFilter(frame: AVChatAudioFrame?): Boolean {
+            return false
+        }
+
+        override fun onVideoFrameResolutionChanged(account: String?, width: Int, height: Int, rotate: Int) {
+        }
+
+        override fun onProtocolIncompatible(status: Int) {
+        }
+
+        override fun onNetworkQuality(account: String?, quality: Int, stats: AVChatNetworkStats?) {
+        }
+
+        override fun onVideoFrameFilter(frame: AVChatVideoFrame?, maybeDualInput: Boolean): Boolean {
+            return false
+        }
+
+        override fun onJoinedChannel(code: Int, audioFile: String?, videoFile: String?, elapsed: Int) {
+        }
+
+        override fun onReportSpeaker(speakers: MutableMap<String, Int>?, mixedEnergy: Int) {
+        }
+
+        override fun onAudioDeviceChanged(device: Int) {
+        }
+
+        override fun onDisconnectServer(code: Int) {
+        }
+
+        override fun onSessionStats(sessionStats: AVChatSessionStats?) {
+        }
+
+        override fun onDeviceEvent(code: Int, desc: String?) {
+        }
+
+        override fun onConnectionTypeChanged(netType: Int) {
+        }
+
+        override fun onLeaveChannel() {
+        }
+
+        override fun onFirstVideoFrameAvailable(account: String?) {
+        }
+
+        override fun onVideoFpsReported(account: String?, fps: Int) {
+        }
+
+        override fun onFirstVideoFrameRendered(account: String?) {
+        }
+
+        override fun onUserJoined(account: String?) {
+            Logger.w("用户加入进来的ID = $account")
+        }
+
     }
 
     /**
@@ -187,14 +271,16 @@ class LiveActivity : BaseActivity() {
                     when (attachment.mCustomMsg?.name) {
                         "video" -> {
                             if (attachment.mCustomMsg?.parameter == "periodover") {
-
+                                this.finish()
+                                toast("课堂已结束")
                             } else if (attachment.mCustomMsg?.parameter == "init") {
-
+                                if (mLiveAddress.size > 0) {
+                                    videoView.setVideoPath(mLiveAddress[0], "", R.drawable.ic_login_logo)
+                                }
                             } else {
                                 addOtherPeople(attachment.mCustomMsg?.content!!)
                             }
                         }
-
 
                     }
                 }
@@ -512,7 +598,7 @@ class LiveActivity : BaseActivity() {
         val dialog = FancyDialogFragment.create()
         dialog.setCanCancelOutside(false)
                 .setLayoutRes(R.layout.dialog_live_confirm_up)
-                .setWidth(this, 200)
+                .setWidth(this, 300)
                 .setViewListener {
                     it.apply {
                         mBtnConfirm.setOnClickListener {
@@ -547,20 +633,23 @@ class LiveActivity : BaseActivity() {
                     mStudent2.visibility = View.GONE
                 }
                 1 -> {
+                    Logger.d("群发消息：本人ID = $loginId ,添加的ID ${mList[0]}")
                     mStudent1.visibility = View.VISIBLE
                     mStudent2.visibility = View.GONE
+                    mStudent1.removeAllViews()
                     val remoteRender = AVChatSurfaceViewRenderer(this)
+                    AVChatManager.getInstance().setupRemoteVideoRender(mList[0], null, false, 0)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender, mStudent1)
                 }
                 2 -> {
                     mStudent1.visibility = View.VISIBLE
                     mStudent2.visibility = View.VISIBLE
-
+                    mStudent1.removeAllViews()
+                    mStudent2.removeAllViews()
                     val remoteRender = AVChatSurfaceViewRenderer(this)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender, mStudent1)
-
                     val remoteRender2 = AVChatSurfaceViewRenderer(this)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[1], remoteRender2, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender2, mStudent2)

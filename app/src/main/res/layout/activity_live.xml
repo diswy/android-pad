@@ -29,12 +29,12 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/mVideoContainer"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="260dp">
 
         <gorden.lib.video.ExVideoView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="260dp" />
 
         <FrameLayout
             android:id="@+id/mCreatorView"
@@ -43,25 +43,25 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
             <FrameLayout
                 android:id="@+id/mMyself"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+                android:layout_width="120dp"
+                android:layout_height="120dp" />
 
             <FrameLayout
                 android:id="@+id/mStudent1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:visibility="gone" />
 
             <FrameLayout
                 android:id="@+id/mStudent2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -69,10 +69,9 @@
 
         <ImageButton
             android:id="@+id/mBtnApplyVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@color/transparent"
-            android:padding="15dp"
             android:src="@drawable/ic_hand_up"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent" />

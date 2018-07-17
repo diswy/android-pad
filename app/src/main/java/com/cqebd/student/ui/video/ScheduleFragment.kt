@@ -15,7 +15,6 @@ import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.LiveVideoActivity
-import com.cqebd.student.ui.VideoActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment
 import com.cqebd.student.viewmodel.ClassScheduleViewModel
 import com.cqebd.student.vo.Resource
@@ -40,7 +39,7 @@ import java.util.*
 class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
     private lateinit var currentDate: Calendar
     private lateinit var selectedDate: Calendar
-    private lateinit var viewModel: ClassScheduleViewModel
+    private val viewModel by lazy { ViewModelProviders.of(this).get(ClassScheduleViewModel::class.java) }
     private val courseList: ArrayList<CourseInfo> = ArrayList()
     private lateinit var adapter: BaseQuickAdapter<CourseInfo, BaseViewHolder>
 
@@ -49,7 +48,6 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
     }
 
     override fun lazyLoad() {
-        viewModel = ViewModelProviders.of(this).get(ClassScheduleViewModel::class.java)
         adapter = object : BaseQuickAdapter<CourseInfo, BaseViewHolder>(R.layout.item_new_schedule) {
             override fun convert(helper: BaseViewHolder?, item: CourseInfo) {
                 helper?.itemView?.apply {
@@ -110,11 +108,16 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
         }
 
         schedule_calendar.setCurrentDate(currentDate)
+
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getPeriodListMonth(selectedDate).observe(this, this)
+        try {
+            viewModel.getPeriodListMonth(selectedDate).observe(this, this)
+        } catch (e: Exception) {
+            Logger.e("${e.message}")
+        }
     }
 
     override fun onInvisible() {

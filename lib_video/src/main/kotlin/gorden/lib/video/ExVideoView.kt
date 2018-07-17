@@ -59,6 +59,15 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
     /*----------------------open parameter-------------------------*/
 
+    interface onVideoError {
+        fun onVideoError()
+    }
+
+    private var onVideoErrorListener: onVideoError? = null
+    fun setOnVideoErrorListener(onVideoErrorListener: onVideoError) {
+        this.onVideoErrorListener = onVideoErrorListener
+    }
+
     /**
      * 是否可以调节进度
      */
@@ -270,6 +279,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
 
         override fun onPlayerError(error: ExoPlaybackException?) {
             Toast.makeText(context, "视频播放错误", Toast.LENGTH_SHORT).show()
+            loadingView.visibility = View.GONE
+            onVideoErrorListener?.onVideoError()
             error?.let {
                 //                Log.e("ExVideoView", it.message)
             }

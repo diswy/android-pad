@@ -2,6 +2,7 @@ package com.cqebd.student.utils;
 
 import android.text.TextUtils;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,9 +62,32 @@ public class DateUtils {
         return "";
     }
 
-    public static String currentDate(){
+    public static String currentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CHINA);
         return dateFormat.format(new Date());
+    }
+
+
+    public static void DeleteFile(File file) {
+        if (file.exists() == false) {
+            return;
+        } else {
+            if (file.isFile()) {
+                file.delete();
+                return;
+            }
+            if (file.isDirectory()) {
+                File[] childFile = file.listFiles();
+                if (childFile == null || childFile.length == 0) {
+                    file.delete();
+                    return;
+                }
+                for (File f : childFile) {
+                    DeleteFile(f);
+                }
+                file.delete();
+            }
+        }
     }
 
 }

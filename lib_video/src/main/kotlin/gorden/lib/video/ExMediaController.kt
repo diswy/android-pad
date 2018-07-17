@@ -212,9 +212,9 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
      */
     private fun updatePlayStatus() {
         if (mPlayer.isPlaying) {
-            btn_start.setImageResource(R.drawable.ic_pause)
+            btn_start.setImageResource(R.drawable.ic_pause_new)
         } else {
-            btn_start.setImageResource(R.drawable.ic_play)
+            btn_start.setImageResource(R.drawable.ic_play_new)
         }
     }
 

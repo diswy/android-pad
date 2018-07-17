@@ -8,12 +8,14 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:id="@+id/mTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="老师让你上麦，确认上麦么"
+        android:text="确认要清除应用数据吗？清除后软件会退出，需要您重新打开。"
         android:textColor="#2a2929" />
 
     <View

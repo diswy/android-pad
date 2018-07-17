@@ -51,6 +51,8 @@ class LiveNeteaseRtsFragment : BaseFragment() {
     private var mSessionId: String? = null
     private var mCreator: String? = null
     private var hasRtsPermission = false
+    private var isOpenRts = false
+    private var count = 0
 
     override fun setContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mSessionId = arguments?.getString("rtsName")
@@ -59,19 +61,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
-            override fun onSuccess(rtsData: RTSData) {
-                Logger.i("join rts success rts extra:" + rtsData.extra)
-            }
-
-            override fun onFailed(i: Int) {
-                Logger.i("join rts session failed, code:$i")
-            }
-
-            override fun onException(throwable: Throwable) {
-
-            }
-        })
+        loginRts()
         initDoodleView(null)
         registerObservers(true)
     }
@@ -104,6 +94,30 @@ class LiveNeteaseRtsFragment : BaseFragment() {
     override fun onDestroy() {
         registerObservers(false)
         super.onDestroy()
+    }
+
+    private fun loginRts(){
+        RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
+            override fun onSuccess(rtsData: RTSData) {
+                isOpenRts = true
+                Logger.e("这是${this@LiveNeteaseRtsFragment.count}次登录成功")
+                Logger.i("join rts success rts extra:" + rtsData.extra)
+            }
+
+            override fun onFailed(i: Int) {
+                isOpenRts = false
+                count++
+                Logger.e("这是${this@LiveNeteaseRtsFragment.count}次登录失败")
+                if (count < 5){
+                    loginRts()
+                }
+                Logger.i("join rts session failed, code:$i")
+            }
+
+            override fun onException(throwable: Throwable) {
+
+            }
+        })
     }
 
     private fun initDoodleView(account: String?) {
@@ -145,6 +159,9 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                 if (mMsgSingle.attachment is NormalAttachment) {
                     val attachment = mMsgSingle.attachment as NormalAttachment
                     if (attachment.mCustomMsg?.name == "ppt") {
+                        if (!isOpenRts){
+                            loginRts()
+                        }
                         Logger.d(attachment.mCustomMsg?.content)
                         GlideApp.with(this@LiveNeteaseRtsFragment)
                                 .asBitmap()
@@ -154,6 +171,10 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                                         mDoodleView.setImageView(resource)
                                     }
                                 })
+                    }else if (attachment.mCustomMsg?.name == "iwb"){
+                        if (!isOpenRts){
+                            loginRts()
+                        }
                     }
                 }
             }
