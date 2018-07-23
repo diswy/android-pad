@@ -1,15 +1,14 @@
 package com.cqebd.student.live.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
 import android.view.SurfaceView
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
@@ -145,14 +144,14 @@ class LiveActivity : BaseActivity() {
     private fun registerObservers(register: Boolean) {
         NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
         NIMClient.getService(ChatRoomServiceObserver::class.java).observeReceiveMessage(incomingChatRoomMsg, register)
-//        AVChatManager.getInstance().observeAVChatState(avChatListener, register)
+        AVChatManager.getInstance().observeAVChatState(avChatListener, register)
 //        NIMClient.getService(ChatRoomServiceObserver::class.java).observeKickOutEvent(kickOutObserver, register)
 //        NIMClient.getService(AuthServiceObserver::class.java).observeOnlineStatus(userStatusObserver, register)
     }
 
     private val avChatListener: AVChatStateObserverLite = object : AVChatStateObserverLite {
         override fun onUserLeave(account: String?, event: Int) {
-            Logger.w("用户离开的ID = $account")
+            Logger.w("--->>>用户离开的ID = $account")
         }
 
         override fun onCallEstablished() {
@@ -212,7 +211,7 @@ class LiveActivity : BaseActivity() {
         }
 
         override fun onUserJoined(account: String?) {
-            Logger.w("用户加入进来的ID = $account")
+            Logger.w("--->>>用户加入进来的ID = $account")
         }
 
     }
@@ -505,6 +504,14 @@ class LiveActivity : BaseActivity() {
         viewLayout.addView(surfaceView)
         surfaceView.setZOrderMediaOverlay(true)
     }
+    private fun addIntoPreviewLayout(surfaceView: TextureView?, viewLayout: ViewGroup) {
+        if (surfaceView == null) {
+            return
+        }
+        if (surfaceView.parent != null)
+            (surfaceView.parent as ViewGroup).removeView(surfaceView)
+        viewLayout.addView(surfaceView)
+    }
 
     // 移除所有成员的画布
     private fun removePreviewLayout() {
@@ -637,8 +644,8 @@ class LiveActivity : BaseActivity() {
                     mStudent1.visibility = View.VISIBLE
                     mStudent2.visibility = View.GONE
                     mStudent1.removeAllViews()
-                    val remoteRender = AVChatSurfaceViewRenderer(this)
-                    AVChatManager.getInstance().setupRemoteVideoRender(mList[0], null, false, 0)
+//                    val remoteRender = AVChatSurfaceViewRenderer(this)
+                    val remoteRender = AVChatTextureViewRenderer(this)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender, mStudent1)
                 }
@@ -647,10 +654,10 @@ class LiveActivity : BaseActivity() {
                     mStudent2.visibility = View.VISIBLE
                     mStudent1.removeAllViews()
                     mStudent2.removeAllViews()
-                    val remoteRender = AVChatSurfaceViewRenderer(this)
+                    val remoteRender = AVChatTextureViewRenderer(this)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[0], remoteRender, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender, mStudent1)
-                    val remoteRender2 = AVChatSurfaceViewRenderer(this)
+                    val remoteRender2 = AVChatTextureViewRenderer(this)
                     AVChatManager.getInstance().setupRemoteVideoRender(mList[1], remoteRender2, false, AVChatVideoScalingType.SCALE_ASPECT_BALANCED)
                     addIntoPreviewLayout(remoteRender2, mStudent2)
                 }

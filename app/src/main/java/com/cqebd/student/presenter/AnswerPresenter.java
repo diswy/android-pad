@@ -53,8 +53,10 @@ import com.cqebd.student.vo.entity.QuestionInfo;
 import com.cqebd.student.vo.entity.WorkInfo;
 import com.cqebd.student.vo.enums.AnswerMode;
 import com.cqebd.student.vo.enums.TaskStatus;
+import com.cqebd.student.widget.AvatarImageView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.greendao.internal.DaoConfig;
@@ -62,6 +64,7 @@ import org.greenrobot.greendao.query.Query;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -342,6 +345,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                     String url = new JSONObject(response.string()).getString("data");
                     imageView.setTag(R.id.image_file_path, picFile.getAbsolutePath());
                     imageView.setTag(R.id.image_url, url);
+                    answer.answerCardView().setImgChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -511,7 +515,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
     //答案提交到服务器
     private void uploadAnswer(QuestionInfo info, boolean end, boolean autoSubmit) {
         NetClient.createApi(NetApi.class).submitAnswer(userId, info.getId(), (int) taskInfo.getPapersId(), (int) taskInfo.getTaskId()
-                , StringUtils.getUnicodeString(info.getStudentsAnswer()), info.getQuestionTypeId(), PackageUtils.getVersionName(mContext), Build.MODEL).enqueue(new NetCallBack<BaseBean>() {
+                , StringUtils.getUnicodeString(info.getStudentsAnswer()), info.getQuestionTypeId(), PackageUtils.getVersionName(mContext), Build.MODEL, TimeConversion.getFullDate(System.currentTimeMillis())).enqueue(new NetCallBack<BaseBean>() {
             @Override
             public void onSucceed(BaseBean response) {
                 if (response.isSuccess()) {

@@ -10,6 +10,7 @@ import com.cqebd.student.http.NetCallBack;
 import com.cqebd.student.http.NetClient;
 import com.cqebd.student.tools.KResKt;
 import com.cqebd.student.tools.StringUtils;
+import com.cqebd.student.tools.TimeConversion;
 import com.cqebd.student.vo.entity.BaseBean;
 import com.cqebd.student.vo.entity.QuestionInfo;
 
@@ -66,7 +67,7 @@ public class SubmitTask {
 
         NetClient.createApi(NetApi.class)
                 .submitAnswer(userId, info.getId(), ExaminationPapersId, StudentQuestionsTasksId, StringUtils.getUnicodeString(info.getStudentsAnswer()),
-                        info.getQuestionTypeId(), Version, Source).enqueue(new SubmitCallBack(info));
+                        info.getQuestionTypeId(), Version, Source, TimeConversion.getFullDate(System.currentTimeMillis())).enqueue(new SubmitCallBack(info));
     }
 
 

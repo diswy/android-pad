@@ -300,6 +300,13 @@ public class AnswerCardView1 extends LinearLayout {
         return decideView;
     }
 
+    /**
+     * 旧逻辑漏洞，单独修改图片不重新提交修复
+     */
+    private boolean isImgChange = false;
+    public void setImgChanged(){
+        this.isImgChange = true;
+    }
 
     /**
      * 答案是否变换
@@ -307,6 +314,10 @@ public class AnswerCardView1 extends LinearLayout {
      * @return
      */
     public boolean isChanged() {
+        if (isImgChange){
+            isImgChange = false;
+            return true;
+        }
         if (mQuestionInfo == null) return false;
         List<StudentAnswer> oldAnswers = new ArrayList<>();
         Map<String, StudentAnswer> oldAnswerMap = new HashMap<>();

@@ -69,7 +69,7 @@ class EditRichFragment : BaseFragment() {
 
             }
 
-            override fun tagChanged(key: Int, tag: Any) {
+            override fun tagChanged(key: Int, tag: Any?) {
                 if (edit_content == null) {
                     return
                 }
@@ -111,11 +111,11 @@ class EditRichFragment : BaseFragment() {
         textWatcher = EditTextWatcher()
         edit_content.addTextChangedListener(textWatcher)
         img_pic.setTAGChangeListener(object : AvatarImageView.TAGChangeListener {
-            override fun tagChanged(tag: Any) {
+            override fun tagChanged(tag: Any?) {
 
             }
 
-            override fun tagChanged(key: Int, tag: Any) {
+            override fun tagChanged(key: Int, tag: Any?) {
                 if (edit_content == null) {
                     return
                 }
