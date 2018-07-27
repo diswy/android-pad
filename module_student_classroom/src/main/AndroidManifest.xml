@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cqebd.module_student_classroom">
+
+    <application android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activity.ClassroomActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.cqebd.module_student_classroom.intent.action.ClassroomActivity" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.InClassActivity"
+            android:screenOrientation="landscape"/>
+    </application>
+
+
+</manifest>

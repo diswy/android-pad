@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="40dp"
+    android:layout_marginStart="40dp"
+    android:layout_marginTop="50dp"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/holder"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        android:background="@color/myTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPeriodTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/tvTitle"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatus"
+        app:layout_constraintStart_toEndOf="@+id/holder"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="第一章 第一节直角三角形" />
+
+    <TextView
+        android:id="@+id/tvPeriodNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:lines="2"
+        android:textColor="@color/tvSubtitle"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvPeriodTitle"
+        app:layout_constraintStart_toStartOf="@+id/tvPeriodTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvPeriodTitle"
+        tools:text="备注" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPeriodTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPeriodTitle"
+        tools:text="未上课" />
+
+    <TextView
+        android:id="@+id/tvTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/tvSubtitle"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tvPeriodNote"
+        app:layout_constraintTop_toBottomOf="@+id/tvPeriodNote"
+        tools:text="张老师" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/tvSubtitle"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvStatus"
+        app:layout_constraintTop_toTopOf="@+id/tvTeacher"
+        tools:text="开课时间:2018.7.12" />
+
+    <Space
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeacher" />
+
+
+</android.support.constraint.ConstraintLayout>

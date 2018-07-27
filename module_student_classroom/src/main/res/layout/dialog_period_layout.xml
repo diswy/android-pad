@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="消息......" />
+
+    <View
+        android:id="@+id/vDivider"
+        style="@style/VerticalDivider"
+        app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
+
+    <View
+        android:id="@+id/view"
+        style="@style/HorizontalDivider"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnOk"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@+id/vDivider" />
+
+    <com.xiaofu.lib_base_xiaofu.fancy.FancyButton
+        android:id="@+id/btnCancel"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:fb_text_hover_color="@color/white"
+        app:fb_hover_color="@color/hoverGray"
+        app:fb_text="取消"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vDivider" />
+
+    <com.xiaofu.lib_base_xiaofu.fancy.FancyButton
+        android:id="@+id/btnOk"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:fb_text_hover_color="@color/white"
+        app:fb_hover_color="@color/myTheme"
+        app:fb_text="进入课堂"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/vDivider" />
+
+
+</android.support.constraint.ConstraintLayout>

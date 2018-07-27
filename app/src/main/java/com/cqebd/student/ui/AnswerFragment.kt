@@ -16,6 +16,7 @@ import android.webkit.*
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.vo.entity.Attachment
+import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.logError
 import gorden.lib.anko.static.startActivityForResult
 import kotlinx.android.synthetic.main.fragment_answer_content.*

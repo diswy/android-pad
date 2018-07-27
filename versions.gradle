@@ -25,7 +25,7 @@ versions.paging = "1.0.0-alpha3"
 versions.constraint_layout = "1.0.2"
 versions.arch = "1.1.0"
 versions.room = "1.0.0"
-versions.netease = "5.0.0"
+versions.netease = "5.1.1"
 
 def support = [:]
 support.app_compat = "com.android.support:appcompat-v7:$versions.support"

@@ -38,7 +38,7 @@ dependencies {
     api deps.support.constraint_layout
     api deps.support.gridlayout
     api deps.support.vector_drawable
-    api deps.lifecycle.extensions
+//    api deps.lifecycle.extensions
     api 'com.android.support.constraint:constraint-layout:1.1.2'
     kapt deps.lifecycle.compiler
     api deps.room.runtime
@@ -53,12 +53,6 @@ dependencies {
     api deps.retrofit.gson
     api deps.retrofit.rxjava2
     api deps.retrofit.logging
-    // NetEase
-    api deps.netease.base_im
-    api deps.netease.nrtc
-    api deps.netease.chatroom
-    api deps.netease.avchat
-    api deps.netease.rts
     api 'org.greenrobot:greendao:3.2.0'
     api 'com.jakewharton:butterknife:8.5.1'
     kapt 'com.jakewharton:butterknife-compiler:8.5.1'
@@ -70,7 +64,6 @@ dependencies {
     api 'com.orhanobut:logger:2.2.0'
     api 'com.just.agentweb:agentweb:4.0.2'
     api 'com.github.hackware1993:MagicIndicator:1.5.0'
-    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     api 'com.hyman:flowlayout-lib:1.1.2'
     //Umeng
     api 'com.umeng.sdk:common:1.5.0'
@@ -79,9 +72,6 @@ dependencies {
     //leakcanary
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    //Chuck
-    debugApi 'com.readystatesoftware.chuck:library:1.1.0'
-    releaseApi 'com.readystatesoftware.chuck:library-no-op:1.1.0'
     //Luban
     api 'top.zibin:Luban:1.1.5'
     api "com.android.support:exifinterface:27.1.1"
@@ -89,4 +79,8 @@ dependencies {
     api 'com.android.support:multidex:1.0.3'
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    // 组件化自由插拔
+    api project(':lib_netease')
+    api project(':lib_base_xiaofu')
 }

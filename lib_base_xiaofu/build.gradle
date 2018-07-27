@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // 根据不同项目，配置不同的实体
+//    api project(':lib_cqebd_teacher')
+
+    compileOnly deps.kotlin.stdlib
+    compileOnly deps.support.app_compat
+    // glide
+    compileOnly deps.glide.core
+    kapt deps.glide.compiler
+    // RxJava
+    compileOnly deps.rx_android
+    compileOnly deps.rxjava2
+    // Retrofit
+    compileOnly deps.retrofit.runtime
+    compileOnly deps.retrofit.gson
+    compileOnly deps.retrofit.rxjava2
+    compileOnly deps.retrofit.logging
+    // RecyclerView
+    compileOnly deps.support.design
+    // Anko
+    api 'org.jetbrains.anko:anko:0.10.5'
+    // Lifecycle
+    api 'android.arch.lifecycle:extensions:1.1.1'
+    // StatusBarUtils
+    api 'com.jaeger.statusbaruitl:library:1.0.0'
+    // SmartRefreshLayout
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    // Chuck
+    debugApi 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseApi 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+}

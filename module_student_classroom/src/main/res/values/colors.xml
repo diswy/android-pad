@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4bba74</color>
+    <color name="colorPrimaryDark">#4bba74</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <!--自定义-->
+    <color name="myTheme">#4bba74</color>
+    <color name="baseBj">#eff2f4</color>
+    <color name="divider">#4c000000</color>
+    <!--基础色方便使用，部分机型找不到系统资源会出BUG-->
+    <color name="white">#FFFFFF</color>
+    <!--字体颜色-->
+    <color name="tvTitle">#333333</color>
+    <color name="tvSubtitle">#666666</color>
+    <!--按钮Hover颜色-->
+    <color name="hoverGray">#d8d8d8</color>
+
+
+
+</resources>
