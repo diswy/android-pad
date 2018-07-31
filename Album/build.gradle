@@ -9,8 +9,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.support.app_compat
-    implementation deps.support.design
-    implementation 'me.xiaopan:sketch:2.4.0-beta1'
+    compileOnly deps.support.app_compat
+    compileOnly deps.support.design
+    compileOnly 'me.xiaopan:sketch:2.4.0-beta1'
+    compileOnly deps.support.app_compat
+    compileOnly deps.support.design
+    compileOnly deps.rxjava2
+    compileOnly deps.rx_android
+    compileOnly 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     api project(':LibGorden')
 }

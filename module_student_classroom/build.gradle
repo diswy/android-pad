@@ -43,10 +43,12 @@ android {
             }
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(':lib_old_bridge')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation project(':lib_old_bridge')
+    implementation deps.glide.core
+    kapt deps.glide.compiler
 }

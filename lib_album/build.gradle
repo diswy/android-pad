@@ -28,20 +28,20 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation deps.support.app_compat
-    implementation deps.support.design
-    implementation deps.kotlin.stdlib
+    compileOnly deps.support.app_compat
+    compileOnly deps.support.design
+    compileOnly deps.kotlin.stdlib
 
-    implementation deps.lifecycle.extensions
-    kapt deps.lifecycle.compiler
+    compileOnly deps.lifecycle.extensions
+//    kapt deps.lifecycle.compiler
 
-    implementation deps.glide.core
+    compileOnly deps.glide.core
     kapt deps.glide.compiler
-    implementation ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
+    compileOnly ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
         transitive = false
     }
-    implementation 'me.panpf:sketch:2.6.1'
-    implementation 'me.panpf:sketch-gif:2.6.1'
+    compileOnly 'me.panpf:sketch:2.6.1'
+    compileOnly 'me.panpf:sketch-gif:2.6.1'
     //noinspection GradleDependency
     api 'com.github.yalantis:ucrop:2.2.1-native'
 }

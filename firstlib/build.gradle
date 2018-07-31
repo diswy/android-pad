@@ -19,6 +19,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly deps.support.recyclerview
     compileOnly deps.support.app_compat
-    implementation deps.glide.core
-    annotationProcessor deps.glide.compiler
+    compileOnly deps.glide.core
 }

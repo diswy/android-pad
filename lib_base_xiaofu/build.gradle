@@ -24,28 +24,27 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // 根据不同项目，配置不同的实体
-//    api project(':lib_cqebd_teacher')
 
     compileOnly deps.kotlin.stdlib
     compileOnly deps.support.app_compat
     // glide
-    compileOnly deps.glide.core
-    kapt deps.glide.compiler
+//    api deps.glide.core
+//    kapt deps.glide.compiler
     // RxJava
-    compileOnly deps.rx_android
-    compileOnly deps.rxjava2
+    api deps.rx_android
+    api deps.rxjava2
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     // Retrofit
-    compileOnly deps.retrofit.runtime
-    compileOnly deps.retrofit.gson
-    compileOnly deps.retrofit.rxjava2
-    compileOnly deps.retrofit.logging
+    api deps.retrofit.runtime
+    api deps.retrofit.gson
+    api deps.retrofit.rxjava2
+    api deps.retrofit.logging
     // RecyclerView
-    compileOnly deps.support.design
+    api deps.support.design
     // Anko
     api 'org.jetbrains.anko:anko:0.10.5'
     // Lifecycle
-    api 'android.arch.lifecycle:extensions:1.1.1'
+    api deps.lifecycle.extensions
     // StatusBarUtils
     api 'com.jaeger.statusbaruitl:library:1.0.0'
     // SmartRefreshLayout

@@ -26,11 +26,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation deps.support.app_compat
-    implementation deps.kotlin.stdlib
+    compileOnly deps.support.app_compat
+    compileOnly deps.kotlin.stdlib
     implementation project(':lib_anko')
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    api "org.jetbrains.anko:anko:0.10.4"
+    compileOnly 'com.android.support.constraint:constraint-layout:1.1.2'
+    compileOnly "org.jetbrains.anko:anko:0.10.5"
     api 'com.google.android.exoplayer:exoplayer:2.7.3'
     api 'com.google.android.exoplayer:extension-rtmp:2.7.3'
 
