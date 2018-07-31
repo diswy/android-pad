@@ -4,7 +4,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
-import com.cqebd.student.glide.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.glide.GlideRoundTransform
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse

@@ -15,7 +15,6 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.live.custom.NormalAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.helper.IWB_CANCEL
@@ -38,6 +37,7 @@ import com.netease.nimlib.sdk.rts.RTSManager2
 import com.netease.nimlib.sdk.rts.model.RTSData
 import com.netease.nimlib.sdk.rts.model.RTSTunData
 import com.orhanobut.logger.Logger
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import kotlinx.android.synthetic.main.fragment_live_netease_rts.*
 import org.jetbrains.anko.support.v4.dip
 import java.io.UnsupportedEncodingException
@@ -62,7 +62,6 @@ class LiveNeteaseRtsFragment : BaseFragment() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         loginRts()
-        initDoodleView(null)
         registerObservers(true)
     }
 
@@ -100,6 +99,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
         RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
             override fun onSuccess(rtsData: RTSData) {
                 isOpenRts = true
+                initDoodleView(null)
                 Logger.e("这是${this@LiveNeteaseRtsFragment.count}次登录成功")
                 Logger.i("join rts success rts extra:" + rtsData.extra)
             }

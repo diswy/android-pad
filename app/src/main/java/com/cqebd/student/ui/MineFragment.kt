@@ -16,7 +16,6 @@ import com.anko.static.dp
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
@@ -28,6 +27,7 @@ import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.widget.LoadingDialog
 import com.cqebd.teacher.vo.Status
 import com.wuhangjia.firstlib.view.FancyDialogFragment
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import gorden.lib.anko.static.startActivity

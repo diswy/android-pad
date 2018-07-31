@@ -2,21 +2,17 @@ package com.cqebd.student.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Color
 import android.os.Bundle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.formatTimeYMD
-import com.cqebd.student.tools.toast
 import com.cqebd.student.viewmodel.SubscribeListViewModel
-import com.cqebd.student.vo.entity.CourseInfo
-import com.cqebd.student.vo.entity.PeriodInfo
 import com.cqebd.student.vo.entity.VideoInfo
 import com.cqebd.teacher.vo.Status
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_subcribe.*
 import kotlinx.android.synthetic.main.item_course.view.*

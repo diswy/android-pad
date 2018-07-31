@@ -2,6 +2,7 @@ package com.cqebd.student.glide
 
 import android.content.Context
 import android.widget.ImageView
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 
 
 fun imageNormalLoad(context: Context, localRes: Int, iv: ImageView) {

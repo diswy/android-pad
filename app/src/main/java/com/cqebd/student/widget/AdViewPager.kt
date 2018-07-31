@@ -16,7 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.anko.static.dp
 import com.cqebd.student.R
-import com.cqebd.student.glide.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.glide.RoundedTransformation
 import java.lang.ref.WeakReference
 

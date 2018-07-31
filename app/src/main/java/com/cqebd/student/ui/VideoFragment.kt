@@ -11,11 +11,11 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.VideoListViewModel
 import com.cqebd.student.vo.entity.VideoInfo
 import com.cqebd.teacher.vo.Status
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.fragment_video.*
 import kotlinx.android.synthetic.main.item_video.view.*

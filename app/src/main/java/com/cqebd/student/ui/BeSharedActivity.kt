@@ -8,13 +8,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMD
 import com.cqebd.student.viewmodel.FilterViewModel
 import com.cqebd.student.viewmodel.ShareHomeworkViewModel
 import com.cqebd.student.vo.entity.ShareHomeworkItem
 import com.cqebd.teacher.vo.Status
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_be_shared.*
 import kotlinx.android.synthetic.main.item_be_shared_homework.view.*

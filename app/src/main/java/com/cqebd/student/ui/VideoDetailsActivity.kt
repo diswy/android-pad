@@ -9,7 +9,6 @@ import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
@@ -18,9 +17,8 @@ import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.fragment.CourseListFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.VideoInfo
-import com.orhanobut.logger.Logger
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.rxbus.RxBus
-import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.activity_video_details.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator

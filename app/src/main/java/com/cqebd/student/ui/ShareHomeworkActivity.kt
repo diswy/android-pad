@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.viewmodel.FilterViewModel
@@ -24,6 +23,7 @@ import com.cqebd.teacher.vo.Status
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.orhanobut.logger.Logger
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_share_homework.*
 import kotlinx.android.synthetic.main.item_share_homework.view.*

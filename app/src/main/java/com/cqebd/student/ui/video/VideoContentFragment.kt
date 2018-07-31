@@ -12,7 +12,7 @@ import com.cqebd.student.adapter.SubtitleNavigatorAdapter
 import com.cqebd.student.event.STATUS_SUBJECT
 import com.cqebd.student.event.STATUS_SUBSCRIBE
 import com.cqebd.student.event.STATUS_TIME
-import com.cqebd.student.glide.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.glide.GlideRoundTransform
 import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.ui.fragment.BaseLazyFragment

@@ -4,9 +4,9 @@ import android.view.View
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
-import com.cqebd.student.glide.GlideApp
 import com.cqebd.student.live.entity.ChatRoomEntity
 import com.cqebd.student.vo.entity.UserAccount
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import kotlinx.android.synthetic.main.item_chat_room_img.view.*
 import kotlinx.android.synthetic.main.item_chat_room_text.view.*
 import org.jetbrains.anko.backgroundResource

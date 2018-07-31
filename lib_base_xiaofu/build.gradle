@@ -47,7 +47,9 @@ dependencies {
     api 'org.jetbrains.anko:anko:0.10.5'
     // Lifecycle
     api deps.lifecycle.extensions
-
+    // glide
+    api deps.glide.core
+    kapt deps.glide.compiler
     //------------第三方库------------
     // WebView
     api 'com.just.agentweb:agentweb:4.0.2'

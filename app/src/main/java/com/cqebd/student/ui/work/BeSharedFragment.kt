@@ -18,7 +18,7 @@ import com.cqebd.student.event.STATUS_DATE
 import com.cqebd.student.event.STATUS_QUESTION_TYPE
 import com.cqebd.student.event.STATUS_SUBJECT
 import com.cqebd.student.fix_system_bug.WrapContentLinearLayoutManager
-import com.cqebd.student.glide.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.tools.PageProcess
 import com.cqebd.student.tools.formatTimeYMDHM
 import com.cqebd.student.ui.WebActivity

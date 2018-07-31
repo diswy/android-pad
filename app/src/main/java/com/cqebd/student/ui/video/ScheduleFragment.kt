@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.db.entity.ClassSchedule
-import com.cqebd.student.glide.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.live.ui.LiveActivity
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
