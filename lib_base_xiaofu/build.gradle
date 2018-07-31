@@ -25,11 +25,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compileOnly deps.kotlin.stdlib
-    compileOnly deps.support.app_compat
-    // glide
-//    api deps.glide.core
-//    kapt deps.glide.compiler
+    // 分包
+    api 'com.android.support:multidex:1.0.3'
+    // android基础包
+    api deps.kotlin.stdlib
+    api deps.support.app_compat
+    api deps.support.v4
+    api deps.support.cardview
+    api deps.support.constraint_layout
+    api deps.support.design
     // RxJava
     api deps.rx_android
     api deps.rxjava2
@@ -39,17 +43,31 @@ dependencies {
     api deps.retrofit.gson
     api deps.retrofit.rxjava2
     api deps.retrofit.logging
-    // RecyclerView
-    api deps.support.design
     // Anko
     api 'org.jetbrains.anko:anko:0.10.5'
     // Lifecycle
     api deps.lifecycle.extensions
+
+    //------------第三方库------------
+    // WebView
+    api 'com.just.agentweb:agentweb:4.0.2'
     // StatusBarUtils
     api 'com.jaeger.statusbaruitl:library:1.0.0'
     // SmartRefreshLayout
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    // BRVAH
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+
+    //------------工具-方便调试------------
+    // Logger
+    api 'com.orhanobut:logger:2.2.0'
     // Chuck
     debugApi 'com.readystatesoftware.chuck:library:1.1.0'
     releaseApi 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+    // LeakCanary
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    // ------------组件化-差异包------------
+    api project(':lib_netease')
 }

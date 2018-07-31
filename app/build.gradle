@@ -71,13 +71,17 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-//    kapt deps.lifecycle.compiler
-    kapt deps.room.compiler
-    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
-
+    // glide
     implementation deps.glide.core
     kapt deps.glide.compiler
-
-    compileOnly files('libs/fastjson-1.1.34.android.jar')
+    // old libs
     implementation project(':lib_old_bridge')
+    implementation files('libs/fastjson-1.1.34.android.jar')
+    kapt deps.room.compiler
+    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+    // my libs
+    implementation project(':lib_base_xiaofu')
+
+
+
 }

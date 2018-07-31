@@ -66,7 +66,7 @@ class App : Application() {
             }
         })
         // TODO:遗留代码，额外的日志打印
-        logInit(true, "app_log")
+        logInit(false, "app_log")
         XLog.init(false, "app_log")
 
         // 网易云信

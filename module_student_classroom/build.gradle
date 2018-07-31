@@ -48,7 +48,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lib_old_bridge')
+    implementation project(':lib_base_xiaofu')
     implementation deps.glide.core
     kapt deps.glide.compiler
 }

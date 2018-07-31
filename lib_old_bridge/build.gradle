@@ -30,43 +30,26 @@ dependencies {
     api project(':lib_video')
     api project(':firstlib')
     api project(':Album')
-    api deps.kotlin.stdlib
-    api deps.support.app_compat
-    api deps.support.v4
-    api deps.support.cardview
-    api deps.support.constraint_layout
+
     api deps.support.gridlayout
     api deps.support.vector_drawable
-//    kapt deps.lifecycle.compiler
     api deps.room.runtime
     kapt deps.room.compiler
     api 'org.greenrobot:greendao:3.2.0'
     api 'com.jakewharton:butterknife:8.5.1'
     api 'gorden.refresh:refresh-kotlin:1.32'
     api 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     api 'com.prolificinteractive:material-calendarview:1.4.3'
-//    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    api 'com.orhanobut:logger:2.2.0'
-    api 'com.just.agentweb:agentweb:4.0.2'
     api 'com.github.hackware1993:MagicIndicator:1.5.0'
     api 'com.hyman:flowlayout-lib:1.1.2'
     //Umeng
     api 'com.umeng.sdk:common:1.5.0'
     api 'com.umeng.sdk:analytics:7.5.0'
     api 'com.umeng.sdk:debug:1.0.0'
-    //leakcanary
-    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     //Luban
     api 'top.zibin:Luban:1.1.5'
     api "com.android.support:exifinterface:27.1.1"
     // (必选)
-    api 'com.android.support:multidex:1.0.3'
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
-
-    // 组件化自由插拔
-    api project(':lib_netease')
-    api project(':lib_base_xiaofu')
 }

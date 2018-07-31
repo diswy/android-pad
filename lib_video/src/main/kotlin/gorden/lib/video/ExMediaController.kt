@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Message
 import android.view.*
 import android.widget.*
-import gorden.lib.anko.static.logInfo
 import kotlinx.android.synthetic.main.mediacontroller.view.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.textColor
@@ -164,7 +163,6 @@ class ExMediaController(context: Context?, val title: ExMediaTitle) : FrameLayou
                 }
                 mHandler.removeMessages(SHOW_PROGRESS)
             } catch (ex: IllegalArgumentException) {
-                logInfo("MediaController already removed")
             }
             mShowing = false
             showListener?.invoke(false)

@@ -12,7 +12,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.widget.*
-import com.anko.static.dp
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory
@@ -31,7 +30,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoListener
-import gorden.lib.anko.static.logError
+import org.jetbrains.anko.dip
 
 class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     //The container that actually holds the content
@@ -143,7 +142,7 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         (videoContent as FrameLayout).addView(thumbImageView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
         loadingView = ProgressBar(context)
-        (videoContent as FrameLayout).addView(loadingView, LayoutParams(40.dp, 40.dp, Gravity.CENTER))
+        (videoContent as FrameLayout).addView(loadingView, LayoutParams(dip(40), dip(40), Gravity.CENTER))
 
 
         componentListener = ComponentListener()
@@ -225,7 +224,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         mediaController.isEnabled = true
 
         if (play) {
-            logError("准备播放")
             mPlayer?.playWhenReady = true
             requestAudioFocus()
         }
@@ -244,7 +242,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         }
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            logError("playWhenReady  $playWhenReady")
             if (playWhenReady) {
                 (context as? Activity)?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
@@ -305,7 +302,6 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        logError("dispatchKeyEvent  ${event.keyCode}")
         return mediaController.dispatchKeyEvent(event)
     }
 

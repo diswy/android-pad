@@ -31,10 +31,7 @@ dependencies {
     compileOnly deps.support.app_compat
     compileOnly deps.support.design
     compileOnly deps.kotlin.stdlib
-
     compileOnly deps.lifecycle.extensions
-//    kapt deps.lifecycle.compiler
-
     compileOnly deps.glide.core
     kapt deps.glide.compiler
     compileOnly ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
