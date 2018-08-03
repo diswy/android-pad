@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import com.jaeger.library.StatusBarUtil
 import com.xiaofu.lib_base_xiaofu.R
 
@@ -14,6 +15,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setView()
+        window.setBackgroundDrawable(null)
         statusBarSettings()
         initialize()
         bindEvent()
@@ -36,6 +38,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected open fun bindEvent() {
 
+    }
+
+    protected open fun setFullScreen() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+                , WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    protected open fun keepScreenOn() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
 }

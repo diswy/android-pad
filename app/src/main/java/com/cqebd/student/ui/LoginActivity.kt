@@ -44,8 +44,8 @@ class LoginActivity : BaseActivity() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         text_version.text = "V".plus(versionName)
-        edit_username.setText(PreferencesUtil.getInstance(this).getString(Constant.LAST_USER_NAME, ""))
-        edit_pwd.setText(PreferencesUtil.getInstance(this).getString(Constant.LAST_USER_PASSWORD, ""))
+        edit_username.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_NAME, ""))
+        edit_pwd.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_PASSWORD, ""))
     }
 
     override fun bindEvents() {
@@ -67,8 +67,8 @@ class LoginActivity : BaseActivity() {
                         if (it?.isSuccessful() == true) {
                             it.body?.save()
                             savePassword(edit_pwd.text.toString())
-                            PreferencesUtil.getInstance(this).putString(Constant.LAST_USER_NAME, edit_username.text.toString())
-                            PreferencesUtil.getInstance(this).putString(Constant.LAST_USER_PASSWORD, edit_pwd.text.toString())
+                            PreferencesUtil.getInstance(applicationContext).putString(Constant.LAST_USER_NAME, edit_username.text.toString())
+                            PreferencesUtil.getInstance(applicationContext).putString(Constant.LAST_USER_PASSWORD, edit_pwd.text.toString())
                             saveUserList(edit_username.text.toString())
                             startActivity<MainActivity>()
                             finish()
@@ -103,7 +103,7 @@ class LoginActivity : BaseActivity() {
 
             val gson = Gson()
             val userList: List<String>
-            val list = PreferencesUtil.getInstance(this).getString(Constant.USER_NAME_LIST, "")
+            val list = PreferencesUtil.getInstance(applicationContext).getString(Constant.USER_NAME_LIST, "")
             userList = if (list == "") {
                 ArrayList()
             } else {
@@ -117,18 +117,18 @@ class LoginActivity : BaseActivity() {
             rv.adapter = adapter
             rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-            adapter.setItemListener({ v ->
+            adapter.setItemListener { v ->
                 edit_username.setText((v as TextView).text.toString())
 
-                if (PreferencesUtil.getInstance(this).getString(Constant.LAST_USER_NAME, "") == v.text.toString()) {
-                    edit_pwd.setText(PreferencesUtil.getInstance(this).getString(Constant.LAST_USER_PASSWORD, ""))
+                if (PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_NAME, "") == v.text.toString()) {
+                    edit_pwd.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_PASSWORD, ""))
                 } else {
                     edit_pwd.setText("")
                 }
 
                 if (pop != null && pop!!.isShowing)
                     pop!!.dismiss()
-            })
+            }
 
             pop!!.contentView = container
             pop!!.isFocusable = true
@@ -156,7 +156,7 @@ class LoginActivity : BaseActivity() {
     private fun saveUserList(user: String) {
         val gson = Gson()
         val userList: ArrayList<String>
-        val list = PreferencesUtil.getInstance(this).getString(Constant.USER_NAME_LIST, "")
+        val list = PreferencesUtil.getInstance(applicationContext).getString(Constant.USER_NAME_LIST, "")
         if (list == "") {
             userList = ArrayList()
             userList.add(user)
@@ -171,6 +171,6 @@ class LoginActivity : BaseActivity() {
         userList.addAll(hashSet)
 
         val jsonList = gson.toJson(userList)
-        PreferencesUtil.getInstance(this).putString(Constant.USER_NAME_LIST, jsonList)
+        PreferencesUtil.getInstance(applicationContext).putString(Constant.USER_NAME_LIST, jsonList)
     }
 }

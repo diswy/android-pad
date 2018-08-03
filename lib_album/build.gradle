@@ -34,11 +34,11 @@ dependencies {
     compileOnly deps.lifecycle.extensions
     compileOnly deps.glide.core
     kapt deps.glide.compiler
-    compileOnly ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
+    api ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
         transitive = false
     }
-    compileOnly 'me.panpf:sketch:2.6.1'
-    compileOnly 'me.panpf:sketch-gif:2.6.1'
+    api 'me.panpf:sketch:2.6.1'
+    api 'me.panpf:sketch-gif:2.6.1'
     //noinspection GradleDependency
     api 'com.github.yalantis:ucrop:2.2.1-native'
 }

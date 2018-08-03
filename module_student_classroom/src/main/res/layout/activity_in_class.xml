@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.activity.InClassActivity">
 
-    <com.cqebd.lib_netease.doodle.DoodleView
-        android:id="@+id/mDoodle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="100dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableStart="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="互动课堂" />
+
+        <RadioGroup
+            android:id="@+id/mRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/mBtnRts"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/in_class_title_rts"
+                android:gravity="center"
+                android:text="电子白板" />
+
+            <RadioButton
+                android:id="@+id/mBtnLibs"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/in_class_title_rts"
+                android:gravity="center"
+                android:text="资源库" />
+
+            <RadioButton
+                android:id="@+id/mBtnAnswers"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/in_class_title_rts"
+                android:gravity="center"
+                android:text="互动答题" />
+
+            <RadioButton
+                android:id="@+id/mBtnCheckIn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/in_class_title_rts"
+                android:gravity="center"
+                android:text="学生点名" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View style="@style/VerticalDivider" />
+
+    <FrameLayout
+        android:id="@+id/mRealContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseBj" />
+
+</LinearLayout>

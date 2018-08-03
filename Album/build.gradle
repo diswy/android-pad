@@ -11,7 +11,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly deps.support.app_compat
     compileOnly deps.support.design
-    compileOnly 'me.xiaopan:sketch:2.4.0-beta1'
+    api 'me.xiaopan:sketch:2.4.0-beta1'
     compileOnly deps.support.app_compat
     compileOnly deps.support.design
     compileOnly deps.rxjava2

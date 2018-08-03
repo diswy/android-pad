@@ -1,82 +1,67 @@
 package com.cqebd.module_student_classroom.ui.activity
 
-import android.graphics.Color
-import android.graphics.Rect
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import com.cqebd.lib_netease.doodle.ActionTypeEnum
-import com.cqebd.lib_netease.doodle.DoodleView
-import com.cqebd.lib_netease.doodle.SupportActionType
-import com.cqebd.lib_netease.doodle.TransactionCenter
-import com.cqebd.lib_netease.doodle.action.MyPath
-import com.cqebd.lib_netease.helper.IJoinListener
-import com.cqebd.lib_netease.helper.joinRTSRoom
+import android.support.v4.app.Fragment
+import com.cqebd.lib_netease.helper.sendP2P
 import com.cqebd.module_student_classroom.R
+import com.cqebd.module_student_classroom.ui.fragment.LibsFragment
+import com.cqebd.module_student_classroom.ui.fragment.RTSFragment
+import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
-import com.netease.nimlib.sdk.rts.RTSManager2
-import com.netease.nimlib.sdk.rts.model.RTSTunData
-import com.orhanobut.logger.Logger
+import com.netease.nimlib.sdk.msg.MsgServiceObserve
+import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.xiaofu.lib_base_xiaofu.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_in_class.*
-import java.io.UnsupportedEncodingException
+import org.jetbrains.anko.toast
 
 class InClassActivity : BaseActivity() {
+
+    private val mRts by lazy { RTSFragment() }
+    private val mLibs by lazy { LibsFragment() }
+
     override fun getView(): Int = R.layout.activity_in_class
 
+    override fun setView() {
+        setFullScreen()
+        keepScreenOn()
+        super.setView()
+    }
+
     override fun initialize() {
-        joinRTSRoom(this, "xiaofudejiaoshi",object :IJoinListener{
-            override fun joinSuccess() {
-
-                initDoodle()
-
-            }
-        })
+        registerObservers(true)
     }
 
-    private fun initDoodle() {
-        SupportActionType.getInstance().addSupportActionType(ActionTypeEnum.Path.value, MyPath::class.java)
-        mDoodle.init("xiaofudejiaoshi", null, DoodleView.Mode.BOTH, Color.WHITE, Color.BLACK, this, null)
-        mDoodle.setPaintSize(3)
-        mDoodle.setPaintType(ActionTypeEnum.Path.value)
-
-        // adjust paint offset
-        Handler(Looper.getMainLooper()).postDelayed({
-            val frame = Rect()
-            window.decorView.getWindowVisibleDisplayFrame(frame)
-            val statusBarHeight = frame.top
-            Log.i("Doodle", "statusBarHeight =$statusBarHeight")
-
-            val marginTop = mDoodle.getTop()
-            Log.i("Doodle", "doodleView marginTop =$marginTop")
-
-            val marginLeft = mDoodle.getLeft()
-            Log.i("Doodle", "doodleView marginLeft =$marginLeft")
-
-            val offsetX = marginLeft.toFloat()
-            val offsetY = statusBarHeight
-            mDoodle.setPaintOffset(offsetX, offsetY.toFloat())
-        }, 50)
-
-
-        RTSManager2.getInstance().observeReceiveData("xiaofudejiaoshi", receiveDataObserver, true)
+    override fun onDestroy() {
+        registerObservers(false)
+        super.onDestroy()
     }
 
-    /**
-     * 监听收到对方发送的通道数据
-     */
-    private val receiveDataObserver = Observer<RTSTunData> { rtsTunData ->
-        Logger.i("receive data")
-        var data = "[parse bytes error]"
-        try {
-            data = String(rtsTunData.data, 0, rtsTunData.length)
-            Logger.e(data)
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
+    override fun bindEvent() {
+        btnBack.setOnClickListener {
+            mRadioGroup.clearCheck()
+//            finish()
         }
 
-        TransactionCenter.getInstance().onReceive("xiaofudejiaoshi", rtsTunData.account, data)
+        mRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.mBtnRts -> switchFragment(mRts)
+                R.id.mBtnLibs -> switchFragment(mLibs)
+                R.id.mBtnAnswers -> sendP2P("student_1420","学生发送的内容~")
+                R.id.mBtnCheckIn -> toast("点名")
+            }
+        }
+    }
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mRealContainer, fragment)
+                .commit()
+    }
+
+    private fun registerObservers(register: Boolean) {
+        NIMClient.getService(MsgServiceObserve::class.java).observeCustomNotification(customNotification, register)
+    }
+
+    private val customNotification: Observer<CustomNotification> = Observer {
+        toast(it.content)
     }
 }

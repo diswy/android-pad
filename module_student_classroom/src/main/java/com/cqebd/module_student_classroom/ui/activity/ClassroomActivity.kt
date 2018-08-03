@@ -1,6 +1,9 @@
 package com.cqebd.module_student_classroom.ui.activity
 
+import android.app.ActivityManager
+import android.content.Context
 import android.support.v7.widget.GridLayoutManager
+import android.view.KeyEvent
 import android.view.View
 import com.cqebd.lib_netease.helper.neteaseLogin
 import com.cqebd.module_student_classroom.R
@@ -12,6 +15,7 @@ import com.xiaofu.lib_base_xiaofu.api.viewmodel.MyCallback
 import com.xiaofu.lib_base_xiaofu.base.BaseToolbarActivity
 import kotlinx.android.synthetic.main.base_refresh_layout.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Response
 
@@ -26,12 +30,12 @@ class ClassroomActivity : BaseToolbarActivity() {
         mRv.layoutManager = GridLayoutManager(this, 2)
         periodAdapter.bindToRecyclerView(mRv)
 
-        periodAdapter.setNewData(listOf("1","1"))
+        periodAdapter.setNewData(listOf("1", "1"))
 
 
         ApiManager.getInstance().classService
                 .test()
-                .enqueue(object :MyCallback<String>{
+                .enqueue(object : MyCallback<String> {
                     override fun onResponse(call: Call<String>?, response: Response<String>?) {
                         Logger.e(response?.body()!!)
                     }
@@ -43,9 +47,25 @@ class ClassroomActivity : BaseToolbarActivity() {
 
     override fun bindEvent() {
         periodAdapter.setOnItemClickListener { adapter, view, position ->
-            showPeriodDialog("开始上课？",View.OnClickListener {
+            showPeriodDialog("开始上课？", View.OnClickListener {
                 startActivity<InClassActivity>()
             })
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        for (i in 0..49) {
+            val am: ActivityManager = applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            am.moveTaskToFront(taskId, 0)
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            toast("你点击了back键")
+            return false
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

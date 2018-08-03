@@ -110,3 +110,10 @@ fun joinRTSRoom(context: Context, sessionId: String, listener: IJoinListener, is
 
     })
 }
+
+/**
+ * 简化发送点对点通知
+ */
+fun sendP2P(account: String, content: String) {
+    NNotificationHelper.instance().sendP2PCustomNotification(account, content)
+}

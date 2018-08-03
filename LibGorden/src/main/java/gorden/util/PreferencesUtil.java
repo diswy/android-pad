@@ -33,7 +33,7 @@ public class PreferencesUtil {
         if (preferencesUtil == null) {
             synchronized (PreferencesUtil.class) {
                 if (preferencesUtil == null) {
-                    preferencesUtil = new PreferencesUtil(context);
+                    preferencesUtil = new PreferencesUtil(context.getApplicationContext());
                 }
             }
         }
