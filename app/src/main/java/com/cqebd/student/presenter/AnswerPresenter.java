@@ -31,6 +31,7 @@ import com.cqebd.student.db.dao.StudentAnswer;
 import com.cqebd.student.db.dao.StudentAnswerDao;
 import com.cqebd.student.dialog.Effectstype;
 import com.cqebd.student.dialog.NiftyDialog;
+import com.cqebd.student.glide.GlidePreviewActivity;
 import com.cqebd.student.http.NetApi;
 import com.cqebd.student.http.NetCallBack;
 import com.cqebd.student.http.NetClient;
@@ -53,7 +54,6 @@ import com.cqebd.student.vo.entity.QuestionInfo;
 import com.cqebd.student.vo.entity.WorkInfo;
 import com.cqebd.student.vo.enums.AnswerMode;
 import com.cqebd.student.vo.enums.TaskStatus;
-import com.cqebd.student.widget.AvatarImageView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
@@ -64,7 +64,6 @@ import org.greenrobot.greendao.query.Query;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -301,6 +300,11 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
 
     @Override
     public void pathResult(String path, ImageView imageView) {
+//        Intent i = new Intent(mContext, GlidePreviewActivity.class);
+//        i.putExtra("IMG_PATH", path);
+//        Logger.d("path = "+path);
+//        mContext.startActivity(i);
+
         new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
@@ -615,7 +619,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
 
     public void showCommitDialog() {
         int undoAnswer = undoQuestions();
-        niftyDialog().setOnDismissListener(null);
+        niftyDialog().isCancelableOnTouchOutside(false)
+                .setOnDismissListener(null);
         String promptStrFormat = "还有%s题未做完\n你确定要现在交卷吗？";
         niftyDialog().withMessage(undoAnswer == 0 ? "你确定要现在交卷吗？" : String.format(promptStrFormat, undoAnswer))
                 .withButton1Text("继续做题").withButton2Text("现在交卷").withGravity(Gravity.CENTER).withEffect(Effectstype.Shake)
@@ -694,7 +699,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                         XLog.exception(e);
                     }
 
-                    niftyDialog().withMessage("完成交卷,点击\"查看记录\"可查看本次做题记录")
+                    niftyDialog().isCancelableOnTouchOutside(false)
+                            .withMessage("完成交卷,点击\"查看记录\"可查看本次做题记录")
                             .withButton1Text("不想看").withButton2Text("查看记录").withGravity(Gravity.CENTER)
                             .setButton2Click(v -> {
                                 niftyDialog().dismiss();

@@ -6,9 +6,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
+import android.support.annotation.RequiresApi
 import android.support.v4.content.FileProvider
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
@@ -142,19 +145,15 @@ class StartActivity : BaseActivity() {
                             it.progress = mProgress
                             if (mProgress == 100) {
                                 dialog.dismiss()
-                                val i = Intent(Intent.ACTION_VIEW)
-                                val data: Uri
-                                val filePath = path + fileName
-                                val file = File(filePath)
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {// 大于7.0
-                                    data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
-                                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                                downloadPath = path
+                                downloadFileName = fileName
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    installOreo()
                                 } else {
-                                    data = Uri.fromFile(file)
+                                    apkInstall()
                                 }
-                                i.setDataAndType(data, "application/vnd.android.package-archive")
-                                startActivity(i)
-                                this@StartActivity.finish()
                             }
                         }
                     }
@@ -166,4 +165,45 @@ class StartActivity : BaseActivity() {
                     }
                 })
     }
+
+    private val GET_INSTALL_APP_PERMISSION = 111222
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun installOreo() {
+        val canInstallApk = packageManager.canRequestPackageInstalls()
+        if (canInstallApk) {
+            apkInstall()
+        } else {
+            // 引导用户去打开权限 PS:部分机型无法跳转 目前小米有出现此情况
+            val packageUri = Uri.parse("package:$packageName")
+            val i = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageUri)
+            startActivityForResult(i, GET_INSTALL_APP_PERMISSION)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GET_INSTALL_APP_PERMISSION) {
+            installOreo()
+        }
+    }
+
+    private fun apkInstall() {
+        val i = Intent(Intent.ACTION_VIEW)
+        val data: Uri
+        val filePath = downloadPath + downloadFileName
+        val file = File(filePath)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {// 大于7.0
+            data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        } else {
+            data = Uri.fromFile(file)
+        }
+        i.setDataAndType(data, "application/vnd.android.package-archive")
+        startActivity(i)
+    }
+
+    private lateinit var downloadPath: String
+    private lateinit var downloadFileName: String
 }

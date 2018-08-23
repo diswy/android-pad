@@ -42,7 +42,7 @@ class CallbackActivity : BaseActivity() {
     }
 
     private fun check(): Boolean {
-        if (TextUtils.isEmpty(edit_content.text.toString().trim({ it <= ' ' }))) {
+        if (TextUtils.isEmpty(edit_content.text.toString().trim { it <= ' ' })) {
             toast("请输入反馈内容")
             return false
         }

@@ -31,6 +31,7 @@ import com.cqebd.student.vo.entity.QuestionInfo;
 import com.cqebd.student.vo.entity.StudentAnswer;
 import com.cqebd.student.vo.enums.CardType;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -137,6 +138,8 @@ public class AnswerCardView1 extends LinearLayout {
         Type type = new TypeToken<ArrayList<AnswerType>>() {
         }.getType();
         answerTypes = (List<AnswerType>) UtilGson.getInstance().convertJsonStringToList(questionInfo.getAnswerType(), type);
+        Logger.json(questionInfo.getAnswerType());
+        Logger.d("count = " + getCount());
         initAnswerMap();
         buildCardFragments();
 
@@ -161,7 +164,7 @@ public class AnswerCardView1 extends LinearLayout {
         int height = 60;
         for (int i = 0; i < getCount(); i++) {
             cards.add(getViewFragment(i));
-            if (getItemViewType(0)!=TYPE_SINGLE){
+            if (getItemViewType(0) != TYPE_SINGLE) {
                 height = 150;
             }
         }
@@ -204,8 +207,8 @@ public class AnswerCardView1 extends LinearLayout {
             /**
              * 填空
              */
-                /*除了英语填空，其他都需要拍照*/
-            if (SubjectTypeId != 12&&mQuestionInfo.getWriteType()!=1) {
+            /*除了英语填空，其他都需要拍照*/
+            if (SubjectTypeId != 12 && mQuestionInfo.getWriteType() != 1) {
                 return TYPE_RICH;
             }
             return TYPE_EDIT;
@@ -304,7 +307,8 @@ public class AnswerCardView1 extends LinearLayout {
      * 旧逻辑漏洞，单独修改图片不重新提交修复
      */
     private boolean isImgChange = false;
-    public void setImgChanged(){
+
+    public void setImgChanged() {
         this.isImgChange = true;
     }
 
@@ -314,7 +318,7 @@ public class AnswerCardView1 extends LinearLayout {
      * @return
      */
     public boolean isChanged() {
-        if (isImgChange){
+        if (isImgChange) {
             isImgChange = false;
             return true;
         }
@@ -366,7 +370,8 @@ public class AnswerCardView1 extends LinearLayout {
         return UtilGson.getInstance().convertObjectToJsonString(answerList);
     }
 
-    private DensityUtil densityUtil = new  DensityUtil(App.mContext);
+    private DensityUtil densityUtil = new DensityUtil(App.mContext);
+
     private int dp2px(int dp) {
         return densityUtil.dip2px(dp);
     }

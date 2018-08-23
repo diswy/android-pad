@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.support.multidex.MultiDex
 import com.cqebd.student.BuildConfig
 import com.cqebd.student.R
@@ -25,6 +26,8 @@ import com.squareup.leakcanary.LeakCanary
 import com.umeng.commonsdk.UMConfigure
 import gorden.lib.anko.static.logInit
 import gorden.util.XLog
+import org.jetbrains.anko.tableRow
+import java.lang.reflect.InvocationTargetException
 
 /**
  * 描述
@@ -82,6 +85,8 @@ class App : Application() {
         // 友盟
         UMConfigure.setLogEnabled(true)
         UMConfigure.init(this, "5af25b66b27b0a5574000090", "server", UMConfigure.DEVICE_TYPE_PHONE, null)
+
+        fixSamsungClipboardUIManagerBug()
     }
 
     override fun attachBaseContext(base: Context?) {
@@ -89,47 +94,25 @@ class App : Application() {
         MultiDex.install(this)
     }
 
-    private fun options(): SDKOptions {
-        val options = SDKOptions()
+    /**
+     * 三星手机ClipboardUIManager内存泄漏BUG
+     * 多出现在登录界面
+     */
+    private fun fixSamsungClipboardUIManagerBug() {
 
-        // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
-        val config = StatusBarNotificationConfig()
-//        config.notificationEntrance = StartActivity::class.java // 点击通知栏跳转到该Activity
-        config.notificationSmallIconId = R.mipmap.ic_launcher
-        // 呼吸灯配置
-        config.ledARGB = Color.GREEN
-        config.ledOnMs = 1000
-        config.ledOffMs = 1500
-        // 通知铃声的uri字符串
-        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
-        options.statusBarNotificationConfig = config
+        if ("samsung" != Build.MANUFACTURER)
+            return
 
-        // 配置保存图片，文件，log 等数据的目录
-        // 如果 options 中没有设置这个值，SDK 会使用采用默认路径作为 SDK 的数据目录。
-        // 该目录目前包含 log, file, image, audio, video, thumb 这6个目录。
-//        val sdkPath = getAppCacheDir(this) +"/nim" // 可以不设置，那么将采用默认路径
-        // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
-//        options.sdkStorageRootPath = sdkPath
+        try {
+            val cls = Class.forName("android.sec.clipboard.ClipboardUIManager")
+            val method = cls.getDeclaredMethod("getInstance", Context::class.java)
+            method.isAccessible = true
+            method.invoke(null, this)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Logger.e("Samsung Bug：${e.message}")
+        }
 
-        // 配置是否需要预下载附件缩略图，默认为 true
-        options.preloadAttach = true
-
-        // 配置附件缩略图的尺寸大小。表示向服务器请求缩略图文件的大小
-        // 该值一般应根据屏幕尺寸来确定， 默认值为 Screen.width / 2
-//        options.thumbnailSize = ${Screen.width} / 2
-
-        // 用户资料提供者, 目前主要用于提供用户资料，用于新消息通知栏中显示消息来源的头像和昵称
-//        options.userInfoProvider = object :UserInfoProvider {
-//            override fun getUserInfo(account: String?): UserInfo {
-//                return UserInfo()
-//            }
-//
-//            override fun getAvatarForMessageNotifier(sessionType: SessionTypeEnum?, sessionId: String?): Bitmap {
-//            }
-//
-//            override fun getDisplayNameForMessageNotifier(account: String?, sessionId: String?, sessionType: SessionTypeEnum?): String {
-//            }
-//        }
-        return options
     }
+
 }

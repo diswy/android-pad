@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':Teaching-lib'
 include ':lib_anko'
 include ':lib_album'
 include ':lib_video'
