@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.KeyEvent
 import android.view.View
 import com.cqebd.lib_netease.helper.neteaseLogin
+import com.cqebd.module_student_classroom.HomeReceiver
 import com.cqebd.module_student_classroom.R
 import com.cqebd.module_student_classroom.adapter.PeriodAdapter
 import com.cqebd.module_student_classroom.helper.showPeriodDialog
@@ -18,6 +19,10 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Response
+import android.content.Intent
+import android.content.IntentFilter
+
+
 
 class ClassroomActivity : BaseToolbarActivity() {
     private val periodAdapter by lazy { PeriodAdapter() }
@@ -27,6 +32,13 @@ class ClassroomActivity : BaseToolbarActivity() {
     override fun getView(): Int = R.layout.activity_classroom
 
     override fun initialize() {
+
+        val receiver = HomeReceiver()
+        val intentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+        registerReceiver(receiver, intentFilter)
+
+//        unregisterReceiver(innerReceiver)
+
         mRv.layoutManager = GridLayoutManager(this, 2)
         periodAdapter.bindToRecyclerView(mRv)
 

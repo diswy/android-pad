@@ -49,4 +49,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib_base_xiaofu')
+    // 差异包
+    implementation project(':lib_netease')
 }

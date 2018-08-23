@@ -70,6 +70,4 @@ dependencies {
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    // ------------组件化-差异包------------
-    api project(':lib_netease')
 }

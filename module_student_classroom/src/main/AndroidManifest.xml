@@ -12,6 +12,9 @@
         </activity>
         <activity android:name=".ui.activity.InClassActivity"
             android:screenOrientation="landscape"/>
+
+
+        <receiver android:name=".HomeReceiver" android:exported="true" android:enabled="true"/>
     </application>
 
 

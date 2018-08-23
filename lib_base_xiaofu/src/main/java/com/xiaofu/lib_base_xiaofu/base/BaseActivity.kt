@@ -16,7 +16,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setView()
         window.setBackgroundDrawable(null)
-        statusBarSettings()
         initialize()
         bindEvent()
     }

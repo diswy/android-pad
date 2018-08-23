@@ -82,4 +82,6 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:8.5.1'
     // my libs
     implementation project(':lib_base_xiaofu')
+    // 差异包
+    implementation project(':lib_netease')
 }
