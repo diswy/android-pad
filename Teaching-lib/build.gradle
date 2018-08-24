@@ -12,18 +12,26 @@ android {
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            buildConfigField("boolean", "SHOW_LOG", "false")
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField("boolean", "SHOW_LOG", "true")
+            minifyEnabled false
         }
     }
 
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_base_xiaofu')
+    implementation 'com.github.smart-fun:XmlToJson:1.4.4'
 }

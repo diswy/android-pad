@@ -10,11 +10,15 @@
                 <action android:name="com.cqebd.module_student_classroom.intent.action.ClassroomActivity" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.InClassActivity"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".ui.activity.InClassActivity"
+            android:screenOrientation="landscape" />
 
 
-        <receiver android:name=".HomeReceiver" android:exported="true" android:enabled="true"/>
+        <receiver
+            android:name=".HomeReceiver"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 
