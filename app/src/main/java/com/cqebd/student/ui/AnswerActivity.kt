@@ -1,6 +1,7 @@
 package com.cqebd.student.ui
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -214,5 +215,12 @@ class AnswerActivity:BaseActivity(),IAnswer {
     override fun onDestroy() {
         super.onDestroy()
         audioPlayer.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 888 && resultCode == 888){
+            presenter.upLoad()
+        }
     }
 }

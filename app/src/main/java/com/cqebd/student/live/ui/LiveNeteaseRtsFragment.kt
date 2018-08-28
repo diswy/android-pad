@@ -40,6 +40,7 @@ import com.orhanobut.logger.Logger
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import kotlinx.android.synthetic.main.fragment_live_netease_rts.*
 import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.support.v4.toast
 import java.io.UnsupportedEncodingException
 
 
@@ -99,6 +100,8 @@ class LiveNeteaseRtsFragment : BaseFragment() {
         RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
             override fun onSuccess(rtsData: RTSData) {
                 isOpenRts = true
+                registerObservers(false)
+                registerObservers(true)
                 initDoodleView(null)
                 Logger.e("这是${this@LiveNeteaseRtsFragment.count}次登录成功")
                 Logger.i("join rts success rts extra:" + rtsData.extra)
@@ -172,7 +175,9 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                                     }
                                 })
                     }else if (attachment.mCustomMsg?.name == "iwb"){
+                        toast("收到iwb")
                         if (!isOpenRts){
+                            println("执行登录")
                             loginRts()
                         }
                     }

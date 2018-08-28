@@ -190,13 +190,14 @@ class StartActivity : BaseActivity() {
 
     private fun apkInstall() {
         val i = Intent(Intent.ACTION_VIEW)
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         val data: Uri
         val filePath = downloadPath + downloadFileName
         val file = File(filePath)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {// 大于7.0
-            data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            data = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
         } else {
             data = Uri.fromFile(file)
         }

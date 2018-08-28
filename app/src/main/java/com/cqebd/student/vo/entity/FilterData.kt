@@ -24,12 +24,7 @@ data class FilterData(val status: Int, val Name: String) {
                 FilterData(9, "六年级"),
                 FilterData(1, "七年级"),
                 FilterData(2, "八年级"),
-                FilterData(3, "九年级"),
-                FilterData(4, "一年级"),
-                FilterData(5, "二年级"),
-                FilterData(6, "三年级"),
-                FilterData(7, "四年级"),
-                FilterData(8, "五年级"))
+                FilterData(3, "九年级"))
 
         //订阅状态
         val subscribeStatus = listOf(

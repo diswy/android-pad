@@ -300,17 +300,25 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
 
     @Override
     public void pathResult(String path, ImageView imageView) {
-//        Intent i = new Intent(mContext, GlidePreviewActivity.class);
-//        i.putExtra("IMG_PATH", path);
-//        Logger.d("path = "+path);
-//        mContext.startActivity(i);
+        Intent i = new Intent(mContext, GlidePreviewActivity.class);
+        i.putExtra("IMG_PATH", path);
+        mContext.startActivityForResult(i, 888);
+        this.mPath = path;
+        this.mImageView = imageView;
+    }
 
-        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(granted -> {
-                    if (granted) {
-                        followImage(path, imageView);
-                    }
-                });
+    private String mPath = null;
+    private ImageView mImageView = null;
+
+    public void upLoad() {
+        if (mPath != null && mImageView != null) {
+            new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(granted -> {
+                        if (granted) {
+                            followImage(mPath, mImageView);
+                        }
+                    });
+        }
     }
 
     private void followImage(String path, ImageView imageView) {

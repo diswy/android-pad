@@ -7,38 +7,78 @@
     android:background="@color/black"
     tools:context=".glide.GlidePreviewActivity">
 
-
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerInside" />
-
-
-    <Button
-        android:id="@+id/btnReRotate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="旋转-90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline" />
-
-    <Button
-        android:id="@+id/btnRotate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="旋转+90"
-        app:layout_constraintBottom_toBottomOf="@+id/btnReRotate"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.xiaofu.lib_base_xiaofu.fancy.FancyButton
+        android:id="@+id/btnConfirm"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:fb_text="确定"
+        app:fb_shape="rect"
+        app:fb_border_color="@color/colorWhite"
+        app:fb_bg_color="@color/transparent"
+        app:fb_hover_color="@color/transparent"
+        app:fb_border_width="1dp"
+        app:fb_showBorder="true"
+        app:fb_text_color="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btnReRotate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/ic_rotate_90"
+        android:text="逆时针旋转90°"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/hintTv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/btnRotate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/ic_rotate90"
+        android:text="顺时针旋转90°"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReRotate"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/hintTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:text="请将图片旋转至正确的方向后按确认键\n如已经正确，直接按确认键!"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
