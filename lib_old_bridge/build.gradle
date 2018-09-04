@@ -42,6 +42,7 @@ dependencies {
     api 'com.prolificinteractive:material-calendarview:1.4.3'
     api 'com.github.hackware1993:MagicIndicator:1.5.0'
     api 'com.hyman:flowlayout-lib:1.1.2'
+    api 'me.panpf:sketch:2.6.1'
     //Umeng
     api 'com.umeng.sdk:common:1.5.0'
     api 'com.umeng.sdk:analytics:7.5.0'

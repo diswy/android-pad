@@ -13,6 +13,7 @@ import com.orhanobut.logger.Logger
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.xiaofu.lib_base_xiaofu.img.PhotoUtils
 import kotlinx.android.synthetic.main.activity_glide_preview.*
+import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileNotFoundException
@@ -38,30 +39,40 @@ class GlidePreviewActivity : BaseActivity() {
                 , WindowManager.LayoutParams.FLAG_FULLSCREEN)
         imgPath = intent.getStringExtra("IMG_PATH")
         Logger.d("imgPath = $imgPath  degree = ${PhotoUtils.getPictureDegree(imgPath)}")
+        iv.displayImage(imgPath)
+        iv.isZoomEnabled = true
         GlideApp.with(this)
                 .asBitmap()
                 .load(imgPath)
                 .into(target)
+
     }
 
     override fun bindEvents() {
         btnRotate.setOnClickListener {
             if (isLoadSuccess) {
+                iv.zoomer?.rotateBy(90)
                 rotate += 90f
-                iv.setImageBitmap(rotateBitmap(mBitmap, rotate))
-                finalBitmap = rotateBitmap(mBitmap, rotate)
             }
         }
         btnReRotate.setOnClickListener {
             if (isLoadSuccess) {
+                iv.zoomer?.rotateBy(270)
                 rotate -= 90f
-                iv.setImageBitmap(rotateBitmap(mBitmap, rotate))
-                finalBitmap = rotateBitmap(mBitmap, rotate)
             }
         }
 
         btnConfirm.setOnClickListener {
-            saveBitmap()
+            if (rotate >= 360f || rotate <= -360f) {
+                rotate = 0f
+            }
+            if (rotate == 0f) {
+                setResult(888)
+                finish()
+            } else {
+                finalBitmap = rotateBitmap(mBitmap, rotate)
+                saveBitmap()
+            }
         }
     }
 
@@ -69,7 +80,6 @@ class GlidePreviewActivity : BaseActivity() {
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
             mBitmap = resource
             isLoadSuccess = true
-            iv.setImageBitmap(resource)
             finalBitmap = resource
         }
     }
@@ -100,7 +110,7 @@ class GlidePreviewActivity : BaseActivity() {
                     setResult(888)
                     finish()
                 }
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 

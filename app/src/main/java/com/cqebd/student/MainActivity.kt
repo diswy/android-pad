@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
 
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
+    private val mGuidePosition by lazy { intent.getIntExtra("guide_position", -1) }
 
     override fun setContentView() {
         setContentView(R.layout.activity_main_drawerlayout)
@@ -71,7 +72,8 @@ class MainActivity : BaseActivity() {
                 switchFragment(position)
             }
         })
-        switchFragment(0)
+        switchFragment(if (mGuidePosition != -1) mGuidePosition else 0)
+        navigation.selectTab(if (mGuidePosition != -1) mGuidePosition else 0)
     }
 
     private fun switchFragment(position: Int) {

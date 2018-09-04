@@ -14,11 +14,10 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <ImageView
+    <me.panpf.sketch.SketchImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

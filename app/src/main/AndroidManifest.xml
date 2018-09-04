@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cqebd.student">
 
-    <!--8.0-->
+    <!-- 8.0 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 访问网络状态 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -107,6 +107,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".shortcuts.GuidePageActivity"
+            android:theme="@style/APPTranslucentStatus">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
@@ -170,7 +183,7 @@
         <activity android:name=".ui.ModifyPwdActivity" />
         <activity android:name=".ui.MessageActivity" />
         <activity android:name=".ui.CallbackActivity" />
-        <activity android:name=".glide.GlidePreviewActivity"></activity>
+        <activity android:name=".glide.GlidePreviewActivity" />
     </application>
 
 </manifest>
