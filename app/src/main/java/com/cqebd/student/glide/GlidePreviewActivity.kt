@@ -13,10 +13,9 @@ import com.orhanobut.logger.Logger
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.xiaofu.lib_base_xiaofu.img.PhotoUtils
 import kotlinx.android.synthetic.main.activity_glide_preview.*
-import org.jetbrains.anko.imageBitmap
+import me.panpf.sketch.Sketch
 import org.jetbrains.anko.toast
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
 class GlidePreviewActivity : BaseActivity() {
@@ -39,7 +38,12 @@ class GlidePreviewActivity : BaseActivity() {
                 , WindowManager.LayoutParams.FLAG_FULLSCREEN)
         imgPath = intent.getStringExtra("IMG_PATH")
         Logger.d("imgPath = $imgPath  degree = ${PhotoUtils.getPictureDegree(imgPath)}")
-        iv.displayImage(imgPath)
+        Sketch.with(this).display(imgPath,iv)
+                .disableCacheInDisk()
+                .disableCacheInMemory()
+                .disableBitmapPool()
+                .commit()
+
         iv.isZoomEnabled = true
         GlideApp.with(this)
                 .asBitmap()
