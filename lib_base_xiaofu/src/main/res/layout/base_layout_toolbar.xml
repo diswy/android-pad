@@ -10,16 +10,16 @@
         android:id="@+id/mToolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/white"
         android:minHeight="40dp"
-        app:navigationIcon="@mipmap/ic_toolbar_nav">
+        app:navigationIcon="@drawable/ic_toolbar_nav_white">
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/tvTitle"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             tools:text="这是标题" />
 
     </android.support.v7.widget.Toolbar>

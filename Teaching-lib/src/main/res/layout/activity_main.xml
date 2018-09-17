@@ -5,8 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     android:id="@+id/mContainer"
     tools:context=".MainActivity">
+
+    <TextView
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="书架"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
+    <include layout="@layout/recycler_view_layout"/>
 
     <Button
         android:id="@+id/testBtn"
@@ -17,11 +29,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv"
-        android:background="@color/colorPrimary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

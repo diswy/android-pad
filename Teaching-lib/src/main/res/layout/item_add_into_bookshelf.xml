@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btnAddBook"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/btn_add_book"
+    android:layout_margin="12dp">
+
+</FrameLayout>

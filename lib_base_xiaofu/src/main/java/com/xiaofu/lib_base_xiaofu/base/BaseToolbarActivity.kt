@@ -1,5 +1,6 @@
 package com.xiaofu.lib_base_xiaofu.base
 
+import android.graphics.Color
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,6 +17,7 @@ abstract class BaseToolbarActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         tvTitle.text = setTitle()
+        setToolbarColor(Color.parseColor("#349aff"))
     }
 
     /**
@@ -39,6 +41,10 @@ abstract class BaseToolbarActivity : BaseActivity() {
         if (getToolbarMenu() != -1)
             menuInflater.inflate(getToolbarMenu(), menu)
         return true
+    }
+
+    private fun setToolbarColor(color: Int) {
+        mToolbar.setBackgroundColor(color)
     }
 
 }

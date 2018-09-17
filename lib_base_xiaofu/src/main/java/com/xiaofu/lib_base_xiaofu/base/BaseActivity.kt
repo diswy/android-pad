@@ -27,6 +27,10 @@ abstract class BaseActivity : AppCompatActivity() {
         StatusBarUtil.setColor(this, resources.getColor(R.color.white), 0)
     }
 
+    protected open fun setStatusBarColor(color:Int){
+        StatusBarUtil.setColor(this,color)
+    }
+
     protected open fun setView() {
         setContentView(getView())
     }
