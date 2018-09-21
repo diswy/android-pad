@@ -58,7 +58,9 @@ dependencies {
     // SmartRefreshLayout
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     // BRVAH
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
+    // 图片缩放库
+    api 'com.github.chrisbanes:PhotoView:2.0.0'
 
     //------------工具-方便调试------------
     // Logger

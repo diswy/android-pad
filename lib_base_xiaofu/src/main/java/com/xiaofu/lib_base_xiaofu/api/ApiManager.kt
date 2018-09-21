@@ -11,6 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 internal const val CLASS_SERVICE_BASE_URL = "http://icr-service.cqebd.cn/"
 
+internal const val LIB_SERVICE_BASE_URL = "http://ebook-service.cqebd.cn/"
+
 class ApiManager {
 
     companion object {
@@ -29,7 +31,7 @@ class ApiManager {
      * 默认的客户端
      */
     private val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(GatewayInterceptor("23393048", "d0c983467d8ced6568e844c0b0a233ae"))
+            .addInterceptor(GatewayInterceptor("25071301", "8db28e83272f04b38135d15af60d4759"))
             .build()
 
     /**
@@ -40,7 +42,7 @@ class ApiManager {
     fun initChuckOkHttpClient(context: Context) {
         chuckOkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(ChuckInterceptor(context))
-                .addInterceptor(GatewayInterceptor("23393048", "d0c983467d8ced6568e844c0b0a233ae"))
+                .addInterceptor(GatewayInterceptor("25071301", "8db28e83272f04b38135d15af60d4759"))
                 .build()
     }
 
@@ -57,5 +59,16 @@ class ApiManager {
                 .addCallAdapterFactory(rxJavaCallAdapterFactory)
                 .build()
                 .create(ApiClassService::class.java)
+    }
+
+    val libService: ApiLibService by lazy {
+        Retrofit.Builder()
+                .client(getOkHttpClient())
+                .baseUrl(LIB_SERVICE_BASE_URL)
+                .addConverterFactory(stringConverterFactory)
+                .addConverterFactory(gsonConverterFactory)
+                .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                .build()
+                .create(ApiLibService::class.java)
     }
 }

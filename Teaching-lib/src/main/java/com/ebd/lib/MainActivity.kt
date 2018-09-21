@@ -1,33 +1,12 @@
 package com.ebd.lib
 
-import android.os.Environment
-import android.support.v7.widget.GridLayoutManager
-import android.view.ViewGroup
-import android.widget.Button
-import com.ebd.lib.adapter.MyBookshelfAdapter
-import com.ebd.lib.utils.XMLUtils
-import com.ebd.lib.zip.ZipListener
-import com.ebd.lib.zip.ZipProgressUtil
 import com.xiaofu.lib_base_xiaofu.base.BaseActivity
-import com.xiaofu.lib_base_xiaofu.img.loadImage
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.recycler_view_layout.*
-import java.io.File
 
 class MainActivity : BaseActivity() {
-
-    private val bookshelfAdapter by lazy { MyBookshelfAdapter() }
 
     override fun getView(): Int = R.layout.activity_main
 
     override fun initialize() {
-        mRv.layoutManager = GridLayoutManager(this,3)
-        bookshelfAdapter.bindToRecyclerView(mRv)
-
-
-
-
-
 
 //        val path = Environment.getExternalStorageDirectory().absolutePath.plus("/cqebd/libs/Ebook/")
 //
@@ -74,25 +53,25 @@ class MainActivity : BaseActivity() {
     }
 
     override fun bindEvent() {
-        testBtn.setOnClickListener {
-            val path = Environment.getExternalStorageDirectory().absolutePath.plus("/cqebd/libs/")
-            ZipProgressUtil.UnZipFile(path.plus("中文.zip"), path.plus("/Ebook/中文/"), object : ZipListener {
-                override fun zipSuccess() {
-                    println("------------>>>zipSuccess")
-                }
-
-                override fun zipStart() {
-                    println("------------>>>zipStart")
-                }
-
-                override fun zipProgress(progress: Int) {
-                    println("------------>>>$progress")
-                }
-
-                override fun zipFail() {
-                    println("------------>>>zipFail")
-                }
-            })
-        }
+//        testBtn.setOnClickListener {
+//            val path = Environment.getExternalStorageDirectory().absolutePath.plus("/cqebd/libs/")
+//            ZipProgressUtil.UnZipFile(path.plus("中文.zip"), path.plus("/Ebook/中文/"), object : ZipListener {
+//                override fun zipSuccess() {
+//                    println("------------>>>zipSuccess")
+//                }
+//
+//                override fun zipStart() {
+//                    println("------------>>>zipStart")
+//                }
+//
+//                override fun zipProgress(progress: Int) {
+//                    println("------------>>>$progress")
+//                }
+//
+//                override fun zipFail() {
+//                    println("------------>>>zipFail")
+//                }
+//            })
+//        }
     }
 }

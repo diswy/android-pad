@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MyBookshelfFragment">
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="书架"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <include layout="@layout/recycler_view_layout" />
+
+</LinearLayout>
