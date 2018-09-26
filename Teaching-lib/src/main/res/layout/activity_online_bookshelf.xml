@@ -8,19 +8,77 @@
     android:orientation="vertical"
     tools:context=".activity.OnlineBookshelfActivity">
 
-    <TextView
-        android:id="@+id/mTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/mBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/mBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/selHolder"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
 
-    <include layout="@layout/recycler_view_layout"/>
+        <FrameLayout
+            android:id="@+id/btnGrade"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cbGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:clickable="false"
+                android:drawableEnd="@drawable/sel_expand_arrow"
+                android:drawablePadding="8dp"
+                android:text="年级"
+                android:textColor="@drawable/sel_color_expand" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btnSubject"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cbSubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:clickable="false"
+                android:drawableEnd="@drawable/sel_expand_arrow"
+                android:drawablePadding="8dp"
+                android:text="科目"
+                android:textColor="@drawable/sel_color_expand" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btnPublish"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/cbPublish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:button="@null"
+                android:clickable="false"
+                android:drawableEnd="@drawable/sel_expand_arrow"
+                android:drawablePadding="8dp"
+                android:text="出版社"
+                android:textColor="@drawable/sel_color_expand" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/recycler_view_layout" />
 
 </LinearLayout>

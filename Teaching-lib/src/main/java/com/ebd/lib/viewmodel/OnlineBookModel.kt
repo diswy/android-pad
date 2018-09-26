@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.ebd.lib.App
 import com.ebd.lib.bean.*
+import com.ebd.lib.json.GsonFix
 import com.ebd.lib.json.fromJson
 import com.ebd.lib.json.fromJsonArray
 import com.google.gson.Gson
@@ -34,30 +35,32 @@ class OnlineBookModel : ViewModel() {
     fun loadGrade() {
         val cacheGrade: String? = mCache.getAsString("grade")
         if (cacheGrade != null) {
-            gradeList.value = Gson().fromJson<List<Grade>>(cacheGrade)
-            return
-        }
-        ApiManager.getInstance().libService
-                .gradeGetAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    try {
-                        val bean = Gson().fromJsonArray(it, Grade::class.java)
-                        bean.data?.let {
-                            gradeList.value = it
-                            mCache.put("grade", Gson().toJson(it), 7 * ACache.TIME_DAY)
+            val list: List<Grade> = Gson().fromJson(cacheGrade, Array<Grade>::class.java).toMutableList()
+            gradeList.value = list
+        } else {
+            ApiManager.getInstance().libService
+                    .gradeGetAll()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        try {
+                            val bean = Gson().fromJsonArray(it, Grade::class.java)
+                            bean.data?.let {
+                                gradeList.value = it
+                                mCache.put("grade", GsonFix.toJson(it), 7 * ACache.TIME_DAY)
+                            }
+                        } catch (e: Exception) {
+                            App.instance.toast("网络错误：${e.message}")
                         }
-                    } catch (e: Exception) {
-                        App.instance.toast("网络请求错误：${e.message}")
                     }
-                }
+        }
     }
 
     fun loadPublish() {
         val cachePublish: String? = mCache.getAsString("publish")
         if (cachePublish != null) {
-            publishList.value = Gson().fromJson<List<Publish>>(cachePublish)
+            val list: List<Publish> = Gson().fromJson(cachePublish, Array<Publish>::class.java).toMutableList()
+            publishList.value = list
             return
         }
         ApiManager.getInstance().libService
@@ -69,7 +72,7 @@ class OnlineBookModel : ViewModel() {
                         val bean = Gson().fromJsonArray(it, Publish::class.java)
                         bean.data?.let {
                             publishList.value = it
-                            mCache.put("publish", Gson().toJson(it), 7 * ACache.TIME_DAY)
+                            mCache.put("publish", GsonFix.toJson(it), 7 * ACache.TIME_DAY)
                         }
                     } catch (e: Exception) {
                         App.instance.toast("网络请求错误：${e.message}")
@@ -80,7 +83,8 @@ class OnlineBookModel : ViewModel() {
     fun loadSubject() {
         val cacheSubject: String? = mCache.getAsString("subject")
         if (cacheSubject != null) {
-            subjectList.value = Gson().fromJson<List<Subject>>(cacheSubject)
+            val list: List<Subject> = Gson().fromJson(cacheSubject, Array<Subject>::class.java).toMutableList()
+            subjectList.value = list
             return
         }
         ApiManager.getInstance().libService
@@ -92,7 +96,7 @@ class OnlineBookModel : ViewModel() {
                         val bean = Gson().fromJsonArray(it, Subject::class.java)
                         bean.data?.let {
                             subjectList.value = it
-                            mCache.put("subject", Gson().toJson(it), 7 * ACache.TIME_DAY)
+                            mCache.put("subject", GsonFix.toJson(it), 7 * ACache.TIME_DAY)
                         }
                     } catch (e: Exception) {
                         App.instance.toast("网络请求错误：${e.message}")
