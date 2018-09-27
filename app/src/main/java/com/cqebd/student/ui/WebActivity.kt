@@ -32,6 +32,8 @@ class WebActivity : BaseActivity() {
     override fun initialize(savedInstanceState: Bundle?) {
         initWebView()
         val url = intent.getStringExtra("url")
+        val title = intent.getStringExtra("title")
+        text_title.text = title
         Logger.d(url)
         webView?.load(url, object : WebView.LoadCallback {
             override fun onLoad() {
@@ -58,7 +60,6 @@ class WebActivity : BaseActivity() {
             }
 
             override fun receivedTitle(title: String?) {
-                text_title.text = title
             }
 
         })

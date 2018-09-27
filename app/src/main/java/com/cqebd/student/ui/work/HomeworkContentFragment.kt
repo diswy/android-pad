@@ -233,9 +233,9 @@ class HomeworkContentFragment : BaseLazyFragment() {
                         } else {
                             val urlFormat = "HomeWork/CheckPaper?StudentQuestionsTasksId=%s"
                             if (item.Status == 2) {
-                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "medal" to item.IsMedal)
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "medal" to item.IsMedal, "title" to item.Name)
                             } else {
-                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)))
+                                startActivity<WebActivity>("url" to WorkService.BASE_WEB_URL.plus(urlFormat.format(item.TaskId)), "title" to item.Name)
                             }
                         }
                     }
