@@ -64,6 +64,7 @@ public class XMLUtils {
             ss = xmlToJson.toString().replace("\\n","")
                                 .replace("\\t","");
             Logger.json(ss);
+            Logger.wtf(ss);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -9,10 +9,11 @@
     <include layout="@layout/layout_book_reader_main" />
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/white"
-        android:layout_gravity="start"
+        android:id="@+id/catalogRv"
         android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
         android:overScrollMode="never" />
 
 </android.support.v4.widget.DrawerLayout>
