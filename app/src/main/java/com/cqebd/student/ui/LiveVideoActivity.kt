@@ -9,36 +9,28 @@ import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
-import com.cqebd.student.live.entity.LiveByRemote
-import com.cqebd.student.live.entity.PullAddress
-import com.cqebd.student.live.ui.ChatRoomFragment
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
-import com.cqebd.student.tools.toast
+import com.cqebd.student.ui.fragment.VideoEvaluateFragment
 import com.cqebd.student.ui.fragment.WebFragment
 import com.cqebd.student.vo.entity.PeriodResponse
 import com.cqebd.student.vo.entity.VodPlay
-import com.google.gson.Gson
 import com.orhanobut.logger.Logger
 import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_live_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class LiveVideoActivity : BaseActivity() {
-    private val titles = listOf("课时", "详细", "讨论")
+    private val titles = listOf("课时", "详细", "评价")
 
     private var status: Int = 0
     private var id: Int = 0
 
     val mRecommendCourseFragment = WebFragment()
     val web1 = WebFragment()
-    val mChatRoomFragment = ChatRoomFragment()
+    val mEvaluateFragment = VideoEvaluateFragment()
 
     override fun setContentView() {
         setContentView(R.layout.activity_live_video)
@@ -79,13 +71,18 @@ class LiveVideoActivity : BaseActivity() {
             initStatus()
             loadVideo()
 
+            val mData = Bundle()
+            mData.putInt("id", id)
+            mEvaluateFragment.arguments = mData
+
             viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
                 override fun getItem(position: Int): Fragment {
                     return when (position) {
                         0 -> mRecommendCourseFragment
                         1 -> web1
                         2 -> {
-                            mChatRoomFragment
+                            mEvaluateFragment
+//                            mChatRoomFragment
 //                            if (status == 1)
 //                                web2
 //                            else
@@ -153,21 +150,20 @@ class LiveVideoActivity : BaseActivity() {
     private fun loadVideo() {
         Logger.d("id = $id")
         NetClient.videoService()
-                .getLive(id)
-                .enqueue(object : NetCallBack<BaseResponse<LiveByRemote>>() {
+                .getPeriodByID(id)
+                .enqueue(object : NetCallBack<BaseResponse<PeriodResponse>>() {
                     override fun onFailure() {
+
                     }
 
-                    override fun onSucceed(response: BaseResponse<LiveByRemote>?) {
+                    override fun onSucceed(response: BaseResponse<PeriodResponse>?) {
                         response?.data?.let {
-                            val address = it.ChannelPullUrls
-                            val mPullAddress = Gson().fromJson(address,PullAddress::class.java)
-                            videoView.setVideoPath(mPullAddress.hlsPullUrl,"",R.drawable.ic_login_logo)
-                            Logger.e(mPullAddress.hlsPullUrl)
-                            mChatRoomFragment.roomId = it.ChatRoomId
+                            if (filterVideoUrl(it.VodPlayList) != null){
+                                videoView.setVideoPath(filterVideoUrl(it.VodPlayList)!!, 0, it.Name, R.drawable.ic_login_logo)
+                            }
                         }
-
                     }
+
                 })
     }
 

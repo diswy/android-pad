@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.glide.GlideRoundTransform
+import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.VideoDetailsActivity
 import com.cqebd.student.vo.entity.RootHomeEntity
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
@@ -55,14 +56,21 @@ class RootHomeAdapter(data: List<RootHomeEntity>?) : BaseMultiItemQuickAdapter<R
                         .setText(R.id.mCount2, "？？？")
 
                 (helper.getView(R.id.mItem1) as CardView).setOnClickListener {
-                    val i = Intent(mContext, VideoDetailsActivity::class.java)
-                    i.putExtra("data", item.arg0!!)
-                    mContext.startActivity(i)
+                    item.arg0?.let {
+                        val i = Intent(mContext, VideoDetailsActivity::class.java)
+                        i.putExtra("data", it)
+                        mContext.startActivity(i)
+                    }
                 }
                 (helper.getView(R.id.mItem2) as CardView).setOnClickListener {
-                    val i = Intent(mContext, VideoDetailsActivity::class.java)
-                    i.putExtra("data", item.arg1!!)
-                    mContext.startActivity(i)
+
+                    if (item.arg1 != null) {
+                        val i = Intent(mContext, VideoDetailsActivity::class.java)
+                        i.putExtra("data", item.arg1)
+                        mContext.startActivity(i)
+                    } else {
+                        toast("该位置无课程，请不要点击")
+                    }
                 }
             }
         }

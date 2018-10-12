@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.R
 import com.cqebd.student.db.entity.ClassSchedule
-import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import com.cqebd.student.live.ui.LiveActivity
 import com.cqebd.student.tools.formatTime
 import com.cqebd.student.tools.formatTimeYMDHM
@@ -26,6 +25,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
+import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.item_new_schedule.view.*
@@ -59,6 +59,28 @@ class ScheduleFragment : BaseLazyFragment(), Observer<Resource<ClassSchedule>> {
                     tv_schedule_title.text = item.Name
                     tv_schedule_grade_time.text = getString(R.string.grade_and_time, item.GradeName, formatTimeYMDHM(item.PlanStartDate))
                     tv_schedule_teacher.text = "主讲老师:".plus(item.TeacherName)
+                    when (item.Status) {
+                        0 -> {
+                            tvStatus.text = "未开始"
+                            tvStatus.background = resources.getDrawable(R.color.color_ccc)
+                        }
+                        1 -> {
+                            tvStatus.text = "直播中"
+                            tvStatus.background = resources.getDrawable(R.color.colorPrimary)
+                        }
+                        2 -> {
+                            tvStatus.text = "直播结束"
+                            tvStatus.background = resources.getDrawable(R.color.color_ccc)
+                        }
+                        3 -> {
+                            tvStatus.text = "回放"
+                            tvStatus.background = resources.getDrawable(R.color.colorPrimary)
+                        }
+                        else -> {
+                            tvStatus.text = "没开始"
+                            tvStatus.background = resources.getDrawable(R.color.color_ccc)
+                        }
+                    }
 
                 }
             }

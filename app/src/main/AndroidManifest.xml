@@ -109,13 +109,13 @@
         </activity>
 
         <activity
-            android:screenOrientation="landscape"
             android:name=".shortcuts.GuidePageActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/APPTranslucentStatus">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
