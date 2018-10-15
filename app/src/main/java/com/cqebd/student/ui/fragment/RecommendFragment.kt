@@ -64,7 +64,8 @@ class RecommendFragment : BaseFragment() {
         override fun convert(helper: BaseViewHolder?, item: PeriodInfo) {
             helper?.itemView?.apply {
 
-                tvSort.text = "课时".plus(helper.layoutPosition + 1)
+//                tvSort.text = "课时".plus(helper.layoutPosition + 1)
+                tvSort.text = "课时".plus(data.size - helper.layoutPosition)
                 tvCourseName.text = item.Name
 
                 if (helper.layoutPosition == currentPos) {
