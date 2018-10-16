@@ -119,7 +119,8 @@ class LiveChatFragment : BaseFragment() {
                     val pathList = data?.getStringArrayListExtra(Album.KEY_IMAGES)
                     pathList?.let {
                         compressImage(it[0])
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, it[0], true))
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, it[0], UserAccount.load()?.Name
+                                ?: "神秘同学", true))
                         mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
                     }
                 }
@@ -165,16 +166,30 @@ class LiveChatFragment : BaseFragment() {
         Logger.d(mMsgSingle)
         when (mMsgSingle.msgType) {
             MsgTypeEnum.text -> {// 处理文本消息
-                if (mMsgSingle.remoteExtension !== null
+
+                var nickName = ""
+                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
+                    nickName = mMsgSingle.remoteExtension["nickName"] as String
+                }
+
+                if (mMsgSingle.remoteExtension != null
                         && mMsgSingle.remoteExtension["avatar"] != null
                         && mMsgSingle.remoteExtension["avatar"] is String) {
                     val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
-                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, mAvatar))
+                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, mAvatar, nickName))
                 } else {
-                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content))
+                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, nickName))
                 }
+
+
             }
             MsgTypeEnum.image -> {// 处理图片
+
+                var nickName = ""
+                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
+                    nickName = mMsgSingle.remoteExtension["nickName"] as String
+                }
+
                 if (mMsgSingle.remoteExtension !== null
                         && mMsgSingle.remoteExtension["avatar"] != null
                         && mMsgSingle.remoteExtension["avatar"] is String) {
@@ -182,9 +197,9 @@ class LiveChatFragment : BaseFragment() {
                     if (mMsgSingle.remoteExtension["avatar"] != null
                             && mMsgSingle.remoteExtension["avatar"] is String) {
                         val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, mAvatar))
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, mAvatar, nickName))
                     } else {
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc))
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, nickName))
                     }
                 }
             }
@@ -219,12 +234,14 @@ class LiveChatFragment : BaseFragment() {
         val message = ChatRoomMessageBuilder.createChatRoomTextMessage(roomId, content)
         val mExtensionMap = HashMap<String, Any>()
         mExtensionMap["avatar"] = UserAccount.load()?.Avatar ?: ""
+        mExtensionMap["nickName"] = UserAccount.load()?.Name ?: "神秘同学"
         message.remoteExtension = mExtensionMap
         NIMClient.getService(ChatRoomService::class.java).sendMessage(message, false)
                 .setCallback(object : RequestCallback<Void> {
                     override fun onSuccess(param: Void?) {
                         Logger.e("onTextSuccess")
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, content, true))
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, content, UserAccount.load()?.Name
+                                ?: "神秘同学", true))
                         if (!mAdapter.data.isEmpty() && mChatRoomRv != null) {
                             mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
                         }
@@ -249,6 +266,7 @@ class LiveChatFragment : BaseFragment() {
         val message = ChatRoomMessageBuilder.createChatRoomImageMessage(roomId, file, file.name)
         val mExtensionMap = HashMap<String, Any>()
         mExtensionMap["avatar"] = UserAccount.load()?.Avatar ?: ""
+        mExtensionMap["nickName"] = UserAccount.load()?.Name ?: "神秘同学"
         message.remoteExtension = mExtensionMap
         NIMClient.getService(ChatRoomService::class.java).sendMessage(message, false)
                 .setCallback(object : RequestCallback<Void> {

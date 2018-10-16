@@ -409,9 +409,8 @@ class LiveActivity : BaseActivity() {
                 when (code) {
                     ResponseCode.RES_CHATROOM_BLACKLIST.toInt() -> toast("你已被拉入黑名单，不能再进入聊天室")
                     ResponseCode.RES_ENONEXIST.toInt() -> toast("该聊天室不存在")
-                    else -> toast("enter chat room failed, code = $code")
+                    else -> toast("无法使用聊天室功能，请联系管理员。错误码：$code")
                 }
-                finish()
             }
 
             override fun onException(exception: Throwable) {

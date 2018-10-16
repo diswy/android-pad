@@ -53,4 +53,6 @@ dependencies {
     // (必选)
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
+    // Banner
+    api 'com.youth.banner:banner:1.4.10'
 }
