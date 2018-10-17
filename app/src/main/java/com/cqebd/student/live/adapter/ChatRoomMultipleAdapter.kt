@@ -37,8 +37,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
                         GlideApp.with(mContext)
                                 .asBitmap()
                                 .circleCrop()
-                                .placeholder(R.drawable.ic_avatar)
-                                .load(if (item.isMyself) UserAccount.load()?.Avatar else item.avatar)
+                                .load(R.drawable.avtar_teacher)
                                 .into(if (item.isMyself) mMyAvatar else mOtherAvatar)
                     } else {
                         mOtherAvatar.visibility = if (item.isMyself) View.GONE else View.VISIBLE
@@ -77,8 +76,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
                         GlideApp.with(mContext)
                                 .asBitmap()
                                 .circleCrop()
-                                .placeholder(R.drawable.ic_avatar)
-                                .load(if (item.isMyself) UserAccount.load()?.Avatar else item.avatar)
+                                .load(R.drawable.avtar_teacher)
                                 .into(if (item.isMyself) mImgMyAvatar else mImgOtherAvatar)
                     } else {
                         mImgOtherAvatar.visibility = if (item.isMyself) View.GONE else View.VISIBLE
