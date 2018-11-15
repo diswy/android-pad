@@ -1,10 +1,12 @@
 package com.cqebd.student.net.api
 
 import android.arch.lifecycle.LiveData
+import android.os.Build
 import com.cqebd.student.live.entity.LiveByRemote
 import com.cqebd.student.net.ApiResponse
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
+import com.cqebd.student.tools.versionName
 import com.cqebd.student.vo.entity.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -135,5 +137,17 @@ interface VideoService {
             @Query("NewPwd") NewPwd: String,
             @Query("UserId") UserId: Long = loginId)
             : Call<BaseResponse<Unit>>
+
+    /**
+     * 课时播放记录
+     */
+    @POST("api/PeriodReview/Add")
+    fun playRecord(
+            @Query("PeriodId") PeriodId: Int,
+            @Query("Duration") Duration: Int,
+            @Query("SourceType") SourceType: Int = 2,
+            @Query("SourceName") SourceName: String = "${Build.MODEL}|$versionName",
+            @Query("StudentId") StudentId: Long = loginId)
+            : Call<ResponseBody>
 
 }

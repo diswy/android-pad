@@ -46,10 +46,12 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.orhanobut.logger.Logger
 import com.wuhangjia.firstlib.view.FancyDialogFragment
 import gorden.lib.video.ExVideoView
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_live.*
 import kotlinx.android.synthetic.main.dialog_live_confirm_up.view.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import okhttp3.ResponseBody
 import org.jetbrains.anko.toast
 
 class LiveActivity : BaseActivity() {
@@ -133,6 +135,32 @@ class LiveActivity : BaseActivity() {
 //        videoView.waitPlay(R.drawable.ic_no_video)
         getLiveInfo(id)
         registerObservers(true)
+
+        NetClient.videoService()
+                .playRecord(id, 0)
+                .enqueue(object : NetCallBack<ResponseBody>() {
+                    override fun onSucceed(response: ResponseBody) {
+
+                    }
+
+                    override fun onFailure() {
+                    }
+                })
+
+        videoView.setOnCompletionListener {
+            NetClient.videoService()
+                    .playRecord(id, videoView.duration)
+                    .enqueue(object : NetCallBack<ResponseBody>() {
+                        override fun onSucceed(response: ResponseBody) {
+
+                        }
+
+                        override fun onFailure() {
+                        }
+                    })
+        }
+
+
     }
 
     override fun onDestroy() {
@@ -396,7 +424,9 @@ class LiveActivity : BaseActivity() {
         }
 
         val data = EnterChatRoomData(roomId)
-        enterRequest = NIMClient.getService(ChatRoomService::class.java).enterChatRoom(data)
+        data.nick = UserAccount.load()?.Name
+        data.avatar = UserAccount.load()?.Avatar
+        enterRequest = NIMClient.getService(ChatRoomService::class.java).enterChatRoomEx(data, 3)
         enterRequest?.setCallback(object : RequestCallback<EnterChatRoomResultData> {
             override fun onSuccess(result: EnterChatRoomResultData) {
                 enterRequest = null
@@ -503,6 +533,7 @@ class LiveActivity : BaseActivity() {
         viewLayout.addView(surfaceView)
         surfaceView.setZOrderMediaOverlay(true)
     }
+
     private fun addIntoPreviewLayout(surfaceView: TextureView?, viewLayout: ViewGroup) {
         if (surfaceView == null) {
             return

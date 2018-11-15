@@ -18,12 +18,14 @@ class ChatRoomEntity : MultiItemEntity {
     var imgSrc: String = ""
     var avatar: String = ""
     var nick: String = ""
+    var account: String = ""
     var isMyself = false
 
-    constructor(mType: Int, mContent: String, mNick: String, isMyself: Boolean = false) {
+    constructor(mType: Int, mAccount: String, mContent: String, mNick: String, isMyself: Boolean = false) {
         this.itemType = mType
         this.isMyself = isMyself
         this.nick = mNick
+        this.account = mAccount
         when (itemType) {
             TEXT -> {
                 this.content = mContent
@@ -34,11 +36,12 @@ class ChatRoomEntity : MultiItemEntity {
         }
     }
 
-    constructor(mType: Int, mContent: String, avatar: String, mNick: String, isMyself: Boolean = false) {
+    constructor(mType: Int, mAccount: String, mContent: String, avatar: String, mNick: String, isMyself: Boolean = false) {
         this.itemType = mType
         this.isMyself = isMyself
         this.avatar = avatar
         this.nick = mNick
+        this.account = mAccount
         when (itemType) {
             TEXT -> {
                 this.content = mContent

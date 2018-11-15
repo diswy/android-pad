@@ -25,6 +25,7 @@ import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import okhttp3.ResponseBody
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -135,6 +136,30 @@ class VideoActivity : BaseActivity() {
             override fun getCount(): Int {
                 return 3
             }
+        }
+
+        NetClient.videoService()
+                .playRecord(mId, 0)
+                .enqueue(object : NetCallBack<ResponseBody>() {
+                    override fun onSucceed(response: ResponseBody) {
+
+                    }
+
+                    override fun onFailure() {
+                    }
+                })
+
+        videoView.setOnCompletionListener {
+            NetClient.videoService()
+                    .playRecord(mId, videoView.duration)
+                    .enqueue(object : NetCallBack<ResponseBody>() {
+                        override fun onSucceed(response: ResponseBody) {
+
+                        }
+
+                        override fun onFailure() {
+                        }
+                    })
         }
 
     }

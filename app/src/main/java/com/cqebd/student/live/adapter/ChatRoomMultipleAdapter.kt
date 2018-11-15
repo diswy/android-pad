@@ -24,7 +24,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
         when (helper?.itemViewType) {
             ChatRoomEntity.TEXT -> {
                 helper.itemView.apply {
-                    if (item.nick == "") {// 老师消息
+                    if (item.account.toLowerCase().contains("teacher")) {// 老师消息
                         mOtherAvatar.visibility = if (item.isMyself) View.GONE else View.VISIBLE
                         mMyAvatar.visibility = if (item.isMyself) View.VISIBLE else View.GONE
                         mStartSpace.visibility = if (item.isMyself) View.VISIBLE else View.GONE
@@ -60,7 +60,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
             }
             ChatRoomEntity.IMG -> {
                 helper.itemView.apply {
-                    if (item.nick == "") {// 老师消息
+                    if (item.account.toLowerCase().contains("teacher")) {// 老师消息
                         mImgOtherAvatar.visibility = if (item.isMyself) View.GONE else View.VISIBLE
                         mImgMyAvatar.visibility = if (item.isMyself) View.VISIBLE else View.GONE
                         mImgStartSpace.visibility = if (item.isMyself) View.VISIBLE else View.GONE

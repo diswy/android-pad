@@ -150,7 +150,8 @@ class StartActivity : BaseActivity() {
                                 downloadFileName = fileName
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    installOreo()
+//                                    installOreo()
+                                    newInstall()
                                 } else {
                                     apkInstall()
                                 }
@@ -184,7 +185,8 @@ class StartActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GET_INSTALL_APP_PERMISSION) {
-            installOreo()
+//            installOreo()
+            newInstall()
         }
     }
 
@@ -207,4 +209,27 @@ class StartActivity : BaseActivity() {
 
     private lateinit var downloadPath: String
     private lateinit var downloadFileName: String
+
+    //---------------------新的安装方法
+    private fun newInstall() {
+        try {
+            val filePath = downloadPath + downloadFileName
+            val file = File(filePath)
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                val fileUri = FileProvider.getUriForFile(this@StartActivity, "${applicationContext.packageName}.provider", file)
+                intent.setDataAndType(fileUri, "application/vnd.android.package-archive")
+            }
+
+            if (packageManager.queryIntentActivities(intent, 0).size > 0) {
+                startActivity(intent)
+            }
+
+        } catch (e: Exception) {
+            Logger.d(e.message)
+        }
+    }
 }

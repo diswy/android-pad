@@ -135,7 +135,8 @@ class ChatRoomFragment : BaseLazyFragment() {
                     val pathList = data?.getStringArrayListExtra(Album.KEY_IMAGES)
                     pathList?.let {
                         compressImage(it[0])
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, it[0], UserAccount.load()?.Name
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, UserAccount.load()?.Account
+                                ?: "未知账号", it[0], UserAccount.load()?.Name
                                 ?: "神秘同学", true))
                         mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
                     }
@@ -214,39 +215,52 @@ class ChatRoomFragment : BaseLazyFragment() {
         when (mMsgSingle.msgType) {
             MsgTypeEnum.text -> {// 处理文本消息
 
-                var nickName = ""
-                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
-                    nickName = mMsgSingle.remoteExtension["nickName"] as String
-                }
+                mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT,
+                        mMsgSingle.fromAccount,
+                        mMsgSingle.content,
+                        mMsgSingle.chatRoomMessageExtension.senderAvatar,
+                        mMsgSingle.chatRoomMessageExtension.senderNick))
 
-                if (mMsgSingle.remoteExtension !== null
-                        && mMsgSingle.remoteExtension["avatar"] != null
-                        && mMsgSingle.remoteExtension["avatar"] is String) {
-                    val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
-                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, mAvatar, nickName))
-                } else {
-                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, nickName))
-                }
+//                var nickName = ""
+//                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
+//                    nickName = mMsgSingle.remoteExtension["nickName"] as String
+//                }
+//
+//                if (mMsgSingle.remoteExtension !== null
+//                        && mMsgSingle.remoteExtension["avatar"] != null
+//                        && mMsgSingle.remoteExtension["avatar"] is String) {
+//                    val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
+//                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, mAvatar, nickName))
+//                } else {
+//                    mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, mMsgSingle.content, nickName))
+//                }
             }
             MsgTypeEnum.image -> {// 处理图片
 
-                var nickName = ""
-                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
-                    nickName = mMsgSingle.remoteExtension["nickName"] as String
-                }
+                val imgSrc = (mMsgSingle.attachment as ImageAttachment).thumbUrl
+                mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG,
+                        mMsgSingle.fromAccount,
+                        imgSrc,
+                        mMsgSingle.chatRoomMessageExtension.senderAvatar,
+                        mMsgSingle.chatRoomMessageExtension.senderNick))
 
-                if (mMsgSingle.remoteExtension !== null
-                        && mMsgSingle.remoteExtension["avatar"] != null
-                        && mMsgSingle.remoteExtension["avatar"] is String) {
-                    val imgSrc = (mMsgSingle.attachment as ImageAttachment).thumbUrl
-                    if (mMsgSingle.remoteExtension["avatar"] != null
-                            && mMsgSingle.remoteExtension["avatar"] is String) {
-                        val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, mAvatar, nickName))
-                    } else {
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, nickName))
-                    }
-                }
+//                var nickName = ""
+//                if (mMsgSingle.remoteExtension != null && mMsgSingle.remoteExtension["nickName"] != null) {
+//                    nickName = mMsgSingle.remoteExtension["nickName"] as String
+//                }
+//
+//                if (mMsgSingle.remoteExtension !== null
+//                        && mMsgSingle.remoteExtension["avatar"] != null
+//                        && mMsgSingle.remoteExtension["avatar"] is String) {
+//                    val imgSrc = (mMsgSingle.attachment as ImageAttachment).thumbUrl
+//                    if (mMsgSingle.remoteExtension["avatar"] != null
+//                            && mMsgSingle.remoteExtension["avatar"] is String) {
+//                        val mAvatar = mMsgSingle.remoteExtension["avatar"] as String
+//                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, mAvatar, nickName))
+//                    } else {
+//                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.IMG, imgSrc, nickName))
+//                    }
+//                }
             }
             MsgTypeEnum.notification -> {
 
@@ -287,7 +301,8 @@ class ChatRoomFragment : BaseLazyFragment() {
                 .setCallback(object : RequestCallback<Void> {
                     override fun onSuccess(param: Void?) {
                         Logger.e("onTextSuccess")
-                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, content, UserAccount.load()?.Name
+                        mAdapter.addData(ChatRoomEntity(ChatRoomEntity.TEXT, UserAccount.load()?.Account
+                                ?: "未知账号", content, UserAccount.load()?.Name
                                 ?: "神秘同学", true))
                         mChatRoomRv.scrollToPosition(mAdapter.data.size - 1)
                     }
