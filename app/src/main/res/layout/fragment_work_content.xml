@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,10 +28,23 @@
 
     </LinearLayout>
 
+
+    <com.xiaofu.lib_base_xiaofu.fancy.FancyButton
+        android:id="@+id/btnAutoRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_margin="6dp"
+        android:visibility="gone"
+        app:fb_bg_color="@color/colorPrimary"
+        app:fb_shape="round_rect"
+        app:fb_text="随机组卷"
+        app:fb_text_color="@color/white" />
+
+
     <FrameLayout
-        android:background="@color/bg_theme"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg_theme">
 
         <include layout="@layout/merge_refresh_layout" />
 

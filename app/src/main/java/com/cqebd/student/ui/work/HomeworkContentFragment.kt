@@ -199,14 +199,20 @@ class HomeworkContentFragment : BaseLazyFragment() {
                         -1 -> {
                             text_status.text = "新作业"
                             text_status.setTextColor(colorForRes(R.color.status_new))
+                            text_name.setCompoundDrawables(null, null, null, null)
+                            text_name.compoundDrawablePadding = dip(0)
                         }
                         0 -> {
                             text_status.text = "答题中"
                             text_status.setTextColor(colorForRes(R.color.status_run))
+                            text_name.setCompoundDrawables(null, null, null, null)
+                            text_name.compoundDrawablePadding = dip(0)
                         }
                         1 -> {
                             text_status.text = "已完成"
                             text_status.setTextColor(colorForRes(R.color.status_complete))
+                            text_name.setCompoundDrawables(null, null, null, null)
+                            text_name.compoundDrawablePadding = dip(0)
                         }
                         2 -> {
                             text_status.text = "已批阅"
@@ -243,6 +249,4 @@ class HomeworkContentFragment : BaseLazyFragment() {
             }
         }
     }
-
-
 }

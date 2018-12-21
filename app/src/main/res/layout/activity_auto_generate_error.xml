@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.work.AutoGenerateErrorActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_back">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            tools:text="云课堂" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_weight="1"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <com.xiaofu.lib_base_xiaofu.fancy.FancyButton
+        android:id="@+id/btnStart"
+        app:fb_text="确认组卷"
+        app:fb_text_color="@color/white"
+        app:fb_bg_color="@color/colorPrimary"
+        app:fb_hover_color="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>

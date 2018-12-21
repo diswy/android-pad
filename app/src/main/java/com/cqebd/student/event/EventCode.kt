@@ -12,3 +12,5 @@ const val STATUS_DATE = 0x10003
 const val STATUS_TIME = 0x10004
 
 const val STATUS_SUBSCRIBE = 0x10005
+
+const val STATUS_WRONG = 0x10006

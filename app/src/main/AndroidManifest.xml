@@ -100,27 +100,18 @@
 
         <activity
             android:name=".ui.StartActivity"
-            android:theme="@style/APPTranslucentStatus">
+            android:theme="@style/AppTheme.customTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".shortcuts.GuidePageActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/APPTranslucentStatus">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-
+            android:theme="@style/APPTranslucentStatus"></activity>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
@@ -185,6 +176,7 @@
         <activity android:name=".ui.MessageActivity" />
         <activity android:name=".ui.CallbackActivity" />
         <activity android:name=".glide.GlidePreviewActivity" />
+        <activity android:name=".ui.work.AutoGenerateErrorActivity"></activity>
     </application>
 
 </manifest>

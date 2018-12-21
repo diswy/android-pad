@@ -12,14 +12,16 @@ import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.adapter.TitleNavigatorAdapter
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.event.STATUS_WRONG
 import com.cqebd.student.ui.work.BeSharedFragment
 import com.cqebd.student.ui.work.HomeworkContentFragment
 import com.cqebd.student.ui.work.MyWorkCollectFragment
 import com.cqebd.student.ui.work.WrongQuestionFragment
+import gorden.rxbus.RxBus
+import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.fragment_root_homework.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-
 
 /**
  *  作业
@@ -31,11 +33,16 @@ class HomeworkFragment : BaseFragment() {
         return inflater?.inflate(R.layout.fragment_root_homework, container, false)
     }
 
-    override fun initialize(savedInstanceState: Bundle?) {
+    override fun onDestroyView() {
+        RxBus.get().unRegister(this)
+        super.onDestroyView()
+    }
 
+    override fun initialize(savedInstanceState: Bundle?) {
+        RxBus.get().register(this)
         val mainActivity = activity as MainActivity
         mainActivity.filterLayoutItem(0, MainActivity.WORK)
-        view_pager.adapter = object : FragmentStatePagerAdapter(fragmentManager) {
+        view_pager.adapter  = object : FragmentStatePagerAdapter(fragmentManager) {
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> HomeworkContentFragment()
@@ -78,6 +85,11 @@ class HomeworkFragment : BaseFragment() {
             magic_indicator.navigator = commonNavigator
             ViewPagerHelper.bind(magic_indicator, view_pager)
         }
+    }
+
+    @Subscribe(code = STATUS_WRONG)
+    fun jumpWrong() {
+        view_pager.currentItem = 0
     }
 
 }

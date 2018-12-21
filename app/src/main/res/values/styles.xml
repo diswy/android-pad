@@ -8,12 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="APPTranslucentStatus" parent="AppTheme"/>
-    <style name="APPTranslucentBackGround" parent="AppTheme" >
+    <!--parent设置为启动页的theme-->
+    <style name="AppTheme.customTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/ic_splash</item>
+    </style>
+
+    <style name="APPTranslucentStatus" parent="AppTheme" />
+
+    <style name="APPTranslucentBackGround" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
-    <style name="Full" parent="AppTheme" >
+
+    <style name="Full" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
@@ -36,10 +43,12 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
     </style>
+
     <style name="DialogWindowTitle">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/color_text_title</item>
     </style>
+
     <style name="dialog_btn">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -54,14 +63,17 @@
 
     <style name="list_view" parent="@android:style/Widget.ListView">
         <item name="android:scrollbarThumbVertical">@drawable/nim_scrollbar_handle_holo_dark</item>
-        <item name="android:scrollbarThumbHorizontal">@drawable/nim_scrollbar_handle_holo_dark</item>
+        <item name="android:scrollbarThumbHorizontal">@drawable/nim_scrollbar_handle_holo_dark
+        </item>
     </style>
-    
+
     <style name="MyProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:maxHeight">10dp</item>
         <item name="android:minHeight">9dp</item>
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:indeterminateDrawable">
+            @android:drawable/progress_indeterminate_horizontal
+        </item>
         <item name="android:progressDrawable">@drawable/my_progress_horizontal</item>
     </style>
 

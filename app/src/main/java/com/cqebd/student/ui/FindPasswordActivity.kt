@@ -90,8 +90,8 @@ class FindPasswordActivity : BaseActivity() {
                     NetClient.workService().getPhoneCode(userName, 0)
                             .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
                                 override fun onSucceed(response: BaseResponse<Unit>) {
+                                    toast(response.message)
                                     if (!response.isSuccess) {
-                                        toast(response.message)
                                         subscription.cancel()
                                         btn_verify.isEnabled = true
                                         btn_verify.text = "获取验证码"

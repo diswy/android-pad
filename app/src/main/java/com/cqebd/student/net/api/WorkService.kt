@@ -70,7 +70,7 @@ interface WorkService {
      */
     @GET("api/Students/StartWork")
     fun startWork(
-            @Query("StudentQuestionsTasksID") taskId: Long)
+             @Query("StudentQuestionsTasksID") taskId: Long)
             : LiveData<ApiResponse<JsonObject>>
 
     @GET("api/Students/GetExaminationPapersByID")
@@ -117,7 +117,7 @@ interface WorkService {
     /**
      * 点点作业 获取验证码
      */
-    @GET("api/Account/getTelCode")
+    @GET("api/Account/GetTelCode")
     fun getPhoneCode(
             @Query("loginName") loginName: String,
             @Query("type") type: Int)
@@ -192,5 +192,15 @@ interface WorkService {
             @Query("Type") type: Int,
             @Query("SourceType") SourceType: String)
             : Call<BaseResponse<Unit>>
+
+    @POST("api/AnswerError/GroupExaminationPaper")
+    fun retryWrongQuestion(
+            @Query("SubjectTypeId") SubjectTypeId : Int,
+//            @Query("count2") WriteUserName: String,// type=0时有效
+//            @Query("count1") Title: String,// type=0时有效
+//            @Query("strQuesion") Countent: String,// type=0时有效
+            @Query("Type") Type : Int = 0,//  1手动组卷 0自动组卷
+            @Query("StudentId") StudentId: Long = loginId)
+            : Call<BaseResponse<WrongQuestionTask>>
 
 }

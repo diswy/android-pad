@@ -20,6 +20,7 @@ import gorden.lib.video.ExDefinition
 import kotlinx.android.synthetic.main.activity_live_video.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import okhttp3.ResponseBody
 import java.util.*
 
 class LiveVideoActivity : BaseActivity() {
@@ -164,6 +165,17 @@ class LiveVideoActivity : BaseActivity() {
                         }
                     }
 
+                })
+
+        NetClient.videoService()
+                .playRecord(id, 0)
+                .enqueue(object : NetCallBack<ResponseBody>() {
+                    override fun onSucceed(response: ResponseBody) {
+
+                    }
+
+                    override fun onFailure() {
+                    }
                 })
     }
 

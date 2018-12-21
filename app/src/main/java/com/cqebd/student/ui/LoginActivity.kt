@@ -83,7 +83,7 @@ class LoginActivity : BaseActivity() {
         }
 
         text_find_account.setOnClickListener {
-            startActivity<WebActivity>("url" to "http://student.cqebd.cn/Account/FindLoginName")
+            startActivity<AgentWebActivity>("url" to "http://student.cqebd.cn/Account/FindLoginName")
         }
 
         btn_choose_user.setOnClickListener {
