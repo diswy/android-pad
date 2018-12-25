@@ -31,6 +31,15 @@ android {
         schemaVersion 1    // 当前数据库结构的版本
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("\\config\\cqebd.jks")
+            storePassword 'cqebd0612'
+            keyAlias 'cqebd'
+            keyPassword 'cqebd0612'
+        }
+    }
+
     buildTypes {
         release {
             buildConfigField("boolean", "SHOW_LOG", "false")
@@ -44,7 +53,7 @@ android {
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // 输出apk名称为cqebd_merge_android_v1.0.apk
-                        outputFileName = "diandian_android_v${defaultConfig.versionName}.apk"
+                        outputFileName = "diandian_android_v${defaultConfig.versionName}_pad.apk"
                     }
                 }
             }
@@ -53,6 +62,7 @@ android {
         debug {
             buildConfigField("boolean", "SHOW_LOG", "true")
             minifyEnabled false
+            signingConfig signingConfigs.debug
         }
     }
     kapt {

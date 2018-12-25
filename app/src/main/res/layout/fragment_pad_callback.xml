@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:ignore="PxUsage,RtlHardcoded">
+
+    <TextView
+        android:id="@+id/opinion_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="655px"
+        android:layout_marginTop="88px"
+        android:lineSpacingExtra="38px"
+        android:text="帮助与反馈"
+        android:textColor="@color/mine_menu_title"
+        android:textSize="36px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="1100px"
+        android:layout_height="320px"
+        android:layout_marginLeft="199px"
+        android:layout_marginTop="40px"
+        android:background="@drawable/opinion_bg_shape"
+        android:gravity="start|top"
+        android:hint="请写下您的意见或建议"
+        android:lineSpacingExtra="38px"
+        android:padding="20dp"
+        android:textColorHint="@color/color_999999"
+        android:textSize="28px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/opinion_title" />
+
+    <LinearLayout
+        android:id="@+id/opinion_btn_group"
+        android:layout_width="1100px"
+        android:layout_height="175px"
+        android:layout_marginTop="20px"
+        android:background="@drawable/opinion_bg_shape"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_content"
+        app:layout_constraintTop_toBottomOf="@+id/edit_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="38px"
+            android:padding="21px"
+            android:text="请选择反馈类型"
+            android:textColor="@color/color_999999"
+            android:textSize="28px" />
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="74px"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="74px"
+                android:button="@drawable/radiobutton_background"
+                android:checked="true"
+                android:lineSpacingExtra="38px"
+                android:paddingLeft="10px"
+                android:text="问题反馈"
+                android:textColor="@color/mine_menu_title"
+                android:textSize="28px" />
+
+            <RadioButton
+                android:id="@+id/rb2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="64px"
+                android:button="@drawable/radiobutton_background"
+                android:lineSpacingExtra="38px"
+                android:paddingLeft="10px"
+                android:text="功能建议"
+                android:textColor="@color/mine_menu_title"
+                android:textSize="28px" />
+
+            <RadioButton
+                android:id="@+id/rb3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="74px"
+                android:button="@drawable/radiobutton_background"
+                android:lineSpacingExtra="38px"
+                android:paddingLeft="10px"
+                android:text="其他"
+                android:textColor="@color/mine_menu_title"
+                android:textSize="28px" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/opinion_submit"
+        android:layout_width="1000px"
+        android:layout_height="70px"
+        android:layout_marginLeft="249px"
+        android:layout_marginTop="40px"
+        android:background="@drawable/submit_shape"
+        android:lineSpacingExtra="38px"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="32px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/opinion_btn_group" />
+
+    <TextView
+        android:id="@+id/text_feedback_see"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="652px"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="10dp"
+        android:drawableStart="@drawable/opinion_respose"
+        android:drawablePadding="3dp"
+        android:padding="10dp"
+        android:text="查看反馈回复"
+        android:textColor="#f28f1d"
+        android:textSize="24px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/opinion_submit" />
+
+</android.support.constraint.ConstraintLayout>

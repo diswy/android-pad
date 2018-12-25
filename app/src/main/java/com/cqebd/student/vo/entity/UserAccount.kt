@@ -28,6 +28,7 @@ data class UserAccount(
         val OssAccessUrl: String,
         val OssAccessUrlTag: String,
         var Flower: Int,//红花数量
+        var Medal: Int,//奖状
         val IsGroup: Boolean//是否为小组长
 ) {
     //科目

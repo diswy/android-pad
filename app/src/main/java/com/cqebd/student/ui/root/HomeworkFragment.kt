@@ -85,6 +85,14 @@ class HomeworkFragment : BaseFragment() {
             magic_indicator.navigator = commonNavigator
             ViewPagerHelper.bind(magic_indicator, view_pager)
         }
+
+        arguments?.let {
+            val pos = it.getInt("pos", -1)
+            if (pos != -1) {
+                view_pager.currentItem = pos
+                magic_indicator.onPageScrollStateChanged(pos)
+            }
+        }
     }
 
     @Subscribe(code = STATUS_WRONG)

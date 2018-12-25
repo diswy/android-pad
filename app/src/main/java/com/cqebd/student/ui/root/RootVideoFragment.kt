@@ -75,6 +75,14 @@ class RootVideoFragment : BaseFragment() {
             ViewPagerHelper.bind(video_magic_indicator, video_vp)
         }
 
+        arguments?.let {
+            val pos = it.getInt("pos", -1)
+            if (pos != -1) {
+                video_vp.currentItem = pos
+                video_magic_indicator.onPageScrollStateChanged(pos)
+            }
+        }
+
     }
 
 }

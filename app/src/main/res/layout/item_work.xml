@@ -4,14 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="15dp"
-    android:layout_marginStart="15dp"
-    android:layout_marginTop="6dp"
+    android:layout_margin="6dp"
     android:background="@drawable/shape_bg_white_border"
-    android:paddingBottom="6dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="15dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/text_subject"
@@ -46,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="@id/text_name"
         app:layout_constraintTop_toBottomOf="@id/text_name"
         tools:text="共21题" />
@@ -55,7 +50,7 @@
         android:id="@+id/text_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_end_time"
         tools:text="新作业" />
@@ -65,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/text_count"
         app:layout_constraintTop_toBottomOf="@id/text_count"
         tools:text="截止时间:12.05 14:23" />

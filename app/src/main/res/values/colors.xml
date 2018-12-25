@@ -116,4 +116,15 @@
 
 
 
+    <color name="color_666666">#666666</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_F6F6F6">#F6F6F6</color>
+
+    <!--whc-->
+    <color name="mine_photo">#10E697</color>
+    <color name="mine_menu_bg">#f4f4f5</color>
+    <color name="mine_menu_title">#333333</color>
+    <color name="dianzan_bg">#11E697</color>
+    <color name="honghua_bg">#F6AF38</color>
+
 </resources>

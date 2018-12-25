@@ -68,8 +68,6 @@ class CallbackActivity : BaseActivity() {
                         }
                     })
         }
-
-
     }
 
 }

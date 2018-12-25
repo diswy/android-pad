@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -96,7 +98,7 @@ class BeSharedFragment : BaseLazyFragment() {
             adapter.notifyDataSetChanged()
             shareHomeworkViewModel.getShareHomeworkList()
         })
-        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         adapter = object : BaseQuickAdapter<ShareHomeworkItem, BaseViewHolder>(R.layout.item_share_homework, pageProcess.data) {
             @SuppressLint("SetTextI18n")
             override fun convert(helper: BaseViewHolder?, item: ShareHomeworkItem) {
@@ -219,15 +221,17 @@ class BeSharedFragment : BaseLazyFragment() {
     }
 
     @Subscribe(code = STATUS_SUBJECT)
-    fun filterSubject(filter:FilterData) {
+    fun filterSubject(filter: FilterData) {
         filterViewModel.filterSubject(filter)
     }
+
     @Subscribe(code = STATUS_QUESTION_TYPE)
-    fun filterQuestion(filter:FilterData) {
+    fun filterQuestion(filter: FilterData) {
         filterViewModel.filterProblemType(filter)
     }
+
     @Subscribe(code = STATUS_DATE)
-    fun filterDate(filter:FilterData) {
+    fun filterDate(filter: FilterData) {
         filterViewModel.filterShareHomeworkDate(filter)
     }
 

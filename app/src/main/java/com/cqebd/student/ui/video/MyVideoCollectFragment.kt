@@ -1,5 +1,6 @@
 package com.cqebd.student.ui.video
 
+import android.support.v7.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -43,7 +44,7 @@ class MyVideoCollectFragment : BaseLazyFragment() {
                 }
             }
         }
-
+        recyclerView.layoutManager = GridLayoutManager(activity,2)
         adapter.bindToRecyclerView(recyclerView)
         adapter.setOnItemClickListener { adapter, _, position ->
             startActivity<VideoDetailsActivity>("data" to adapter.getItem(position))
@@ -83,7 +84,11 @@ class MyVideoCollectFragment : BaseLazyFragment() {
                     }
 
                     override fun onFailure() {
-                        smart_refresh_layout.finishRefresh(false)
+                        try {
+                            smart_refresh_layout.finishRefresh(false)
+                        } catch (e: Exception) {
+
+                        }
                     }
 
                 })

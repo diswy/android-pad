@@ -1,7 +1,6 @@
 package com.cqebd.student.ui
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -17,6 +16,7 @@ import com.cqebd.student.adapter.AccountListAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.constant.Constant
 import com.cqebd.student.net.NetClient
+import com.cqebd.student.shortcuts.GuidePageActivity
 import com.cqebd.student.tools.savePassword
 import com.cqebd.student.tools.toastError
 import com.cqebd.student.tools.versionName
@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        text_version.text = "V".plus(versionName)
+        version_name.text = "V".plus(versionName)
         edit_username.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_NAME, ""))
         edit_pwd.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_PASSWORD, ""))
     }
@@ -70,7 +70,7 @@ class LoginActivity : BaseActivity() {
                             PreferencesUtil.getInstance(applicationContext).putString(Constant.LAST_USER_NAME, edit_username.text.toString())
                             PreferencesUtil.getInstance(applicationContext).putString(Constant.LAST_USER_PASSWORD, edit_pwd.text.toString())
                             saveUserList(edit_username.text.toString())
-                            startActivity<MainActivity>()
+                            startActivity<GuidePageActivity>()
                             finish()
                         } else {
                             toastError(it?.errorMessage ?: "登录失败")
@@ -86,68 +86,68 @@ class LoginActivity : BaseActivity() {
             startActivity<AgentWebActivity>("url" to "http://student.cqebd.cn/Account/FindLoginName")
         }
 
-        btn_choose_user.setOnClickListener {
-            showUserList()
-        }
+//        btn_choose_user.setOnClickListener {
+//            showUserList()
+//        }
     }
 
     private var pop: PopupWindow? = null
-    private fun showUserList() {
-        if (pop == null) {
-            pop = PopupWindow(this)
-            val container = FrameLayout(this)
-            container.setBackgroundColor(resources.getColor(R.color.white))
-            val rv = RecyclerView(this)
-            val lp = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT)
-            container.addView(rv, lp)
-
-            val gson = Gson()
-            val userList: List<String>
-            val list = PreferencesUtil.getInstance(applicationContext).getString(Constant.USER_NAME_LIST, "")
-            userList = if (list == "") {
-                ArrayList()
-            } else {
-                gson.fromJson(list, object : TypeToken<List<String>>() {
-                }.type)
-            }
-
-            val adapter = AccountListAdapter(this, userList)
-            rv.layoutManager = LinearLayoutManager(this)
-            rv.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            rv.adapter = adapter
-            rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
-            adapter.setItemListener { v ->
-                edit_username.setText((v as TextView).text.toString())
-
-                if (PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_NAME, "") == v.text.toString()) {
-                    edit_pwd.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_PASSWORD, ""))
-                } else {
-                    edit_pwd.setText("")
-                }
-
-                if (pop != null && pop!!.isShowing)
-                    pop!!.dismiss()
-            }
-
-            pop!!.contentView = container
-            pop!!.isFocusable = true
-            pop!!.isOutsideTouchable = true
-            pop!!.setBackgroundDrawable(BitmapDrawable())
-            pop!!.width = edit_username_layout.width
-            pop!!.height = DensityUtil.dip2px(160, this)
-
-            pop!!.showAsDropDown(edit_username_layout)
-        }
-
-        pop?.let {
-            if (it.isShowing) {
-                it.dismiss()
-            } else {
-                it.showAsDropDown(edit_username_layout)
-            }
-        }
-    }
+//    private fun showUserList() {
+//        if (pop == null) {
+//            pop = PopupWindow(this)
+//            val container = FrameLayout(this)
+//            container.setBackgroundColor(resources.getColor(R.color.white))
+//            val rv = RecyclerView(this)
+//            val lp = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT)
+//            container.addView(rv, lp)
+//
+//            val gson = Gson()
+//            val userList: List<String>
+//            val list = PreferencesUtil.getInstance(applicationContext).getString(Constant.USER_NAME_LIST, "")
+//            userList = if (list == "") {
+//                ArrayList()
+//            } else {
+//                gson.fromJson(list, object : TypeToken<List<String>>() {
+//                }.type)
+//            }
+//
+//            val adapter = AccountListAdapter(this, userList)
+//            rv.layoutManager = LinearLayoutManager(this)
+//            rv.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+//            rv.adapter = adapter
+//            rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+//
+//            adapter.setItemListener { v ->
+//                edit_username.setText((v as TextView).text.toString())
+//
+//                if (PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_NAME, "") == v.text.toString()) {
+//                    edit_pwd.setText(PreferencesUtil.getInstance(applicationContext).getString(Constant.LAST_USER_PASSWORD, ""))
+//                } else {
+//                    edit_pwd.setText("")
+//                }
+//
+//                if (pop != null && pop!!.isShowing)
+//                    pop!!.dismiss()
+//            }
+//
+//            pop!!.contentView = container
+//            pop!!.isFocusable = true
+//            pop!!.isOutsideTouchable = true
+//            pop!!.setBackgroundDrawable(BitmapDrawable())
+//            pop!!.width = edit_username_layout.width
+//            pop!!.height = DensityUtil.dip2px(160, this)
+//
+//            pop!!.showAsDropDown(edit_username_layout)
+//        }
+//
+//        pop?.let {
+//            if (it.isShowing) {
+//                it.dismiss()
+//            } else {
+//                it.showAsDropDown(edit_username_layout)
+//            }
+//        }
+//    }
 
     /**
      * 保存登录过的账号

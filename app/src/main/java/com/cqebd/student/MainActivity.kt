@@ -20,6 +20,7 @@ import com.cqebd.student.ui.HomeFragment
 import com.cqebd.student.ui.MineFragment
 import com.cqebd.student.ui.root.HomeworkFragment
 import com.cqebd.student.ui.root.RootHomeFragment
+import com.cqebd.student.ui.root.RootMineFragment
 import com.cqebd.student.ui.root.RootVideoFragment
 import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.UserAccount
@@ -38,6 +39,7 @@ import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
     private val mGuidePosition by lazy { intent.getIntExtra("guide_position", -1) }
+    private val mChildGuidePosition by lazy { intent.getIntExtra("child_guide_position", -1) }
 
     override fun setContentView() {
         setContentView(R.layout.activity_main_drawerlayout)
@@ -49,8 +51,7 @@ class MainActivity : BaseActivity() {
         initDrawerView()
 
         val titles = resources.getStringArray(R.array.title)
-        navigation.addItem(BottomNavigationItem(R.drawable.ic_home_selected, titles[0]).setInactiveIconResource(R.drawable.ic_home_normal))
-                .addItem(BottomNavigationItem(R.drawable.ic_video_selected, titles[1]).setInactiveIconResource(R.drawable.ic_video_normal))
+        navigation.addItem(BottomNavigationItem(R.drawable.ic_video_selected, titles[1]).setInactiveIconResource(R.drawable.ic_video_normal))
                 .addItem(BottomNavigationItem(R.drawable.ic_work_selected, titles[2]).setInactiveIconResource(R.drawable.ic_work_normal))
                 .addItem(BottomNavigationItem(R.drawable.ic_mine_selected, titles[3]).setInactiveIconResource(R.drawable.ic_mine_normal))
                 .initialise()
@@ -72,28 +73,44 @@ class MainActivity : BaseActivity() {
                 switchFragment(position)
             }
         })
-        switchFragment(if (mGuidePosition != -1) mGuidePosition else 0)
+
+        if (mGuidePosition == 2) {
+            main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        } else {
+            main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
         navigation.selectTab(if (mGuidePosition != -1) mGuidePosition else 0)
+//        switchFragment(if (mGuidePosition != -1) mGuidePosition else 0)
     }
 
     private fun switchFragment(position: Int) {
         var targetFragment: Fragment? = supportFragmentManager.findFragmentByTag("tag$position")
         if (targetFragment == null) {
             when (position) {
+//                0 -> {
+////                    targetFragment = HomeFragment()
+//                    targetFragment = RootHomeFragment()
+//                }
                 0 -> {
-//                    targetFragment = HomeFragment()
-                    targetFragment = RootHomeFragment()
-                }
-                1 -> {
 //                    targetFragment = VideoFragment()
                     targetFragment = RootVideoFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("pos", mChildGuidePosition)
+                    targetFragment.setArguments(bundle)
                 }
-                2 -> {
+                1 -> {
 //                    targetFragment = WorkFragment()
                     targetFragment = HomeworkFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("pos", mChildGuidePosition)
+                    targetFragment.setArguments(bundle)
                 }
-                3 -> {
-                    targetFragment = MineFragment()
+                2 -> {
+//                    targetFragment = MineFragment()
+                    targetFragment = RootMineFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("pos", mChildGuidePosition)
+                    targetFragment.setArguments(bundle)
                 }
             }
         }
@@ -110,21 +127,21 @@ class MainActivity : BaseActivity() {
         currentFragment = targetFragment
     }
 
-    private var exitTime: Long = 0
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                toast("再按一次退出点点课")
-                exitTime = System.currentTimeMillis()
-            } else {
-                finish()
-                System.exit(0)
-            }
-            return true
-        }
-
-        return super.onKeyDown(keyCode, event)
-    }
+//    private var exitTime: Long = 0
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+//            if ((System.currentTimeMillis() - exitTime) > 2000) {
+//                toast("再按一次退出点点课")
+//                exitTime = System.currentTimeMillis()
+//            } else {
+//                finish()
+//                System.exit(0)
+//            }
+//            return true
+//        }
+//
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     /**
      * -------------------侧滑菜单部分-------------------

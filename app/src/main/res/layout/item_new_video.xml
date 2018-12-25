@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:layout_margin="6dp"
+    android:background="@drawable/shape_bg_white_border"
+    android:padding="12dp"
+    app:cardCornerRadius="8dp">
+
 
     <ImageView
         android:id="@+id/iv_video_snapshot"
-        android:layout_width="100dp"
-        android:layout_height="70dp" />
+        android:layout_width="120dp"
+        android:layout_height="84dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -28,7 +32,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/color_title"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/iv_video_snapshot"
         app:layout_constraintTop_toTopOf="@+id/iv_video_snapshot"
         tools:text="标题" />
@@ -38,10 +42,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:lineSpacingExtra="8dp"
         android:textColor="@color/color_subtitle_grey"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/iv_video_snapshot"
         app:layout_constraintTop_toBottomOf="@+id/tv_video_title"
         tools:text="主讲老师：李老师\n年级：八年级" />
@@ -53,11 +57,10 @@
         android:layout_marginEnd="10dp"
         android:lineSpacingExtra="8dp"
         android:textColor="@color/color_subtitle_grey"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_video_teacher_grade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_video_teacher_grade"
         tools:text="共1节\n科目：数学" />
-
 
 </android.support.constraint.ConstraintLayout>

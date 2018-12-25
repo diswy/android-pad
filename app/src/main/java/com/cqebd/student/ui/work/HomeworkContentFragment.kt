@@ -3,6 +3,7 @@ package com.cqebd.student.ui.work
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cqebd.student.MainActivity
@@ -97,8 +98,7 @@ class HomeworkContentFragment : BaseLazyFragment() {
             adapter.notifyDataSetChanged()
             workListViewModel.getWorkList()
         })
-        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
-
+        recyclerView.layoutManager = GridLayoutManager(activity,2)
         adapter.setOnLoadMoreListener({
             if (pageProcess.data.isNotEmpty() && pageProcess.data.size >= 20) {
                 workListViewModel.getWorkList()

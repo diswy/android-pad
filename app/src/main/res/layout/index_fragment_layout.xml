@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/index_bg">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/index_bar"
+        android:layout_width="1170px"
+        android:layout_height="300px"
+        android:layout_marginTop="124px"
+        android:background="@drawable/indexbar_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/title_img"
+            android:layout_width="346px"
+            android:layout_height="223px"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="43px"
+            android:src="@drawable/title_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="39px"
+            android:background="@drawable/title_font"
+            app:layout_constraintLeft_toRightOf="@+id/title_img"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35px"
+            android:layout_marginTop="25px"
+            tools:text="11:30"
+            android:textColor="@color/white"
+            android:textSize="60px"
+            app:layout_constraintLeft_toRightOf="@+id/title_img"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/title_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="39px"
+            android:layout_marginTop="5px"
+            tools:text="12月19日"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toRightOf="@+id/title_img"
+            app:layout_constraintTop_toBottomOf="@+id/title_time" />
+
+        <TextView
+            android:id="@+id/title_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19px"
+            tools:text="周三"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toRightOf="@+id/title_date"
+            app:layout_constraintTop_toTopOf="@+id/title_date" />
+
+
+        <TextView
+            android:id="@+id/join_class"
+            android:layout_width="144px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="73px"
+            android:layout_marginRight="80px"
+            android:drawableTop="@drawable/join_class"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="进入课堂"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/index_mine"
+        android:layout_width="370px"
+        android:layout_height="550px"
+        android:layout_marginTop="30px"
+        android:background="@drawable/index_mine_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/index_bar"
+        app:layout_constraintTop_toBottomOf="@+id/index_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:text="我的"
+            android:textColor="@color/white"
+            android:textSize="42px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/index_mine_photo"
+            android:layout_width="120px"
+            android:layout_height="120px"
+            android:layout_marginTop="90px"
+            android:src="@drawable/ic_avatar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/index_mine_name"
+            android:layout_width="120px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5px"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="@+id/index_mine_photo"
+            app:layout_constraintTop_toBottomOf="@+id/index_mine_photo" />
+
+        <TextView
+            android:id="@+id/schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="281px"
+            android:drawableTop="@drawable/schedule"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="课表"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintRight_toLeftOf="@id/index_mine_photo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/message"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="消息"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toRightOf="@+id/index_mine_photo"
+            app:layout_constraintTop_toTopOf="@+id/schedule" />
+
+        <TextView
+            android:id="@+id/red_flower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:drawableTop="@drawable/red_flowwer"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="红花"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="@+id/schedule"
+            app:layout_constraintTop_toBottomOf="@+id/schedule" />
+
+        <TextView
+            android:id="@+id/dianzan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/index_dianzan"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="点赞"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="@+id/message"
+            app:layout_constraintTop_toTopOf="@+id/red_flower" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/index_video"
+        android:layout_width="770px"
+        android:layout_height="260px"
+        android:layout_marginLeft="30px"
+        android:background="@drawable/index_video_bg"
+        app:layout_constraintLeft_toRightOf="@+id/index_mine"
+        app:layout_constraintTop_toTopOf="@+id/index_mine">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:text="视频"
+            android:textColor="@color/white"
+            android:textSize="42px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="100px"
+            android:drawableTop="@drawable/index_video"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="视频"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/subscrilbe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/index_subscrilbe"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="订阅"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/video" />
+
+        <TextView
+            android:id="@+id/collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="80px"
+            android:drawableTop="@drawable/index_collection"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="收藏"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/video" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/indx_homework"
+        android:layout_width="770px"
+        android:layout_height="260px"
+        android:layout_marginTop="30px"
+        android:background="@drawable/index_homework_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/index_video"
+        app:layout_constraintTop_toBottomOf="@+id/index_video">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:text="作业"
+            android:textColor="@color/white"
+            android:textSize="42px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/homework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80px"
+            android:layout_marginTop="100px"
+            android:drawableTop="@drawable/index_homework"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="作业"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/work_wrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105px"
+            android:drawableTop="@drawable/index_homework_wrong"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="错题"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toRightOf="@+id/homework"
+            app:layout_constraintTop_toTopOf="@+id/homework" />
+
+        <TextView
+            android:id="@+id/work_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="105px"
+            android:drawableTop="@drawable/index_homework_share"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintLeft_toRightOf="@+id/work_wrong"
+            app:layout_constraintTop_toTopOf="@+id/homework" />
+
+        <TextView
+            android:id="@+id/work_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="80px"
+            android:drawableTop="@drawable/index_homework_collection"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="收藏"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/homework" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

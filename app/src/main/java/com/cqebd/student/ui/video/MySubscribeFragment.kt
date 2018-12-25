@@ -3,6 +3,7 @@ package com.cqebd.student.ui.video
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.widget.GridLayoutManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -56,6 +57,8 @@ class MySubscribeFragment : BaseLazyFragment() {
                 }
             }
         }
+
+        recyclerView.layoutManager = GridLayoutManager(activity,2)
         adapter.bindToRecyclerView(recyclerView)
         adapter.setOnItemClickListener { adapter, _, position ->
             startActivity<VideoDetailsActivity>("data" to adapter.getItem(position))

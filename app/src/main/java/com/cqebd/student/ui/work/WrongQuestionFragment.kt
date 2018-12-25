@@ -4,6 +4,7 @@ package com.cqebd.student.ui.work
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -107,7 +108,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
             adapter.notifyDataSetChanged()
             getWrongQuestionList()
         })
-        recyclerView.layoutManager = WrapContentLinearLayoutManager(activity)
+        recyclerView.layoutManager = GridLayoutManager(activity,2)
         adapter = object : BaseQuickAdapter<WrongQuestion, BaseViewHolder>(R.layout.item_wrong_question, pageProcess.data) {
             override fun convert(helper: BaseViewHolder?, item: WrongQuestion) {
                 helper?.itemView?.apply {
