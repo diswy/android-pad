@@ -1,5 +1,6 @@
 package com.cqebd.student.ui
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -59,12 +60,29 @@ class VideoActivity : BaseActivity() {
         ViewPagerHelper.bind(video_player_indicator, viewPager)
 
         toolbar.setNavigationOnClickListener { finish() }
-        toolbar_title.text = "点点直播"
 
         intent?.let {
             initStatus(it)
         }
 
+    }
+
+    override fun bindEvents() {
+        btnExpand.setOnCheckedChangeListener { _, isChecked ->
+            val va: ValueAnimator = if (isChecked) {// 折叠
+                ValueAnimator.ofInt(500, 0)
+            } else {
+                ValueAnimator.ofInt(0, 500)
+            }
+
+            va.addUpdateListener {
+                val width: Int = it.animatedValue as Int
+                hover.layoutParams.width = width
+                hover.requestLayout()
+            }
+            va.duration = 300
+            va.start()
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -87,6 +105,7 @@ class VideoActivity : BaseActivity() {
     }
 
     private fun initStatus(i: Intent) {
+        toolbar_title.text = intent.getStringExtra("title")
         listData = i.getParcelableArrayListExtra("listData")
         val mCurrentPos = i.getIntExtra("pos", 0)
         status = i.getIntExtra("status", 0)
@@ -212,7 +231,7 @@ class VideoActivity : BaseActivity() {
             }
         }
 
-        if (definitionList.isEmpty()){
+        if (definitionList.isEmpty()) {
             for (vodPlay in vodPlays) {
                 if (vodPlay.Url.substring(vodPlay.Url.lastIndexOf(".")).contains("mp4")) {
                     when {

@@ -60,7 +60,8 @@ class StartActivity : BaseActivity() {
                 .subscribe { granted ->
                     if (!granted)
                         toast("您拒绝了必要权限")
-                    appUpdate()
+//                    appUpdate()
+                    next()
                 }
     }
 

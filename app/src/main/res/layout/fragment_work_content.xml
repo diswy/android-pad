@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:background="@color/colorWhite">
 
         <net.lucode.hackware.magicindicator.MagicIndicator
@@ -36,7 +36,7 @@
         android:visibility="gone"
         app:fb_bg_color="@color/colorPrimary"
         app:fb_shape="round_rect"
-        app:fb_text="随机组卷"
+        app:fb_text="错题重练"
         app:fb_text_color="@color/white" />
 
 

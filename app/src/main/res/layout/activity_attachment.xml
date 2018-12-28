@@ -31,7 +31,7 @@
     <gorden.lib.video.ExVideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="800px" />
     <TextView
         android:id="@+id/text_info"
         android:layout_width="wrap_content"

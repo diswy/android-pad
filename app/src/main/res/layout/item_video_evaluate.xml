@@ -28,10 +28,12 @@
 
     <TextView
         android:id="@+id/mContent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
         android:textColor="@color/color_333a42"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/mUserName"
         app:layout_constraintTop_toBottomOf="@+id/mUserName"
         tools:text="Content" />

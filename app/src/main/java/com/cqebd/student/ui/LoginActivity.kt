@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.PopupWindow
@@ -27,6 +28,7 @@ import gorden.lib.anko.static.startActivity
 import gorden.util.DensityUtil
 import gorden.util.PreferencesUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.toast
 import java.util.ArrayList
 import java.util.HashSet
 
@@ -172,5 +174,21 @@ class LoginActivity : BaseActivity() {
 
         val jsonList = gson.toJson(userList)
         PreferencesUtil.getInstance(applicationContext).putString(Constant.USER_NAME_LIST, jsonList)
+    }
+
+    private var exitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                toast("再按一次退出点点课")
+                exitTime = System.currentTimeMillis()
+            } else {
+                finish()
+                System.exit(0)
+            }
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 }

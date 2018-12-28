@@ -1,5 +1,6 @@
 package com.cqebd.student.live.ui
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -76,6 +77,23 @@ class LiveActivity : BaseActivity() {
     }
 
     override fun bindEvents() {
+
+        btnExpand.setOnCheckedChangeListener { _, isChecked ->
+            val va: ValueAnimator = if (isChecked) {// 折叠
+                ValueAnimator.ofInt(500, 0)
+            } else {
+                ValueAnimator.ofInt(0, 500)
+            }
+
+            va.addUpdateListener {
+                val width:Int = it.animatedValue as Int
+                hover.layoutParams.width = width
+                hover.requestLayout()
+            }
+            va.duration = 300
+            va.start()
+        }
+
         mToolbar.setNavigationOnClickListener {
             leaveRoom()
             exitRoom()

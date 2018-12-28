@@ -72,8 +72,11 @@ class PadCallbackFragment : BaseFragment() {
             NetClient.workService().submitFeedBk(loginId, it.Name, "", content, type, 0, sourceType)
                     .enqueue(object : NetCallBack<BaseResponse<Unit>>() {
                         override fun onSucceed(response: BaseResponse<Unit>?) {
-                            response?.let { response ->
+                            response?.let {
                                 toast(response.message)
+                                if (response.isSuccess){
+                                    edit_content.setText("")
+                                }
                             }
                         }
 

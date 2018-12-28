@@ -10,6 +10,7 @@ import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
+import com.cqebd.student.event.FINISH
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.ui.AgentWebActivity
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GuidePageActivity : BaseActivity() {
+    private lateinit var userModel:MineViewModel
 
     override fun setContentView() {
         //取消状态栏
@@ -34,14 +36,24 @@ class GuidePageActivity : BaseActivity() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         updateTime()
-
-        val userModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
+        RxBus.get().register(this)
+        userModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
         userModel.userAccount.observe(this, Observer {
             it?.apply {
                 index_mine_name.text = Name
                 GlideApp.with(App.mContext).asBitmap().circleCrop().load(Avatar).placeholder(R.drawable.ic_avatar).into(index_mine_photo)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userModel.refreshUser()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.get().unRegister(this)
     }
 
     override fun bindEvents() {
@@ -130,11 +142,15 @@ class GuidePageActivity : BaseActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    @Subscribe(code = 999)
-    fun myFinish(myCode: Int) {
-        if (myCode == 999){
-            finish()
-            System.exit(0)
-        }
+//    @Subscribe(code = 999)
+//    fun myFinish(myCode: Int) {
+//        if (myCode == 999){
+//            finish()
+//            System.exit(0)
+//        }
+//    }
+    @Subscribe(code = FINISH)
+    fun myFinish(myCode: String) {
+        finish()
     }
 }

@@ -126,5 +126,6 @@
     <color name="mine_menu_title">#333333</color>
     <color name="dianzan_bg">#11E697</color>
     <color name="honghua_bg">#F6AF38</color>
+    <color name="color_CCCCCC">#cccccc</color>
 
 </resources>

@@ -14,6 +14,7 @@ import android.widget.TextView
 
 import com.cqebd.student.R
 import com.cqebd.student.app.App
+import com.cqebd.student.event.FINISH
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.tools.logoutNetease
 import com.cqebd.student.tools.toast
@@ -52,6 +53,7 @@ class RootMineFragment : BaseFragment() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        RxBus.get().register(this)
         btnLists = listOf(btnMine, btnShare, btnMsg, btnHeadman, btnCallback, btnClear, btnExit)
         tvLists = listOf(tvShare, tvShare, tvMsg, tvHeadman, tvCallback, tvClear, tvExit)
         icResNormal = listOf(R.drawable.mine_share, R.drawable.mine_share, R.drawable.item_message, R.drawable.item_headman,
@@ -59,7 +61,7 @@ class RootMineFragment : BaseFragment() {
         icResSelected = listOf(R.drawable.item_share_selected, R.drawable.item_share_selected, R.drawable.item_message_selected, R.drawable.item_headman_selected,
                 R.drawable.item_opinion_selected, R.drawable.item_cache_selected, R.drawable.item_exit_selected)
 
-        mineViewModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
+        mineViewModel = ViewModelProviders.of(activity!!).get(MineViewModel::class.java)
         mineViewModel.userAccount.observe(this, Observer {
             it?.apply {
                 tvName.text = Name
@@ -81,6 +83,11 @@ class RootMineFragment : BaseFragment() {
         }
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.get().unRegister(this)
     }
 
     private var currentItem = 0
@@ -134,6 +141,8 @@ class RootMineFragment : BaseFragment() {
 //                currentItem = 6
 //                changeStyle(currentItem)
 //            }
+
+            RxBus.get().send(FINISH,"finish")
             activity?.finish()
             UserAccount.clear()
             logoutNetease()

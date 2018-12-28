@@ -23,7 +23,7 @@ class TitleNavigatorAdapter(context: Context, titles: List<String>, vp: ViewPage
         titleView.normalColor = mContext.resources.getColor(R.color.color_title)
         titleView.selectedColor = mContext.resources.getColor(R.color.color_main)
         titleView.text = mTitles[index]
-        titleView.textSize = 14f
+        titleView.textSize = 16f
         if (mIsTextBold){
             val tp = titleView.paint
             tp.isFakeBoldText = true

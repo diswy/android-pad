@@ -1,24 +1,26 @@
 package com.cqebd.student.ui
 
 import android.text.TextUtils
+import android.view.WindowManager
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.tools.toast
-import com.cqebd.student.vo.entity.BaseBean
 import gorden.behavior.LoadingDialog
 import gorden.util.RxCounter
 import kotlinx.android.synthetic.main.activity_find_password.*
 
 class FindPasswordActivity : BaseActivity() {
     override fun setContentView() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_find_password)
     }
 
     override fun bindEvents() {
-        toolbar.setNavigationOnClickListener { finish() }
+//        toolbar.setNavigationOnClickListener { finish() }
 
         btn_verify.setOnClickListener {
             val userName = edit_username.text.toString()
@@ -32,7 +34,7 @@ class FindPasswordActivity : BaseActivity() {
         btn_reset.setOnClickListener {
             val userName = edit_username.text.toString()
             if (check() && !TextUtils.isEmpty(userName)) {
-                val pwd = edit_new_pwd.text.toString().trim()
+                val pwd = edit_confirm_pwd.text.toString().trim()
                 val code = edit_verify.text.toString().trim()
                 LoadingDialog.show(this)
                 NetClient.workService().updatePwd(userName, pwd, code)
@@ -59,11 +61,11 @@ class FindPasswordActivity : BaseActivity() {
             toast("请输入验证码")
             return false
         }
-        if (TextUtils.isEmpty(edit_new_pwd.text.toString().trim())) {
+        if (TextUtils.isEmpty(edit_confirm_pwd.text.toString().trim())) {
             toast("新密码不能为空")
             return false
         }
-        if (edit_new_pwd.text.length < 6) {
+        if (edit_confirm_pwd.text.length < 6) {
             toast("请输入6位数以上的密码")
             return false
         }
@@ -71,7 +73,7 @@ class FindPasswordActivity : BaseActivity() {
             toast("确认密码不能为空")
             return false
         }
-        if (!TextUtils.equals(edit_new_pwd.text.toString(), edit_confirm_pwd.text.toString())) {
+        if (!TextUtils.equals(edit_confirm_pwd.text.toString(), repeat_new_pwd.text.toString())) {
             toast("新密码与确认密码不一致")
             return false
         }

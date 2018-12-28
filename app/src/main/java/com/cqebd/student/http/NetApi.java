@@ -113,7 +113,7 @@ public interface NetApi {
     );
 
     @POST("api/Account/UpdataStudent")
-    Call<BaseBean> updateStudent(@Query("Id") int UserId, @Query("Photo") String Photo);
+    Call<BaseBean> updateStudent(@Query("Id") long UserId, @Query("Photo") String Photo);
 
     @POST("api/Account/EditPwd")
     Call<BaseBean> modifyPwd(@Query("UserId") int UserId, @Query("Pwd") String Pwd, @Query("NewPwd") String NewPwd);

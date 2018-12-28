@@ -8,8 +8,8 @@
     <application android:allowBackup="true"
         android:largeHeap="true"
         android:supportsRtl="true">
-        <activity android:name=".AlbumPickerActivity" android:screenOrientation="portrait" android:theme="@style/ALbumPickerStyle"/>
-        <activity android:name=".crop.CropImageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".AlbumPickerActivity" android:screenOrientation="landscape" android:theme="@style/ALbumPickerStyle"/>
+        <activity android:name=".crop.CropImageActivity" android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

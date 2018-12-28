@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.work.MyWorkCollectFragment">
+    android:orientation="vertical">
 
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator_subtitle"
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="55dp" />
 
     <FrameLayout
         android:id="@+id/web_container"

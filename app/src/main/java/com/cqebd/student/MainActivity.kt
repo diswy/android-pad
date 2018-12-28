@@ -39,13 +39,17 @@ import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
     private val mGuidePosition by lazy { intent.getIntExtra("guide_position", -1) }
-    private val mChildGuidePosition by lazy { intent.getIntExtra("child_guide_position", -1) }
+    private var mChildGuidePosition = -1
+    private var isFirstLaunch = true
 
     override fun setContentView() {
         setContentView(R.layout.activity_main_drawerlayout)
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
+        mChildGuidePosition = intent.getIntExtra("child_guide_position", -1)
+
+
         RxBus.get().register(this)
         loginNetease()
         initDrawerView()
@@ -65,6 +69,13 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onTabSelected(position: Int) {
+
+                if (isFirstLaunch) {
+                    isFirstLaunch = false
+                } else {
+                    mChildGuidePosition = -1
+                }
+
                 if (position == 2) {
                     main_drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 } else {

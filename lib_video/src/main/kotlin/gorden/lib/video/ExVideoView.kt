@@ -32,7 +32,7 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoListener
 import org.jetbrains.anko.dip
 
-class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
+class  ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
     //The container that actually holds the content
     private lateinit var videoContent: View
     //current display mode SCREEN_WINDOW or SCREEN_FULL
@@ -472,7 +472,8 @@ class ExVideoView : FrameLayout, ExMediaController.MediaPlayerControl {
         private const val SCREEN_FULL = 1
         private const val SCREEN_WINDOW = 0
         private const val FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        private const val PORTRAIT_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//        private const val PORTRAIT_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        private const val PORTRAIT_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
     }
 
     /*-----------------------  open api  --------------------------------*/

@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".live.ui.LiveActivity">
-
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/mToolbar"
@@ -26,79 +24,105 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/mVideoContainer"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="260dp">
+        android:layout_height="match_parent">
 
-        <gorden.lib.video.ExVideoView
-            android:id="@+id/videoView"
-            android:layout_width="match_parent"
-            android:layout_height="260dp" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_weight="1"
+            android:id="@+id/mVideoContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/mCreatorView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <gorden.lib.video.ExVideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <FrameLayout
+                android:id="@+id/mCreatorView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="160dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <FrameLayout
+                    android:id="@+id/mMyself"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp" />
+
+                <FrameLayout
+                    android:id="@+id/mStudent1"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:id="@+id/mStudent2"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/mBtnApplyVideo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_hand_up"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <CheckBox
+                android:id="@+id/btnExpand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_expand"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            
+            <!--<Button-->
+            <!--android:id="@+id/mTestBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="直接上墙"/>-->
+            <!--<Button-->
+            <!--android:id="@+id/mTestBtn2"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/mTestBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="直接下墙"/>-->
+
+        </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:id="@+id/hover"
+            android:orientation="vertical"
+            android:layout_width="500px"
+            android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/mMyself"
-                android:layout_width="120dp"
-                android:layout_height="120dp" />
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/mLiveIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorWhite" />
 
-            <FrameLayout
-                android:id="@+id/mStudent1"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:visibility="gone" />
-
-            <FrameLayout
-                android:id="@+id/mStudent2"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:visibility="gone" />
+            <com.cqebd.student.netease.wedigt.NonScrollViewPager
+                android:id="@+id/mNonScrollVp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
-
-        <ImageButton
-            android:id="@+id/mBtnApplyVideo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/transparent"
-            android:src="@drawable/ic_hand_up"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!--<Button-->
-        <!--android:id="@+id/mTestBtn"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="直接上墙"/>-->
-        <!--<Button-->
-        <!--android:id="@+id/mTestBtn2"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/mTestBtn"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="直接下墙"/>-->
-
-    </android.support.constraint.ConstraintLayout>
-
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/mLiveIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/colorWhite" />
-
-    <com.cqebd.student.netease.wedigt.NonScrollViewPager
-        android:id="@+id/mNonScrollVp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>

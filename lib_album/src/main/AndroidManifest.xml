@@ -14,7 +14,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <provider
             android:name="android.support.v4.content.FileProvider"

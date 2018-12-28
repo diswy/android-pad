@@ -3,6 +3,7 @@ package com.cqebd.student.adapter
 import android.content.Context
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.Interpolator
 import com.cqebd.student.R
 import com.cqebd.student.`interface`.CustomCallback
 import com.cqebd.student.vo.entity.FilterData

@@ -25,6 +25,11 @@ class MineViewModel : ViewModel() {
         userAccount.value = UserAccount.load()
     }
 
+    fun refreshUser(){
+        userAccount.value = null
+        userAccount.value = UserAccount.load()
+    }
+
     fun refreshFlowers(){
         val call = NetClient.workService().getFlower()
         userAccount.addSource(call, {

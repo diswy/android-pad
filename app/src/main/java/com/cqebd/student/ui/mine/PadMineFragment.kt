@@ -1,8 +1,11 @@
 package com.cqebd.student.ui.mine
 
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -13,26 +16,37 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import com.anko.static.dp
 
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.http.NetApi
 import com.cqebd.student.http.NetCallBack
 import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
-import com.cqebd.student.tools.loginId
-import com.cqebd.student.tools.toast
+import com.cqebd.student.tools.*
 import com.cqebd.student.ui.AgentWebActivity
 import com.cqebd.student.viewmodel.MineViewModel
+import com.cqebd.student.vo.entity.BaseBean
 import com.cqebd.student.vo.entity.UserAccount
+import com.cqebd.student.widget.LoadingDialog
+import com.cqebd.teacher.vo.Status
 import com.xiaofu.lib_base_xiaofu.fancy.FancyDialogFragment
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCropActivity
 import gorden.lib.anko.static.startActivity
+import gorden.library.Album
 import gorden.util.RxCounter
 import gorden.widget.selector.SelectorButton
 import kotlinx.android.synthetic.main.dialog_modify_pwd.view.*
 import kotlinx.android.synthetic.main.fragment_pad_mine.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 
 /**
@@ -47,13 +61,14 @@ class PadMineFragment : BaseFragment() {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        mineViewModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
+        mineViewModel = ViewModelProviders.of(activity!!).get(MineViewModel::class.java)
         mineViewModel.userAccount.observe(this, Observer {
             it?.apply {
                 stu_name.text = "姓名:".plus(Name)
                 stu_phone.text = "电话:".plus(if (TextUtils.isEmpty(it.Phone)) "未绑定" else it.Phone)
-                little_flower.text = "小红花\n".plus((Flower / 25).toString())
-                big_flower.text = "大红花\n".plus((Flower % 25 / 5).toString())
+                stu_change_phone.text = if (TextUtils.isEmpty(it.Phone)) "绑定" else "修改"
+                little_flower.text = "小红花\n".plus((Flower % 25 / 5).toString())
+                big_flower.text = "大红花\n".plus((Flower / 25).toString())
                 medal.text = "奖章\n".plus((Flower % 5).toString())
                 diploma.text = "奖状\n".plus(Medal)
                 GlideApp.with(App.mContext).asBitmap().circleCrop().load(Avatar).placeholder(R.drawable.ic_avatar).into(head_portrait)
@@ -63,8 +78,11 @@ class PadMineFragment : BaseFragment() {
     }
 
     override fun bindEvents() {
+        head_portrait.setOnClickListener {
+            Album.create().single().start(this)
+        }
         stu_change_phone.setOnClickListener {
-            if (stu_change_phone.text.toString() == "手机：未绑定") {
+            if (stu_phone.text.toString() == "电话:未绑定") {
                 bindPhone()
             } else {
                 editPhone()
@@ -95,6 +113,72 @@ class PadMineFragment : BaseFragment() {
             val url = WorkService.BASE_WEB_URL.plus(flowerFormat)
             startActivity<AgentWebActivity>("url" to url)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                Album.REQUEST_CODE -> {
+                    val pathList = data!!.getStringArrayListExtra(Album.KEY_IMAGES)
+                    crop(pathList[0])
+                }
+                UCrop.REQUEST_CROP -> {
+                    val uri = UCrop.getOutput(data!!)
+                    updateAvatar(uri)
+                }
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            toastError("图片处理失败")
+        }
+    }
+
+    private val loadingDialog by lazy { LoadingDialog() }
+    private fun updateAvatar(uri: Uri?) {
+        mineViewModel.uploadAvatar(uri).observe(this, Observer {
+            when (it?.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.dismiss()
+                    mineViewModel.userAccount.value?.Avatar = it.data!!
+                    com.cqebd.student.http.NetClient.createApi(NetApi::class.java)
+                            .updateStudent(loginId, it.data)
+                            .enqueue(object : Callback<BaseBean> {
+                                override fun onFailure(call: Call<BaseBean>, t: Throwable) {
+                                }
+
+                                override fun onResponse(call: Call<BaseBean>, response: Response<BaseBean>) {
+
+                                }
+                            })
+                    mineViewModel.refreshUserAccount()
+                }
+                Status.ERROR -> {
+                    loadingDialog.dismiss()
+                    AlertDialog.Builder(activity!!).setMessage("头像上传失败,是否重新上传")
+                            .setPositiveButton("上传", { _, _ ->
+                                updateAvatar(uri)
+                            })
+                            .setNegativeButton("取消", null)
+                            .show()
+                }
+                Status.LOADING -> loadingDialog.show(fragmentManager)
+            }
+        })
+    }
+
+
+    private fun crop(path: String) {
+        UCrop.of(Uri.fromFile(File(path)), cropPath)
+                .withAspectRatio(1f, 1f)
+                .withOptions(UCrop.Options().apply {
+                    this.setStatusBarColor(colorForRes(R.color.colorPrimary))
+                    this.setToolbarColor(colorForRes(R.color.colorPrimary))
+                    this.setHideBottomControls(true)
+                    this.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL)
+                    this.setCompressionFormat(android.graphics.Bitmap.CompressFormat.JPEG)
+                })
+                .withMaxResultSize(80.dp, 80.dp)
+                .start(App.mContext, this)
     }
 
     private lateinit var dialogPhone: AlertDialog

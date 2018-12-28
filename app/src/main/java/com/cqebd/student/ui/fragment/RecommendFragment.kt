@@ -39,7 +39,7 @@ class RecommendFragment : BaseFragment() {
             val itemData = adapter.data[position] as PeriodInfo
             if (itemData.Status == 1 || itemData.Status == 3) {
 //                adapter.setCurrentPos(position)
-                startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.data, "pos" to position)
+                startActivity<VideoActivity>("id" to itemData.Id, "status" to itemData.Status, "listData" to adapter.data, "pos" to position, "title" to itemData.Name)
             } else {
                 toast("视频未准备好哦~")
             }
@@ -64,7 +64,7 @@ class RecommendFragment : BaseFragment() {
         override fun convert(helper: BaseViewHolder?, item: PeriodInfo) {
             helper?.itemView?.apply {
 
-//                tvSort.text = "课时".plus(helper.layoutPosition + 1)
+                //                tvSort.text = "课时".plus(helper.layoutPosition + 1)
                 tvSort.text = "课时".plus(data.size - helper.layoutPosition)
                 tvCourseName.text = item.Name
 

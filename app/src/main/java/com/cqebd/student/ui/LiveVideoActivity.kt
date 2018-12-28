@@ -1,5 +1,6 @@
 package com.cqebd.student.ui
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -46,7 +47,6 @@ class LiveVideoActivity : BaseActivity() {
         val isLiveMode = intent.getBooleanExtra("isLiveMode", false)
         Logger.d("--->>>: id = $id ; status = $status ；isLiveMode = $isLiveMode")
         videoView.setLiveMode(isLiveMode)
-        toolbar_title.text = intent.getStringExtra("title")
         initStatus()
         loadVideo()
     }
@@ -67,7 +67,6 @@ class LiveVideoActivity : BaseActivity() {
             toolbar_title.text = intent.getStringExtra("title")
 
             toolbar.setNavigationOnClickListener { finish() }
-            toolbar_title.text = "点点直播"
 
             initStatus()
             loadVideo()
@@ -116,6 +115,24 @@ class LiveVideoActivity : BaseActivity() {
 
     }
 
+    override fun bindEvents() {
+        btnExpand.setOnCheckedChangeListener { _, isChecked ->
+            val va: ValueAnimator = if (isChecked) {// 折叠
+                ValueAnimator.ofInt(500, 0)
+            } else {
+                ValueAnimator.ofInt(0, 500)
+            }
+
+            va.addUpdateListener {
+                val width: Int = it.animatedValue as Int
+                hover.layoutParams.width = width
+                hover.requestLayout()
+            }
+            va.duration = 300
+            va.start()
+        }
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
         if (newConfig?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -142,7 +159,7 @@ class LiveVideoActivity : BaseActivity() {
 //        }else{
 //            item?.text = "评价"
 //        }
-
+        toolbar_title.text = intent.getStringExtra("title")
         val bundle = Bundle()
         bundle.putInt("id", id)
     }
@@ -159,7 +176,7 @@ class LiveVideoActivity : BaseActivity() {
 
                     override fun onSucceed(response: BaseResponse<PeriodResponse>?) {
                         response?.data?.let {
-                            if (filterVideoUrl(it.VodPlayList) != null){
+                            if (filterVideoUrl(it.VodPlayList) != null) {
                                 videoView.setVideoPath(filterVideoUrl(it.VodPlayList)!!, 0, it.Name, R.drawable.ic_login_logo)
                             }
                         }
