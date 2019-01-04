@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:padding="40dp"
+        android:padding="60dp"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:lineSpacingExtra="4dp"
-            tools:text="    小明同学在2018级卷子培优学习中，成绩优异，特发此状，以资鼓励。"
+            tools:text="      小明同学在2018级卷子培优学习中，成绩优异，特发此状，以资鼓励。"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

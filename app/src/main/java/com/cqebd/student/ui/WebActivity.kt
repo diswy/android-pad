@@ -107,8 +107,8 @@ class WebActivity : BaseActivity() {
                     }
                     .setAnimation(R.style.FadeAndScaleDialogAnimation)
                     .setCanCancelOutside(true)
-                    .setWidth((width * 0.9).toInt())// 适配屏幕 90%
-                    .setHeight((width.toDouble() * 0.9 * 0.9).toInt())// 根据图片比例适配屏幕
+                    .setWidth((width * 0.6).toInt())// 适配屏幕 90%
+                    .setHeight((width.toDouble() * 0.4).toInt())// 根据图片比例适配屏幕
                     .show(fragmentManager, "medal")
 
         }
