@@ -203,4 +203,14 @@ interface WorkService {
             @Query("StudentId") StudentId: Long = loginId)
             : Call<BaseResponse<WrongQuestionTask>>
 
+
+    /**
+     * 广告图
+     */
+    @GET("api/Setting/GetSetting")
+    fun getImg(
+            @Query("keyName") keyName: String = "BannerImgPad")
+            : Call<BaseResponse<String>>
+
+
 }

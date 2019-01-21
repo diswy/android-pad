@@ -4,18 +4,26 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
 import com.cqebd.student.MainActivity
 import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.event.FINISH
+import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.net.BaseResponse
+import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.ui.AgentWebActivity
 import com.cqebd.student.viewmodel.MineViewModel
+import com.cqebd.student.vo.entity.AdBanner
+import com.google.gson.Gson
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
+import com.xiaofu.lib_base_xiaofu.img.loadImage
 import gorden.rxbus.RxBus
 import gorden.rxbus.Subscribe
 import kotlinx.android.synthetic.main.index_fragment_layout.*
@@ -25,7 +33,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GuidePageActivity : BaseActivity() {
-    private lateinit var userModel:MineViewModel
+    private lateinit var userModel: MineViewModel
 
     override fun setContentView() {
         //取消状态栏
@@ -36,6 +44,7 @@ class GuidePageActivity : BaseActivity() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         updateTime()
+        initBanner()
         RxBus.get().register(this)
         userModel = ViewModelProviders.of(this).get(MineViewModel::class.java)
         userModel.userAccount.observe(this, Observer {
@@ -142,15 +151,38 @@ class GuidePageActivity : BaseActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-//    @Subscribe(code = 999)
-//    fun myFinish(myCode: Int) {
-//        if (myCode == 999){
-//            finish()
-//            System.exit(0)
-//        }
-//    }
     @Subscribe(code = FINISH)
     fun myFinish(myCode: String) {
         finish()
     }
+
+    private fun initBanner() {
+        NetClient.workService().getImg()
+                .enqueue(object : NetCallBack<BaseResponse<String>>() {
+                    override fun onSucceed(response: BaseResponse<String>?) {
+                        response?.let { data ->
+                            try {
+                                val bean: AdBanner = Gson().fromJson(data.data, AdBanner::class.java)
+                                if (data.isSuccess) {
+                                    bannerIv.visibility = View.VISIBLE
+                                    loadImage(bean.img, bannerIv)
+                                    bannerIv.setOnClickListener {
+                                        val realUrl = bean.url.plus("?id=$loginId")
+                                        startActivity<AgentWebActivity>("url" to realUrl)
+                                    }
+                                } else {
+                                    bannerIv.visibility = View.GONE
+                                }
+                            } catch (e: Exception) {
+                            }
+
+                        }
+                    }
+
+                    override fun onFailure() {
+                    }
+
+                })
+    }
+
 }
