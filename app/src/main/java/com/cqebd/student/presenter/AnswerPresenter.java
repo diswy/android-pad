@@ -55,6 +55,7 @@ import com.cqebd.student.vo.entity.QuestionInfo;
 import com.cqebd.student.vo.entity.WorkInfo;
 import com.cqebd.student.vo.enums.AnswerMode;
 import com.cqebd.student.vo.enums.TaskStatus;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
@@ -167,14 +168,16 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
      * 获得倒计时时间 答题模式
      */
     private void initTimeModel() {
-        taskInfo.setDuration(taskInfo.getDuration() * 60);//转换为秒
-
+        Logger.json(new Gson().toJson(taskInfo));
+        int tempDuration = taskInfo.getDuration() * 60;// FIX版本
+//        taskInfo.setDuration(taskInfo.getDuration() * 60);//转换为秒 2019/2/21版本
         if (taskInfo.getDuration() == 0 && taskInfo.getIsTasks()) {
             answerMode = AnswerMode.TRAIN;//练习模式，没有规定答题时间  只有答题时间范围
             startTimeTick(TimeConversion.getDurationByEnd(taskInfo.getCanEndDateTime()));
         } else {
             answerMode = AnswerMode.EXAM;//答题模式 有限制时间
-            startTimeTick(TimeConversion.getDurationByStart(taskInfo.getStartTime(), taskInfo.getDuration()));
+//            startTimeTick(TimeConversion.getDurationByStart(taskInfo.getStartTime(), taskInfo.getDuration()));// 2019/2/21版本
+            startTimeTick(TimeConversion.getDurationByStart(taskInfo.getStartTime(), tempDuration));// FIX版本
         }
 
     }
