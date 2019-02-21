@@ -14,7 +14,7 @@ import com.cqebd.student.js.VideoJs
 import com.cqebd.student.vo.entity.UserAccount
 import com.cqebd.student.widget.WebView
 import com.orhanobut.logger.Logger
-import com.wuhangjia.firstlib.view.FancyDialogFragment
+import com.xiaofu.lib_base_xiaofu.fancy.FancyDialogFragment
 import kotlinx.android.synthetic.main.activity_webview.*
 
 /**
@@ -89,13 +89,13 @@ class WebActivity : BaseActivity() {
             val width = dm.widthPixels
             FancyDialogFragment.create()
                     .setLayoutRes(R.layout.medal_view)
-                    .setViewListener { v ->
+                    .setViewListener { dialog, v ->
                         val tv = v.findViewById<TextView>(R.id.tv_content)
                         val title = text_title.text.toString()
                         val mUser = UserAccount.load()
                         var name = "同学:"
                         mUser?.let {
-                            name = it.Name+"同学:"
+                            name = it.Name + "同学:"
                         }
                         val content = String.format("%s\n        在%s培优学习中，成绩优异，特发此状，以资鼓励。", name, title)
                         val builder = SpannableStringBuilder(content)

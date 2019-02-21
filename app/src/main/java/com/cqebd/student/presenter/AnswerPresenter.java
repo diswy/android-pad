@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cqebd.student.R;
 import com.cqebd.student.app.App;
@@ -58,6 +59,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.xiaofu.lib_base_xiaofu.fancy.FancyDialogFragment;
 
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.query.Query;
@@ -210,16 +212,44 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
         tickDisposable = RxCounter.tick(seconds).doOnNext(time -> {
             answer.setCountDown(TimeConversion.getHourMinSecondsData(time * 1000));
             if (time == 3 * 60) {
-                niftyDialog().withMessage(alertTitle)
-                        .withButton1Text("知道了").setButton1Click(view -> niftyDialog().dismiss()).show();
+//                niftyDialog().withMessage(alertTitle)
+//                        .withButton1Text("知道了").setButton1Click(view -> niftyDialog().dismiss()).show();
+
+                FancyDialogFragment.create()
+                        .setLayoutRes(R.layout.dialog_hint_msg_time)
+                        .setViewListener((dialog, v) -> {
+                            v.findViewById(R.id.btn_confirm_commit).setOnClickListener(V -> {
+                                dialog.dismiss();
+                            });
+                            TextView tv = v.findViewById(R.id.tv_hint_tv);
+                            tv.setText(alertTitle);
+                        })
+                        .setCanCancelOutside(false)
+                        .setWidth(600)
+                        .setHeight(200)
+                        .show(mContext.getFragmentManager(), "msg");
+
             }
         }).doOnComplete(() -> {
             answer.setCountDown("已结束");
             TimeIsEnd = true;
             answerCardState();//关闭答题卡
-            niftyDialog().withMessage("答题时间已结束,将为你自动交卷")
-                    .withButton1Text("知道了").show();
-            niftyDialog().setOnDismissListener(dialog -> commitAnswer(true));
+//            niftyDialog().withMessage("答题时间已结束,将为你自动交卷")
+//                    .withButton1Text("知道了").show();
+//            niftyDialog().setOnDismissListener(dialog -> commitAnswer(true));
+
+            FancyDialogFragment.create()
+                    .setLayoutRes(R.layout.dialog_hint_msg)
+                    .setViewListener((dialog, v) -> {
+                        v.findViewById(R.id.btn_confirm_commit).setOnClickListener(V -> {
+                            commitAnswer(true);
+                            dialog.dismiss();
+                        });
+                    })
+                    .setCanCancelOutside(false)
+                    .setWidth(600)
+                    .setHeight(200)
+                    .show(mContext.getFragmentManager(), "msg");
 
         }).subscribe();
     }
