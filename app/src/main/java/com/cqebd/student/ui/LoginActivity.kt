@@ -1,19 +1,12 @@
 package com.cqebd.student.ui
 
 import android.arch.lifecycle.Observer
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.os.Environment
 import android.view.KeyEvent
 import android.view.WindowManager
-import android.widget.FrameLayout
 import android.widget.PopupWindow
-import android.widget.TextView
-import com.cqebd.student.MainActivity
 import com.cqebd.student.R
-import com.cqebd.student.adapter.AccountListAdapter
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.constant.Constant
 import com.cqebd.student.net.NetClient
@@ -25,12 +18,12 @@ import com.cqebd.student.widget.LoadingDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gorden.lib.anko.static.startActivity
-import gorden.util.DensityUtil
 import gorden.util.PreferencesUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.toast
-import java.util.ArrayList
-import java.util.HashSet
+import java.io.File
+import java.io.FileOutputStream
+import java.util.*
 
 /**
  *
@@ -67,6 +60,8 @@ class LoginActivity : BaseActivity() {
                     .observe(this, Observer {
                         loadingDialog.dismiss()
                         if (it?.isSuccessful() == true) {
+                            //----应用间共享数据
+                            sharedUser(Gson().toJson(it.body))
                             it.body?.save()
                             savePassword(edit_pwd.text.toString())
                             PreferencesUtil.getInstance(applicationContext).putString(Constant.LAST_USER_NAME, edit_username.text.toString())
@@ -190,5 +185,19 @@ class LoginActivity : BaseActivity() {
         }
 
         return super.onKeyDown(keyCode, event)
+    }
+
+
+    private fun sharedUser(data: String) {
+        val path = Environment.getExternalStorageDirectory().absolutePath.plus("/yunketang/shared")
+        val file = File(path)
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+
+        val mFile = File(path,"user")
+        val outStream = FileOutputStream(mFile)
+        outStream.write(data.toByteArray())
+        outStream.close()
     }
 }

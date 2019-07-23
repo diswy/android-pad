@@ -35,6 +35,7 @@ import com.zhy.view.flowlayout.TagAdapter
 import gorden.rxbus.RxBus
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
+import kotlinx.android.synthetic.main.index_fragment_layout.*
 
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
@@ -48,7 +49,6 @@ class MainActivity : BaseActivity() {
 
     override fun initialize(savedInstanceState: Bundle?) {
         mChildGuidePosition = intent.getIntExtra("child_guide_position", -1)
-
 
         RxBus.get().register(this)
         loginNetease()

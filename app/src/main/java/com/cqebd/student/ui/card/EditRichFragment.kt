@@ -16,6 +16,7 @@ import com.cqebd.student.R
 import com.cqebd.student.app.App
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.tools.AlbumHelper
+import com.cqebd.student.tools.toast
 import com.cqebd.student.vo.DataChangeListener
 import com.cqebd.student.vo.entity.AnswerCardDetailInfo
 import com.cqebd.student.vo.entity.AnswerType
@@ -221,11 +222,16 @@ class EditRichFragment : BaseFragment() {
 
         img_pic.setOnClickListener {
             var filePath: String? = img_pic.getTag(R.id.image_file_path) as? String
-            if (TextUtils.isEmpty(filePath) || !File(filePath).exists())
-                filePath = img_pic.getTag(R.id.image_url) as String
+            try {
+                if (TextUtils.isEmpty(filePath) || !File(filePath).exists())
+                    filePath = img_pic.getTag(R.id.image_url) as String
 
-            if (TextUtils.isEmpty(filePath)) return@setOnClickListener
-            AlbumPicker.builder().preview(filePath!!).start(this)
+                if (TextUtils.isEmpty(filePath)) return@setOnClickListener
+                AlbumPicker.builder().preview(filePath!!).start(this)
+            } catch (e: Exception) {
+                toast("图片选择失败，请退出应用后重新尝试")
+            }
+
         }
 
         btn_delete.setOnClickListener {
