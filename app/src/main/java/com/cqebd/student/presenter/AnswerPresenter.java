@@ -217,7 +217,6 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
             if (time == 3 * 60) {
 //                niftyDialog().withMessage(alertTitle)
 //                        .withButton1Text("知道了").setButton1Click(view -> niftyDialog().dismiss()).show();
-
                 FancyDialogFragment.create()
                         .setLayoutRes(R.layout.dialog_hint_msg_time)
                         .setViewListener((dialog, v) -> {
@@ -233,6 +232,8 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                         .show(mContext.getFragmentManager(), "msg");
 
             }
+        }).doOnError(error -> {
+            Toast.show("请退出后重新尝试");
         }).doOnComplete(() -> {
             answer.setCountDown("已结束");
             TimeIsEnd = true;

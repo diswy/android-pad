@@ -88,14 +88,14 @@ class HomeworkContentFragment : BaseLazyFragment() {
         filterViewModel.jobStatus.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
-            adapter.notifyDataSetChanged()
+//            adapter.notifyDataSetChanged()
             workListViewModel.getWorkList()
         })
 
         filterViewModel.jobType.observe(this, Observer {
             pageLoadView.show = true
             pageProcess.data.clear()
-            adapter.notifyDataSetChanged()
+//            adapter.notifyDataSetChanged()// 可能会引发rv内部错误，反正要重新刷新，这里干脆不刷新了
             workListViewModel.getWorkList()
         })
         recyclerView.layoutManager = GridLayoutManager(activity,2)

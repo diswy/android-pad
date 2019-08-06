@@ -2,6 +2,7 @@ package com.xiaofu.lib_base_xiaofu.fancy;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * Author:          小夫
@@ -88,10 +90,15 @@ public class FancyDialogFragment extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(canCancelOutside);
 
-        View v = inflater.inflate(mLayoutRes, container, false);
-        if (mViewListener != null)
-            mViewListener.bindView(this, v);
-        return v;
+        try {
+            View v = inflater.inflate(mLayoutRes, container, false);
+            if (mViewListener != null)
+                mViewListener.bindView(this, v);
+            return v;
+        } catch (Resources.NotFoundException e) {
+            Toast.makeText(getActivity(),"系统未找到资源，请尝试关机重启",Toast.LENGTH_SHORT).show();
+            return null;
+        }
     }
 
     public FancyDialogFragment setLayoutRes(@LayoutRes int layoutRes) {

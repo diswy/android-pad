@@ -83,7 +83,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
         }
 
         btnAutoRetry.setOnClickListener {
-            if (currentSubjectType == -1){
+            if (currentSubjectType == -1) {
                 toast("请先选择学科")
                 return@setOnClickListener
             }
@@ -108,7 +108,7 @@ class WrongQuestionFragment : BaseLazyFragment() {
             adapter.notifyDataSetChanged()
             getWrongQuestionList()
         })
-        recyclerView.layoutManager = GridLayoutManager(activity,2)
+        recyclerView.layoutManager = GridLayoutManager(activity, 2)
         adapter = object : BaseQuickAdapter<WrongQuestion, BaseViewHolder>(R.layout.item_wrong_question, pageProcess.data) {
             override fun convert(helper: BaseViewHolder?, item: WrongQuestion) {
                 helper?.itemView?.apply {
@@ -131,8 +131,12 @@ class WrongQuestionFragment : BaseLazyFragment() {
         recyclerView.adapter = adapter
 
         adapter.setOnItemClickListener { adapter, view, position ->
-            val itemData = adapter.data[position] as WrongQuestion
-            startActivity<WrongQuestionDetailsActivity>("taskId" to itemData.StudentQuestionsTasksID, "title" to itemData.Name)
+            try {
+                val itemData = adapter.data[position] as WrongQuestion
+                startActivity<WrongQuestionDetailsActivity>("taskId" to itemData.StudentQuestionsTasksID, "title" to itemData.Name)
+            } catch (e: IndexOutOfBoundsException) {
+                toast("数据错误，请返回上一级重新尝试")
+            }
         }
 
         adapter.setOnLoadMoreListener({

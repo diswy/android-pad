@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.cqebd.student.R;
 import com.cqebd.student.app.App;
@@ -29,7 +28,7 @@ public class AudioPlayer {
     private static final int STATE_PREPARING = 1;
     private static final int STATE_PREPARED = 2;
     private static final int STATE_PLAYING = 3;
-//    private static final int STATE_PAUSED = 4;
+    //    private static final int STATE_PAUSED = 4;
     private static final int STATE_PLAYBACK_COMPLETED = 5;
 
     private int mCurrentState = STATE_IDLE;
@@ -40,7 +39,7 @@ public class AudioPlayer {
     private ImageButton mBtnPlay;
     private ProgressBar mProgressBar;
     private TextView mTextProgress;
-//    private Map<String,Integer> progressData;
+    //    private Map<String,Integer> progressData;
     private SharedPreferences sharedPreferences;
     private AttachmentDao attachmentDao = App.Companion.getDaoSession().getAttachmentDao();
 
@@ -48,12 +47,12 @@ public class AudioPlayer {
         this.mBtnPlay = btnPlay;
         this.mProgressBar = progressBar;
         this.mTextProgress = textProgress;
-        sharedPreferences = App.mContext.getSharedPreferences("audio_cache",Context.MODE_PRIVATE);
+        sharedPreferences = App.mContext.getSharedPreferences("audio_cache", Context.MODE_PRIVATE);
         mBtnPlay.setOnClickListener(v -> start());
     }
 
-    public void openAudio(Attachment attachment){
-        if (this.attachment==null||!this.attachment.getId().equals(attachment.getId())){
+    public void openAudio(Attachment attachment) {
+        if (this.attachment == null || !this.attachment.getId().equals(attachment.getId())) {
             release();
             AudioManager am = (AudioManager) App.mContext.getSystemService(Context.AUDIO_SERVICE);
             assert am != null;
@@ -77,10 +76,11 @@ public class AudioPlayer {
     }
 
 
-    public void release(){
-        if (audioPlayer!=null){
+    public void release() {
+        if (audioPlayer != null) {
+            Log.e("xiaofu", "音频被释放了");
             mProgressBar.setProgress(0);
-            setProgress(0,0);
+            setProgress(0, 0);
             mProgressBar.removeCallbacks(progressRunnable);
             attachment = null;
             mCurrentState = STATE_IDLE;
@@ -97,9 +97,9 @@ public class AudioPlayer {
     }
 
 
-    public void start(){
-        if (isInPlaybackState()){
-            if (attachment.getCanWatchCount()>0&&attachment.getWatchCount()>=attachment.getCanWatchCount()){
+    public void start() {
+        if (isInPlaybackState()) {
+            if (attachment.getCanWatchCount() > 0 && attachment.getWatchCount() >= attachment.getCanWatchCount()) {
                 KToastKt.toast("你最多只能听 " + attachment.getCanWatchCount() + " 遍");
                 return;
             }
@@ -111,45 +111,48 @@ public class AudioPlayer {
         mTargetState = STATE_PLAYING;
     }
 
-    private MediaPlayer.OnPreparedListener mPreparedListener = new MediaPlayer.OnPreparedListener(){
+    private MediaPlayer.OnPreparedListener mPreparedListener = new MediaPlayer.OnPreparedListener() {
 
         @Override
         public void onPrepared(MediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
 
             mProgressBar.setMax(audioPlayer.getDuration());
-            int progress = sharedPreferences.getInt(attachment.getId(),0);
-            if (progress!=0){
+            int progress = sharedPreferences.getInt(attachment.getId(), 0);
+            if (progress != 0) {
                 mProgressBar.setProgress(progress);
                 audioPlayer.seekTo(progress);
-                setProgress(progress,audioPlayer.getDuration());
-            }else{
-                setProgress(0,audioPlayer.getDuration());
+                setProgress(progress, audioPlayer.getDuration());
+            } else {
+                setProgress(0, audioPlayer.getDuration());
             }
 
-            if (mTargetState==STATE_PLAYING){
+            if (mTargetState == STATE_PLAYING) {
                 start();
             }
         }
     };
 
     private MediaPlayer.OnCompletionListener mOnCompletionListener;
-    public void setOnCompletionListener(MediaPlayer.OnCompletionListener l)
-    {
+
+    public void setOnCompletionListener(MediaPlayer.OnCompletionListener l) {
         mOnCompletionListener = l;
     }
+
     private MediaPlayer.OnCompletionListener mCompletionListener =
             new MediaPlayer.OnCompletionListener() {
                 public void onCompletion(MediaPlayer mp) {
+                    Log.e("xiaofu", "音频播放完成了");
+
                     mCurrentState = STATE_PLAYBACK_COMPLETED;
                     mTargetState = STATE_PLAYBACK_COMPLETED;
 
-                    attachment.setWatchCount(attachment.getWatchCount()+1);
+                    attachment.setWatchCount(attachment.getWatchCount() + 1);
                     attachmentDao.insertOrReplace(attachment);
 
                     mProgressBar.removeCallbacks(progressRunnable);
 
-                    mBtnPlay.setImageResource(R.drawable.ic_play);
+                    mBtnPlay.setImageResource(R.drawable.ic_play1);
                     if (mOnCompletionListener != null) {
                         mOnCompletionListener.onCompletion(mp);
                     }
@@ -157,12 +160,13 @@ public class AudioPlayer {
             };
 
     private MediaPlayer.OnErrorListener mErrorListener =
-            new MediaPlayer.OnErrorListener(){
+            new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Log.e("xiaofu", "音频播放错误：" + what + ";extra=" + extra);
                     mCurrentState = STATE_ERROR;
                     mTargetState = STATE_ERROR;
-                    mBtnPlay.setImageResource(R.drawable.ic_play);
+                    mBtnPlay.setImageResource(R.drawable.ic_play1);
                     return false;
                 }
             };
@@ -175,7 +179,7 @@ public class AudioPlayer {
                 mCurrentState != STATE_PREPARING);
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         release();
         mProgressBar = null;
         mBtnPlay = null;
@@ -183,20 +187,20 @@ public class AudioPlayer {
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    private void setProgress(int current, int max){
-        mTextProgress.setText(String.format("%02d",current / 1000/60)+":"+String.format("%02d",current / 1000%60)
-                +"/"+String.format("%02d",max / 1000/60)+":"+String.format("%02d",max / 1000%60));
+    private void setProgress(int current, int max) {
+        mTextProgress.setText(String.format("%02d", current / 1000 / 60) + ":" + String.format("%02d", current / 1000 % 60)
+                + "/" + String.format("%02d", max / 1000 / 60) + ":" + String.format("%02d", max / 1000 % 60));
     }
 
     private Runnable progressRunnable = new Runnable() {
         @Override
         public void run() {
-            if (audioPlayer!=null){
+            if (audioPlayer != null) {
                 int progress = audioPlayer.getCurrentPosition();
-                sharedPreferences.edit().putInt(attachment.getId(),progress).apply();
+                sharedPreferences.edit().putInt(attachment.getId(), progress).apply();
                 mProgressBar.setProgress(progress);
-                setProgress(progress,audioPlayer.getDuration());
-                mProgressBar.postDelayed(progressRunnable,1000 - (progress % 1000));
+                setProgress(progress, audioPlayer.getDuration());
+                mProgressBar.postDelayed(progressRunnable, 1000 - (progress % 1000));
             }
         }
     };

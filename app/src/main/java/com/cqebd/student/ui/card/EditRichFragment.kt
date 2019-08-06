@@ -221,16 +221,22 @@ class EditRichFragment : BaseFragment() {
         }
 
         img_pic.setOnClickListener {
-            var filePath: String? = img_pic.getTag(R.id.image_file_path) as? String
-            try {
-                if (TextUtils.isEmpty(filePath) || !File(filePath).exists())
-                    filePath = img_pic.getTag(R.id.image_url) as String
+            var filePath = img_pic.getTag(R.id.image_file_path)
+            if (filePath != null) {
+                try {
+                    filePath as String
+                    if (TextUtils.isEmpty(filePath) || !File(filePath).exists())
+                        filePath = img_pic.getTag(R.id.image_url) as String
 
-                if (TextUtils.isEmpty(filePath)) return@setOnClickListener
-                AlbumPicker.builder().preview(filePath!!).start(this)
-            } catch (e: Exception) {
+                    if (TextUtils.isEmpty(filePath)) return@setOnClickListener
+                    AlbumPicker.builder().preview(filePath).start(this)
+                } catch (e: Exception) {
+                    toast("图片选择失败，请退出应用后重新尝试")
+                }
+            } else {
                 toast("图片选择失败，请退出应用后重新尝试")
             }
+
 
         }
 

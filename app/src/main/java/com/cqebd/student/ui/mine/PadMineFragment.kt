@@ -11,6 +11,7 @@ import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,9 +68,10 @@ class PadMineFragment : BaseFragment() {
                 stu_name.text = "姓名:".plus(Name)
                 stu_phone.text = "电话:".plus(if (TextUtils.isEmpty(it.Phone)) "未绑定" else it.Phone)
                 stu_change_phone.text = if (TextUtils.isEmpty(it.Phone)) "绑定" else "修改"
-                little_flower.text = "小红花\n".plus((Flower % 25 / 5).toString())
-                big_flower.text = "大红花\n".plus((Flower / 25).toString())
-                medal.text = "奖章\n".plus((Flower % 5).toString())
+                Log.d("xiaofu","Flower = $Flower")
+                little_flower.text = "小红花\n".plus((Flower % 5).toString())
+                big_flower.text = "大红花\n".plus((Flower % 25 / 5).toString())
+                medal.text = "奖章\n".plus((Flower / 25).toString())
                 diploma.text = "奖状\n".plus(Medal)
                 GlideApp.with(App.mContext).asBitmap().circleCrop().load(Avatar).placeholder(R.drawable.ic_avatar).into(head_portrait)
             }
