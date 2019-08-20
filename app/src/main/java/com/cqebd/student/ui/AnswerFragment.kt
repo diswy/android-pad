@@ -13,9 +13,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import android.widget.FrameLayout
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.vo.entity.Attachment
+import com.just.agentweb.AbsAgentWebSettings
+import com.just.agentweb.AgentWeb
+import com.just.agentweb.IAgentWebSettings
 import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.logError
 import gorden.lib.anko.static.startActivityForResult
@@ -44,7 +48,7 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun initialize(savedInstanceState: Bundle?) {
-        initWebView()
+//        initWebView()
         this.url = arguments!!.getString("url")
         this.taskId = arguments!!.getInt("taskId")
         this.attachment = arguments!!.getParcelableArrayList("attachment")
@@ -63,7 +67,7 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
         btn_media.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    webView!!.getGlobalVisibleRect(rectParent)
+//                    webView!!.getGlobalVisibleRect(rectParent)
                     view.parent.requestDisallowInterceptTouchEvent(true)
                     lastX = event.x
                     lastY = event.y
@@ -106,95 +110,95 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private fun initWebView() {
-        progressBar.max = 100
-        webView.canGoBack()
-        web_error_layout.setOnClickListener(this)
-        val settings = webView.settings
-        settings.setSupportZoom(true) // 支持缩放
-        settings.builtInZoomControls = true // 启用内置缩放装置
-        settings.javaScriptEnabled = true // 启用JS脚本
-        settings.loadWithOverviewMode = true//
-        settings.useWideViewPort = true// 设置概览模式
-        settings.allowFileAccess = true
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
-        settings.defaultTextEncodingName = "UTF-8"
-        settings.databaseEnabled = true
-        val dir = activity!!.applicationContext.getDir("database", Context.MODE_PRIVATE).path
-        //启用地理定位
-        settings.setGeolocationEnabled(true)
-        //设置定位的数据库路径
-        settings.setGeolocationDatabasePath(dir)
-        //最重要的方法，一定要设置，这就是出不来的主要原因
-        settings.domStorageEnabled = true
-        /**
-         * 用WebView显示图片，可使用这个参数 设置网页布局类型：
-         * 1、LayoutAlgorithm.NARROW_COLUMNS ：适应内容大小
-         * 2、LayoutAlgorithm.SINGLE_COLUMN : 适应屏幕，内容将自动缩放
-         */
-        settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
-        settings.displayZoomControls = false
-        //target 23 default false, so manual set true
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
-        }
-
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                // TODO: 2016/6/1 处理h5与native交互
-                view.loadUrl(url)
-                return true
-            }
-
-            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
-                super.onReceivedError(view, errorCode, description, failingUrl)
-                showErrorPage()
-            }
-        }
-        webView.webChromeClient = object : WebChromeClient() {
-            // 当WebView进度改变时更新窗口进度
-            override fun onProgressChanged(view: WebView, newProgress: Int) {
-                if (newProgress == 100) {
-                    progressBar?.visibility = View.GONE
-                    if (!isError) {
-                        webView?.let {
-                            it.visibility = View.VISIBLE
-                        }
-                        refreshLayout?.let {
-                            it.isRefreshing = false
-                        }
-                    }
-                } else {
-                    if (progressBar?.visibility != View.VISIBLE) {
-                        progressBar?.visibility = View.VISIBLE
-                    }
-                    progressBar?.progress = newProgress
-                }
-            }
-
-            override fun onGeolocationPermissionsShowPrompt(origin: String,
-                                                            callback: GeolocationPermissions.Callback) {
-                callback.invoke(origin, true, false)
-                super.onGeolocationPermissionsShowPrompt(origin, callback)
-            }
-
-
-        }
-
-    }
+//    private fun initWebView() {
+//        progressBar.max = 100
+//        webView.canGoBack()
+//        web_error_layout.setOnClickListener(this)
+//        val settings = webView.settings
+//        settings.setSupportZoom(true) // 支持缩放
+//        settings.builtInZoomControls = true // 启用内置缩放装置
+//        settings.javaScriptEnabled = true // 启用JS脚本
+//        settings.loadWithOverviewMode = true//
+//        settings.useWideViewPort = true// 设置概览模式
+//        settings.allowFileAccess = true
+//        settings.cacheMode = WebSettings.LOAD_DEFAULT
+//        settings.defaultTextEncodingName = "UTF-8"
+//        settings.databaseEnabled = true
+//        val dir = activity!!.applicationContext.getDir("database", Context.MODE_PRIVATE).path
+//        //启用地理定位
+//        settings.setGeolocationEnabled(true)
+//        //设置定位的数据库路径
+//        settings.setGeolocationDatabasePath(dir)
+//        //最重要的方法，一定要设置，这就是出不来的主要原因
+//        settings.domStorageEnabled = true
+//        /**
+//         * 用WebView显示图片，可使用这个参数 设置网页布局类型：
+//         * 1、LayoutAlgorithm.NARROW_COLUMNS ：适应内容大小
+//         * 2、LayoutAlgorithm.SINGLE_COLUMN : 适应屏幕，内容将自动缩放
+//         */
+//        settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
+//        settings.displayZoomControls = false
+//        //target 23 default false, so manual set true
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
+//        }
+//
+//        webView.webViewClient = object : WebViewClient() {
+//            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//                // TODO: 2016/6/1 处理h5与native交互
+//                view.loadUrl(url)
+//                return true
+//            }
+//
+//            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+//                super.onReceivedError(view, errorCode, description, failingUrl)
+//                showErrorPage()
+//            }
+//        }
+//        webView.webChromeClient = object : WebChromeClient() {
+//            // 当WebView进度改变时更新窗口进度
+//            override fun onProgressChanged(view: WebView, newProgress: Int) {
+//                if (newProgress == 100) {
+//                    progressBar?.visibility = View.GONE
+//                    if (!isError) {
+//                        webView?.let {
+//                            it.visibility = View.VISIBLE
+//                        }
+//                        refreshLayout?.let {
+//                            it.isRefreshing = false
+//                        }
+//                    }
+//                } else {
+//                    if (progressBar?.visibility != View.VISIBLE) {
+//                        progressBar?.visibility = View.VISIBLE
+//                    }
+//                    progressBar?.progress = newProgress
+//                }
+//            }
+//
+//            override fun onGeolocationPermissionsShowPrompt(origin: String,
+//                                                            callback: GeolocationPermissions.Callback) {
+//                callback.invoke(origin, true, false)
+//                super.onGeolocationPermissionsShowPrompt(origin, callback)
+//            }
+//
+//
+//        }
+//
+//    }
 
     /**
      * 显示自定义错误提示页面，用一个View覆盖在WebView
      */
-    protected fun showErrorPage() {
-        isError = true
-        webView?.let {
-            it.visibility = View.GONE
-        }
-        web_error_layout?.let {
-            it.visibility = View.VISIBLE
-        }
-    }
+//    protected fun showErrorPage() {
+//        isError = true
+//        webView?.let {
+//            it.visibility = View.GONE
+//        }
+//        web_error_layout?.let {
+//            it.visibility = View.VISIBLE
+//        }
+//    }
 
     protected fun hideErrorPage() {
         isError = false
@@ -234,7 +238,30 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
         }
         logError("url  $url")
         this.url = url
-        webView.loadUrl(url)
+//        webView.loadUrl(url)
+        inner_web_container.removeAllViews()
+        AgentWeb.with(this)
+                .setAgentWebParent(inner_web_container, FrameLayout.LayoutParams(-1,-1))
+                .useDefaultIndicator()
+                .setAgentWebWebSettings(getSettings())
+                .setWebChromeClient(
+                        object : WebChromeClient() {
+
+                            override fun onReceivedTitle(view: WebView, title: String?) {
+                                super.onReceivedTitle(view, title)
+                            }
+                        }
+                )
+                // 兼容低版本
+                .setWebViewClient(object : WebViewClient(){
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+
+                    }
+                })
+                .createAgentWeb()
+                .ready()
+                .go(url)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -242,6 +269,20 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
         if (requestCode == 212) {
             if (activity != null && activity is AnswerActivity) {
                 (activity as AnswerActivity).answerCardState()
+            }
+        }
+    }
+
+    private fun getSettings(): IAgentWebSettings<*> {
+        return object : AbsAgentWebSettings() {
+            override fun toSetting(webView: android.webkit.WebView?): IAgentWebSettings<*> {
+                super.toSetting(webView)
+                webView?.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                return this
+            }
+
+            override fun bindAgentWebSupport(agentWeb: AgentWeb?) {
+
             }
         }
     }

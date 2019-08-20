@@ -125,12 +125,14 @@
 			android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 		<activity
 			android:name=".ui.WebActivity"
+			android:hardwareAccelerated="false"
 			android:screenOrientation="landscape" />
 		<activity
 			android:name=".ui.AboutActivity"
 			android:screenOrientation="landscape" />
 		<activity
 			android:name=".ui.JobPreviewActivity"
+			android:hardwareAccelerated="false"
 			android:screenOrientation="landscape" />
 		<activity
 			android:name=".ui.ClassScheduleActivity"
@@ -147,6 +149,7 @@
 			android:windowSoftInputMode="adjustPan" />
 		<activity
 			android:name=".ui.AnswerActivity"
+			android:hardwareAccelerated="false"
 			android:screenOrientation="landscape" />
 		<activity
 			android:name=".ui.WrongQuestionActivity"
