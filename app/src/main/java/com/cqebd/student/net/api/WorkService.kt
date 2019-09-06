@@ -142,6 +142,14 @@ interface WorkService {
             : Call<BaseResponse<String>>
 
     /**
+     * 语音评测苛刻程度
+     */
+    @GET("api/Setting/GetSetting")
+    fun getEnglishScoreCoeff(
+            @Query("keyName") keyName: String = "EnglishScoreCoeff")
+            : Call<BaseResponse<String>>
+
+    /**
      * 获取验证码
      */
     @GET("api/Account/GetTelCode")

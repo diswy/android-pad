@@ -23,6 +23,7 @@ import com.cqebd.student.tools.UtilGson;
 import com.cqebd.student.ui.card.DecideFragment;
 import com.cqebd.student.ui.card.EditRichFragment;
 import com.cqebd.student.ui.card.EditSimpleFragment;
+import com.cqebd.student.ui.card.EnTaiAnswerFragment;
 import com.cqebd.student.ui.card.MultiFragment;
 import com.cqebd.student.ui.card.SingleFragment;
 import com.cqebd.student.vo.entity.AlternativeContent;
@@ -58,6 +59,11 @@ public class AnswerCardView1 extends LinearLayout {
     final int TYPE_DECIDE = 5;
     final int TYPE_NONE = 6;
 
+    public static final int TYPE_EN_WORD = 32;
+    public static final int TYPE_EN_SENTENCE = 33;
+    public static final int TYPE_EN_PARAGRAPH = 34;
+    public static final int TYPE_EN_FREE = 35;
+
     int SubjectTypeId = 0;
 
     ViewPager pager;
@@ -76,6 +82,7 @@ public class AnswerCardView1 extends LinearLayout {
      */
     List<AlternativeContent> alternativeContent = new ArrayList<>();
     List<StudentAnswer> studentAnswers = new ArrayList<>();
+    String subjectContent = "";// 口语评测专用
     Map<Integer, Map<String, String>> imageMap = new HashMap<>();
     Map<String, StudentAnswer> answerMap = new HashMap<>();
     List<AnswerType> answerTypes = new ArrayList<>();
@@ -138,6 +145,7 @@ public class AnswerCardView1 extends LinearLayout {
         Type type = new TypeToken<ArrayList<AnswerType>>() {
         }.getType();
         answerTypes = (List<AnswerType>) UtilGson.getInstance().convertJsonStringToList(questionInfo.getAnswerType(), type);
+        subjectContent = questionInfo.getSubject();
         Logger.json(questionInfo.getAnswerType());
         Logger.d("count = " + getCount());
         initAnswerMap();
@@ -219,6 +227,25 @@ public class AnswerCardView1 extends LinearLayout {
              * 解答
              */
             return TYPE_RICH;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_WORD)) {
+            return TYPE_EN_WORD;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_SENTENCE)) {
+            // 口语评测 句子
+            return TYPE_EN_SENTENCE;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_PARAGRAPH)) {
+            // 口语评测 段落
+            return TYPE_EN_PARAGRAPH;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_FREE)) {
+            // 口语评测 句子
+            return TYPE_EN_FREE;
         }
         return TYPE_NONE;
     }
@@ -235,8 +262,29 @@ public class AnswerCardView1 extends LinearLayout {
                 return buildEditRich(position);
             case TYPE_DECIDE:
                 return buildDecide(position);
+            case TYPE_EN_WORD:
+                return buildEnTai(position, TYPE_EN_WORD);
+            case TYPE_EN_SENTENCE:
+                return buildEnTai(position, TYPE_EN_SENTENCE);
+            case TYPE_EN_PARAGRAPH:// 段落
+                return buildEnTai(position, TYPE_EN_PARAGRAPH);
+            case TYPE_EN_FREE:// 自由
+                return buildEnTai(position, TYPE_EN_FREE);
         }
         return null;
+    }
+
+    private Fragment buildEnTai(int position, int type) {
+        StudentAnswer studentAnswer = answerMap.get(answerTypes.get(position).getId());
+        EnTaiAnswerFragment enTaiAnswerFragment = new EnTaiAnswerFragment();
+        enTaiAnswerFragment.setLifeListener(new BaseFragment.ViewLifeListener() {
+            @Override
+            public void onInitialized() {
+                enTaiAnswerFragment.setDataChangeListener(answer -> answerMap.put(answer.Id, answer));
+                enTaiAnswerFragment.build(answerTypes.get(position), type, studentAnswer, subjectContent);
+            }
+        });
+        return enTaiAnswerFragment;
     }
 
     private Fragment buildSingle(int position) {

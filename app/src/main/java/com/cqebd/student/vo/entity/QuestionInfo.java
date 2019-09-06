@@ -55,6 +55,15 @@ public class QuestionInfo implements Parcelable,Cloneable {
     private String StudentsAnswer;
     private int uploadState=STATE_UPSUCCEED;
     private String ErrorMsg = "";
+    private String Subject = "";
+
+    public String getSubject() {
+        return Subject;
+    }
+
+    public void setSubject(String subject) {
+        Subject = subject;
+    }
 
 
     public int getId() {
@@ -172,6 +181,7 @@ public class QuestionInfo implements Parcelable,Cloneable {
         StudentsAnswer = in.readString();
         uploadState = in.readInt();
         ErrorMsg = in.readString();
+        Subject = in.readString();
     }
 
     @Override
@@ -188,6 +198,7 @@ public class QuestionInfo implements Parcelable,Cloneable {
         dest.writeString(StudentsAnswer);
         dest.writeInt(uploadState);
         dest.writeString(ErrorMsg);
+        dest.writeString(Subject);
     }
 
     @Override

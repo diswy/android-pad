@@ -20,6 +20,7 @@ import com.cqebd.student.tools.AudioPlayer
 import com.cqebd.student.tools.toast
 import com.cqebd.student.views.IAnswer
 import com.cqebd.student.widget.AnswerCardView1
+import com.tencent.taisdk.TAIOralEvaluation
 import gorden.lib.anko.static.startActivity
 import kotlinx.android.synthetic.main.activity_answer.*
 
@@ -222,5 +223,12 @@ class AnswerActivity:BaseActivity(),IAnswer {
         if (requestCode == 888 && resultCode == 888){
             presenter.upLoad()
         }
+    }
+
+    //----------------------尝试独立语音评测实例
+    private val oral = TAIOralEvaluation()
+
+    fun getTAIOral(): TAIOralEvaluation {
+        return oral
     }
 }

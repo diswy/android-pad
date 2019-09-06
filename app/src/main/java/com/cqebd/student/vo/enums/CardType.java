@@ -11,6 +11,10 @@ public enum CardType {
     MULTI_CHOOSE(5)/*多选题*/,
     LISTEN_SINGLE_CHOOSE(12)/*听力单选题*/,
     LISTEN_PACK(13)/*听力填空题*/,
+    EN_WORD(32),
+    EN_SENTENCE(33),
+    EN_PARAGRAPH(34),
+    EN_FREE(35),
     NONE(0);
 
     int code = 0;
@@ -39,6 +43,14 @@ public enum CardType {
                 return LISTEN_SINGLE_CHOOSE;
             case 13:
                 return LISTEN_PACK;
+            case 32:
+                return EN_WORD;
+            case 33:
+                return EN_SENTENCE;
+            case 34:
+                return EN_PARAGRAPH;
+            case 35:
+                return EN_FREE;
             default:
                 return NONE;
         }
