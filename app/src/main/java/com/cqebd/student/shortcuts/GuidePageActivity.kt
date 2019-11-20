@@ -19,6 +19,7 @@ import com.cqebd.student.net.NetClient
 import com.cqebd.student.net.api.WorkService
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.ui.AgentWebActivity
+import com.cqebd.student.ui.week.WeekFileActivity
 import com.cqebd.student.viewmodel.MineViewModel
 import com.cqebd.student.vo.entity.AdBanner
 import com.google.gson.Gson
@@ -98,6 +99,10 @@ class GuidePageActivity : BaseActivity() {
             val wonderFormat = "Report/ReportAppraisal?ID=$loginId"
             val url = WorkService.BASE_WEB_URL.plus(wonderFormat)
             startActivity<AgentWebActivity>("url" to url)
+        }
+
+        download.setOnClickListener {
+            startActivity<WeekFileActivity>()
         }
     }
 

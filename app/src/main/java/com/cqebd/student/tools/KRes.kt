@@ -13,6 +13,7 @@ import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
 import android.text.TextUtils
 import com.netease.nimlib.sdk.auth.LoginInfo
+import com.xiaofu.lib_base_xiaofu.fancy.dip2px
 
 
 /**

@@ -14,8 +14,8 @@ android {
         applicationId "com.cqebd.student"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
-        versionCode 108
-        versionName "1.1.8"
+        versionCode 109
+        versionName "1.1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -95,6 +95,9 @@ dependencies {
     // 差异包
     implementation project(':lib_netease')
     implementation files('libs/xiaofu-mail.jar')
+
+    implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
+    implementation 'com.liulishuo.filedownloader:library:1.7.7'
 
     implementation 'com.tencent.taisdk:taisdk:1.2.3.3'
 }

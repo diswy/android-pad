@@ -45,8 +45,10 @@ public abstract class NetCallBack<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         LoadingDialog.stop();
         if (response.body() != null && response.code() == 200) {
+            System.out.println("!@#--------------1");
             parse(response.body());
         } else {
+            System.out.println("!@#--------------2");
             String errMsg = "数据解析失败";
             try {
                 errMsg = response.errorBody().string();
@@ -86,6 +88,8 @@ public abstract class NetCallBack<T> implements Callback<T> {
 
     @Override
     public void onFailure(Call call, Throwable t) {
+        System.out.println("!@#--------------3");
+        System.out.println("!@#--------------"+t.getMessage());
         LoadingDialog.stop();
         if (!call.isCanceled()) {
             KToastKt.toast("网络请求失败，请稍后重试");

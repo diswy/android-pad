@@ -83,7 +83,7 @@ class App : Application() {
         }
 
         // 友盟
-        UMConfigure.setLogEnabled(true)
+        UMConfigure.setLogEnabled(false)
         UMConfigure.init(this, "5af25b66b27b0a5574000090", "server", UMConfigure.DEVICE_TYPE_PHONE, null)
 
         fixSamsungClipboardUIManagerBug()

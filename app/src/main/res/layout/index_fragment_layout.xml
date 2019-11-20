@@ -188,7 +188,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/index_video"
-        android:layout_width="770px"
+        android:layout_width="560px"
         android:layout_height="260px"
         android:layout_marginLeft="30px"
         android:background="@drawable/index_video_bg"
@@ -250,6 +250,46 @@
             app:layout_constraintTop_toTopOf="@+id/video" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/index_file"
+        android:layout_width="185px"
+        android:layout_height="260px"
+        android:layout_marginStart="25px"
+        android:background="@drawable/index_file_download"
+        app:layout_constraintBottom_toBottomOf="@+id/index_video"
+        app:layout_constraintStart_toEndOf="@+id/index_video"
+        app:layout_constraintTop_toTopOf="@+id/index_video">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:text="资料"
+            android:textColor="@color/white"
+            android:textSize="42px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100px"
+            android:drawableTop="@drawable/index_download"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="下载"
+            android:textColor="@color/white"
+            android:textSize="24px"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/index_file" />
+
+    </android.support.constraint.ConstraintLayout>
+
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/indx_homework"
@@ -332,10 +372,10 @@
 
 
     <ImageView
-        android:padding="30px"
         android:id="@+id/bannerIv"
         android:layout_width="150px"
         android:layout_height="270px"
+        android:padding="30px"
         android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

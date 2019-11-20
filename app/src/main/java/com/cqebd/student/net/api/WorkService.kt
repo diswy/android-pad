@@ -6,6 +6,7 @@ import com.cqebd.student.net.BaseResponse
 import com.cqebd.student.tools.loginId
 import com.cqebd.student.vo.entity.*
 import com.google.gson.JsonObject
+import io.reactivex.Flowable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -16,7 +17,7 @@ import retrofit2.http.*
  */
 interface WorkService {
     companion object {
-//        const val BASE_WEB_URL = "http://service.student.cqebd.cn/"
+        //        const val BASE_WEB_URL = "http://service.student.cqebd.cn/"
         const val BASE_WEB_URL = "https://service-student.cqebd.cn/"
     }
 
@@ -70,7 +71,7 @@ interface WorkService {
      */
     @GET("api/Students/StartWork")
     fun startWork(
-             @Query("StudentQuestionsTasksID") taskId: Long)
+            @Query("StudentQuestionsTasksID") taskId: Long)
             : LiveData<ApiResponse<JsonObject>>
 
     @GET("api/Students/GetExaminationPapersByID")
@@ -203,11 +204,11 @@ interface WorkService {
 
     @POST("api/AnswerError/GroupExaminationPaper")
     fun retryWrongQuestion(
-            @Query("SubjectTypeId") SubjectTypeId : Int,
+            @Query("SubjectTypeId") SubjectTypeId: Int,
 //            @Query("count2") WriteUserName: String,// type=0时有效
 //            @Query("count1") Title: String,// type=0时有效
 //            @Query("strQuesion") Countent: String,// type=0时有效
-            @Query("Type") Type : Int = 0,//  1手动组卷 0自动组卷
+            @Query("Type") Type: Int = 0,//  1手动组卷 0自动组卷
             @Query("StudentId") StudentId: Long = loginId)
             : Call<BaseResponse<WrongQuestionTask>>
 
@@ -219,6 +220,16 @@ interface WorkService {
     fun getImg(
             @Query("keyName") keyName: String = "BannerImgPad")
             : Call<BaseResponse<String>>
+
+    /**
+     * 远程文档
+     */
+    @POST("api/Students/FileDistribution")
+    fun getRemoteDoc(
+            @Query("PageIndex") PageIndex: Int,
+            @Query("PageSize") PageSize: Int = 20,
+            @Query("StudentId ") StudentId: Long = loginId)
+            : Flowable<BaseResponse<RemoteDoc>>
 
 
 }

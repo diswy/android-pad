@@ -20,6 +20,13 @@ fun formatTimeYMD(time:String?):String{
     return format.format(Date(formatTime(time)))
 }
 
+fun formatTimeYMD2(time:String?):String{
+    if (time==null)
+        return ""
+    val format = SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA)
+    return format.format(Date(formatTime(time)))
+}
+
 fun formatTimeYMDHM(time:String?):String{
     if (time==null)
         return ""

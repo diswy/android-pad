@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="PxUsage,HardcodedText">
+
+
+    <TextView
+        android:id="@+id/remote_file_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32px"
+        android:layout_marginTop="32px"
+        android:layout_marginBottom="32px"
+        android:layout_weight="1"
+        android:drawablePadding="4dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/tv33"
+        tools:text="word.doc" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3Mb" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="2019-7-10 12:54" />
+
+    </LinearLayout>
+
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:layout_width="300px"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="32px">
+
+        <com.cqebd.student.myview.ProgressButton
+            android:id="@+id/downloadBtn"
+            android:layout_width="160px"
+            android:layout_height="60px"
+            android:layout_gravity="center"
+            android:text="下载"
+            android:textColor="@color/tv33"
+            android:textSize="14sp"
+            app:borderWidth="1px"
+            app:buttonColor="@color/white"
+            app:cornerRadius="6px"
+            app:progressBackColor="@color/white"
+            app:progressColor="@color/colorRemoteFileBg"
+            app:progressMargin="1px" />
+
+    </FrameLayout>
+
+</LinearLayout>
