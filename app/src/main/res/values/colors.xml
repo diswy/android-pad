@@ -138,4 +138,9 @@
     <color name="colorRemoteFileName">#0db677</color>
     <color name="colorRemoteFileBg">#0db677</color>
 
+    <color name="progress_gray">#eeeeee</color>
+    <color name="progress_green">#54CE45</color>
+    <color name="progress_orange">#FFAA46</color>
+    <color name="progress_blue">#44BBF1</color>
+
 </resources>

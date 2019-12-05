@@ -1,5 +1,6 @@
 package com.cqebd.student.tai;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +29,11 @@ public class TAIAudioPlayer {
         }
     }
 
+    public void openRaw(Context context, int resId) {
+        audioPlayer = MediaPlayer.create(context, resId);
+        audioPlayer.start();
+    }
+
     public void release() {
         if (audioPlayer != null) {
             audioPlayer.release();
@@ -39,7 +45,7 @@ public class TAIAudioPlayer {
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.i("xiaofu", "音频长度：" + mediaPlayer.getDuration());
             audioPlayer.start();
-            if (mOnStart != null){
+            if (mOnStart != null) {
                 mOnStart.onVideoStart();
             }
         }
@@ -62,7 +68,7 @@ public class TAIAudioPlayer {
         this.mOnPlayCompleteListener = listener;
     }
 
-    public void setOnStartListener(onStart listener){
+    public void setOnStartListener(onStart listener) {
         this.mOnStart = listener;
     }
 

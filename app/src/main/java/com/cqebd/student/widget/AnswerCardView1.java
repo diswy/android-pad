@@ -24,6 +24,7 @@ import com.cqebd.student.ui.card.DecideFragment;
 import com.cqebd.student.ui.card.EditRichFragment;
 import com.cqebd.student.ui.card.EditSimpleFragment;
 import com.cqebd.student.ui.card.EnTaiAnswerFragment;
+import com.cqebd.student.ui.card.EnTaiAnswerFragment2;
 import com.cqebd.student.ui.card.MultiFragment;
 import com.cqebd.student.ui.card.SingleFragment;
 import com.cqebd.student.vo.entity.AlternativeContent;
@@ -63,6 +64,8 @@ public class AnswerCardView1 extends LinearLayout {
     public static final int TYPE_EN_SENTENCE = 33;
     public static final int TYPE_EN_PARAGRAPH = 34;
     public static final int TYPE_EN_FREE = 35;
+    public static final int TYPE_EN_LISTEN_AND_READ = 36;
+    public static final int TYPE_EN_LISTEN_AND_READ_SHOW = 37;
 
     int SubjectTypeId = 0;
 
@@ -175,6 +178,15 @@ public class AnswerCardView1 extends LinearLayout {
             if (getItemViewType(0) != TYPE_SINGLE) {
                 height = 150;
             }
+
+            if (getItemViewType(0) == TYPE_EN_WORD
+                    || getItemViewType(0) == TYPE_EN_SENTENCE
+                    || getItemViewType(0) == TYPE_EN_PARAGRAPH
+                    || getItemViewType(0) == TYPE_EN_FREE
+                    || getItemViewType(0) == TYPE_EN_LISTEN_AND_READ
+            ) {
+                height = 320;
+            }
         }
         pager.getLayoutParams().height = dp2px(height);
     }
@@ -246,6 +258,16 @@ public class AnswerCardView1 extends LinearLayout {
                 CardType.EN_FREE)) {
             // 口语评测 句子
             return TYPE_EN_FREE;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_LISTEN_AND_READ)) {
+            // 口语评测 跟读
+            return TYPE_EN_LISTEN_AND_READ;
+        } else if (CollectionUtils.isIn(
+                CardType.getType(answerTypes.get(position).getTypeId()),
+                CardType.EN_LISTEN_AND_READ_SHOW)) {
+            // 口语评测 跟读 显示题干
+            return TYPE_EN_LISTEN_AND_READ;
         }
         return TYPE_NONE;
     }
@@ -263,13 +285,15 @@ public class AnswerCardView1 extends LinearLayout {
             case TYPE_DECIDE:
                 return buildDecide(position);
             case TYPE_EN_WORD:
-                return buildEnTai(position, TYPE_EN_WORD);
+                return buildEnTai2(position, TYPE_EN_WORD);
             case TYPE_EN_SENTENCE:
-                return buildEnTai(position, TYPE_EN_SENTENCE);
+                return buildEnTai2(position, TYPE_EN_SENTENCE);
             case TYPE_EN_PARAGRAPH:// 段落
-                return buildEnTai(position, TYPE_EN_PARAGRAPH);
+                return buildEnTai2(position, TYPE_EN_PARAGRAPH);
             case TYPE_EN_FREE:// 自由
-                return buildEnTai(position, TYPE_EN_FREE);
+                return buildEnTai2(position, TYPE_EN_FREE);
+            case TYPE_EN_LISTEN_AND_READ:// 有附件的
+                return buildEnTai2(position, TYPE_EN_LISTEN_AND_READ);
         }
         return null;
     }
@@ -285,6 +309,24 @@ public class AnswerCardView1 extends LinearLayout {
             }
         });
         return enTaiAnswerFragment;
+    }
+
+    private Fragment buildEnTai2(int position, int type) {
+        StudentAnswer studentAnswer = answerMap.get(answerTypes.get(position).getId());
+        EnTaiAnswerFragment2 enTaiAnswerFragment2 = new EnTaiAnswerFragment2();
+        enTaiAnswerFragment2.setLifeListener(new BaseFragment.ViewLifeListener() {
+            @Override
+            public void onInitialized() {
+                enTaiAnswerFragment2.setDataChangeListener(answer -> answerMap.put(answer.Id, answer));
+                if (type == TYPE_EN_LISTEN_AND_READ) {
+                    enTaiAnswerFragment2.build(answerTypes.get(position), type, studentAnswer, subjectContent, mQuestionInfo.getQuestionSubjectAttachment());
+                } else {
+                    enTaiAnswerFragment2.build(answerTypes.get(position), type, studentAnswer, subjectContent, null);
+                }
+
+            }
+        });
+        return enTaiAnswerFragment2;
     }
 
     private Fragment buildSingle(int position) {

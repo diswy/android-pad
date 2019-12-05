@@ -94,7 +94,7 @@
 				android:layout_height="wrap_content"
 				android:background="@color/white_p"
 				app:behavior_hideable="true"
-				app:behavior_peekHeight="300dp"
+				app:behavior_peekHeight="360dp"
 				app:layout_behavior="@string/bottom_sheet_behavior"
 				app:layout_insetEdge="bottom" />
 

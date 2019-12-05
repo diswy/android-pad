@@ -270,12 +270,13 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
         if (TimeIsEnd) {//答题时间结束
             answer.prohibitAnswer();
             answer.tipMessage("答题时间已结束");
-            answer.audioInfo(null);
+            answer.audioInfo(null, 0);
             return;
         }
         QuestionInfo questionInfo = questionInfoList.get(currentItem);
 
         List<Attachment> attachmentList = questionInfo.getQuestionSubjectAttachment();
+        int attachmentType = questionInfo.getQuestionTypeId();// 语音跟读题不需要显示出来
         if (attachmentList != null && attachmentList.size() > 0) {
 
             if (attachmentList.size() == 1 && attachmentList.get(0).getMediaTypeName().toLowerCase().contains("mp3")) {
@@ -286,12 +287,12 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                 int answerType = attachment.getAnswerType();
                 int count = 0;
                 if (resource != null) {
-                    answer.audioInfo(resource);
+                    answer.audioInfo(resource, attachmentType);
                     count = resource.getWatchCount();
                 } else {
                     String id = String.valueOf(taskInfo.getTaskId()) + attachment.getId();
                     answer.audioInfo(new com.cqebd.student.db.dao.Attachment(id, (int) taskInfo.getTaskId(), attachment.getUrl(),
-                            attachment.getName(), 0, attachment.getAnswerType(), attachment.getCanWatchTimes()));
+                            attachment.getName(), 0, attachment.getAnswerType(), attachment.getCanWatchTimes()), attachmentType);
                 }
                 if (answerType == 2 && count == 0) {
                     answer.tipMessage("当前不能答题,请先听完音频文件");
@@ -312,7 +313,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                         count = resource.getWatchCount();
                     }
                     if (answerType == 2 && count == 0) {
-                        answer.audioInfo(null);
+                        answer.audioInfo(null, 0);
                         answer.tipMessage("当前不能答题,请先观看视频");
                         answer.prohibitAnswer();//不满足附件查看条件
                         return;
@@ -320,7 +321,7 @@ public class AnswerPresenter implements AlbumHelper.AlbumCallBack {
                 }
             }
         }
-        answer.audioInfo(null);
+        answer.audioInfo(null, 0);
         answer.tipMessage(null);
         answer.allowAnswer();
     }

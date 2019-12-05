@@ -40,7 +40,7 @@ public interface IAnswer {
 
     void tipMessage(String msg);
 
-    void audioInfo(Attachment attachment);
+    void audioInfo(Attachment attachment, int questionType);
 
     /**
      * 提交模式

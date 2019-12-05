@@ -15,6 +15,8 @@ public enum CardType {
     EN_SENTENCE(33),
     EN_PARAGRAPH(34),
     EN_FREE(35),
+    EN_LISTEN_AND_READ(36),
+    EN_LISTEN_AND_READ_SHOW(37),
     NONE(0);
 
     int code = 0;
@@ -51,6 +53,10 @@ public enum CardType {
                 return EN_PARAGRAPH;
             case 35:
                 return EN_FREE;
+            case 36:
+                return EN_LISTEN_AND_READ;
+            case 37:
+                return EN_LISTEN_AND_READ_SHOW;
             default:
                 return NONE;
         }

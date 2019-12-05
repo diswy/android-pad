@@ -28,10 +28,10 @@ import kotlinx.android.synthetic.main.activity_answer.*
  * 描述
  * Created by gorden on 2018/3/21.
  */
-class AnswerActivity:BaseActivity(),IAnswer {
+class AnswerActivity : BaseActivity(), IAnswer {
 
-    private lateinit var audioPlayer:AudioPlayer
-    private lateinit var presenter:AnswerPresenter
+    private lateinit var audioPlayer: AudioPlayer
+    private lateinit var presenter: AnswerPresenter
     private lateinit var behaviorItem: BottomSheetBehavior<*>
     private lateinit var behaviorCard: BottomSheetBehavior<*>
     private var submitMode = 0
@@ -183,13 +183,21 @@ class AnswerActivity:BaseActivity(),IAnswer {
         }
     }
 
-    override fun audioInfo(attachment: Attachment?) {
-        if (attachment == null) {
-            audioPlayer.release()
-            lin_audio.visibility = View.GONE
-        } else {
-            lin_audio.visibility = View.VISIBLE
-            audioPlayer.openAudio(attachment)
+    override fun audioInfo(attachment: Attachment?, questionType: Int) {
+        when {
+            attachment == null -> {
+                audioPlayer.release()
+                lin_audio.visibility = View.GONE
+            }
+            questionType == AnswerCardView1.TYPE_EN_LISTEN_AND_READ
+                    || questionType == AnswerCardView1.TYPE_EN_LISTEN_AND_READ_SHOW -> {
+                audioPlayer.release()
+                lin_audio.visibility = View.GONE
+            }
+            else -> {
+                lin_audio.visibility = View.VISIBLE
+                audioPlayer.openAudio(attachment)
+            }
         }
     }
 
@@ -220,7 +228,7 @@ class AnswerActivity:BaseActivity(),IAnswer {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 888 && resultCode == 888){
+        if (requestCode == 888 && resultCode == 888) {
             presenter.upLoad()
         }
     }
