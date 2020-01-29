@@ -4,22 +4,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refreshLayout"
+    <FrameLayout
+        android:id="@+id/inner_web_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <FrameLayout
-            android:id="@+id/inner_web_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+<!--    <android.support.v4.widget.SwipeRefreshLayout-->
+<!--        android:id="@+id/refreshLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-        <!--<WebView-->
-            <!--android:id="@+id/webView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:scrollbars="none" />-->
-    </android.support.v4.widget.SwipeRefreshLayout>
+<!--        &lt;!&ndash;<WebView&ndash;&gt;-->
+<!--            &lt;!&ndash;android:id="@+id/webView"&ndash;&gt;-->
+<!--            &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+<!--            &lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+<!--            &lt;!&ndash;android:scrollbars="none" />&ndash;&gt;-->
+<!--    </android.support.v4.widget.SwipeRefreshLayout>-->
     <gorden.widget.selector.SelectorButton
         android:id="@+id/btn_media"
         android:layout_width="50dp"

@@ -16,7 +16,7 @@ import com.cqebd.student.R
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.db.dao.Attachment
 import com.cqebd.student.presenter.AnswerPresenter
-import com.cqebd.student.tools.AudioPlayer
+import com.cqebd.student.tools.ExAudioPlayerUI
 import com.cqebd.student.tools.toast
 import com.cqebd.student.views.IAnswer
 import com.cqebd.student.widget.AnswerCardView1
@@ -30,7 +30,8 @@ import kotlinx.android.synthetic.main.activity_answer.*
  */
 class AnswerActivity : BaseActivity(), IAnswer {
 
-    private lateinit var audioPlayer: AudioPlayer
+    //    private lateinit var audioPlayer: AudioPlayer
+    private lateinit var audioPlayer: ExAudioPlayerUI
     private lateinit var presenter: AnswerPresenter
     private lateinit var behaviorItem: BottomSheetBehavior<*>
     private lateinit var behaviorCard: BottomSheetBehavior<*>
@@ -43,12 +44,15 @@ class AnswerActivity : BaseActivity(), IAnswer {
 
     override fun initialize(savedInstanceState: Bundle?) {
         submitMode = intent.getIntExtra("submitMode", 0)
-        audioPlayer = AudioPlayer(btn_play, progressBar, text_progress)
+//        audioPlayer = AudioPlayer(btn_play, progressBar, text_progress)
+        audioPlayer = ExAudioPlayerUI(this, btn_play, progressBar, text_progress)
         initCardViewEvent()
         presenter = AnswerPresenter(this)
         presenter.bindData()
         initMoreMenu()
-        audioPlayer.setOnCompletionListener { mp -> presenter.answerCardState() }
+        audioPlayer.setOnCompletionListener {
+            presenter.answerCardState()
+        }
     }
 
     //初始答题卡

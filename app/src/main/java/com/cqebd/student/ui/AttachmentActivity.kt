@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.text.Html
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.widget.GridLayout
 import com.anko.static.appWidth
@@ -95,11 +96,12 @@ class AttachmentActivity : BaseActivity() {
                 button.s_solid_color = ContextCompat.getColor(this, R.color.btn_green)
                 button.s_solid_pressed_color = ContextCompat.getColor(this, R.color.btn_green_press)
                 button.setSingleLine()
-                button.setPadding(20, 0, 20, 0)
+//                button.setPadding(20, 0, 20, 0)
+                button.gravity = Gravity.CENTER
                 button.ellipsize = TextUtils.TruncateAt.END
                 button.s_radius = 5.dp.toFloat()
                 button.text = attachment.name
-                gridLayout.addView(button, width, 30.dp)
+                gridLayout.addView(button, 500, 30.dp)
                 (button.layoutParams as GridLayout.LayoutParams).leftMargin = 5.dp
                 (button.layoutParams as GridLayout.LayoutParams).topMargin = 5.dp
                 (button.layoutParams as GridLayout.LayoutParams).rightMargin = 5.dp

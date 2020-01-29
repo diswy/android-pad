@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -13,13 +12,15 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.cqebd.student.app.BaseActivity
 import com.cqebd.student.event.*
+import com.cqebd.student.http.NetCallBack
+import com.cqebd.student.net.BaseResponse
+import com.cqebd.student.net.NetClient
 import com.cqebd.student.netease.NetEaseCache
-import com.cqebd.student.tools.*
+import com.cqebd.student.tools.isLogin
+import com.cqebd.student.tools.password
+import com.cqebd.student.tools.saveNetease
 import com.cqebd.student.tools.string.MD5
-import com.cqebd.student.ui.HomeFragment
-import com.cqebd.student.ui.MineFragment
 import com.cqebd.student.ui.root.HomeworkFragment
-import com.cqebd.student.ui.root.RootHomeFragment
 import com.cqebd.student.ui.root.RootMineFragment
 import com.cqebd.student.ui.root.RootVideoFragment
 import com.cqebd.student.vo.entity.FilterData
@@ -30,12 +31,12 @@ import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.auth.AuthService
 import com.netease.nimlib.sdk.auth.LoginInfo
 import com.orhanobut.logger.Logger
+import com.xiaofu.lib_base_xiaofu.cache.ACache
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import gorden.rxbus.RxBus
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
-import kotlinx.android.synthetic.main.index_fragment_layout.*
 
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity() {
 
         RxBus.get().register(this)
         loginNetease()
+        getEnglishConfig()
         initDrawerView()
 
         val titles = resources.getStringArray(R.array.title)
@@ -430,6 +432,22 @@ class MainActivity : BaseActivity() {
                 })
             }
         }
+    }
+
+    private fun getEnglishConfig() {
+        NetClient.workService().getEnglishScoreCoeff()
+                .enqueue(object : NetCallBack<BaseResponse<String>>() {
+                    override fun onSucceed(response: BaseResponse<String>?) {
+                        response?.data?.let {
+                            val mCache = ACache.get(this@MainActivity)
+                            mCache.put("EnglishScoreCoeff", it)
+                        }
+                    }
+
+                    override fun onFailure() {
+
+                    }
+                })
     }
 
 }

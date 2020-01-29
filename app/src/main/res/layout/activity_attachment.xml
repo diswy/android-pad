@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -28,53 +30,75 @@
             android:onClick="backTop"
             android:src="@drawable/ic_back" />
     </RelativeLayout>
-    <gorden.lib.video.ExVideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="800px" />
-    <TextView
-        android:id="@+id/text_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone"
-        android:layout_marginTop="5dp"
-        android:text="亲爱的同学门，要想阿里放假就开始放假啊是否卡号发来韩国发货罚款了"
-        />
-    <TextView
-        android:id="@+id/text_see"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/default_lev2"
-        android:text="查看音视频文件"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight="1"
-        android:columnCount="2"
-        />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <com.cqebd.student.widget.SubmitButton
-        android:id="@+id/btn_startAnswer"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:s_radius="20dp"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:text="开始答题"
-        android:textColor="@color/white"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        />
+        <gorden.lib.video.ExVideoView
+            android:id="@+id/videoView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textIsSelectable="true"
+                android:visibility="gone"
+                tools:text="亲爱的同学门，要想阿里放假就开始放假啊是否卡号发来韩国发货罚款了" />
+
+            <TextView
+                android:id="@+id/text_see"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="查看音视频文件"
+                android:textColor="@color/default_lev2"
+                android:textIsSelectable="true"
+                android:textSize="16sp" />
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:columnCount="1" />
+
+            <Space
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <com.cqebd.student.widget.SubmitButton
+                android:id="@+id/btn_startAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="开始答题"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:s_radius="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

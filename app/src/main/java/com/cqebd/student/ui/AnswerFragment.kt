@@ -2,25 +2,25 @@ package com.cqebd.student.ui
 
 
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
+import com.cqebd.student.js.AudioJs
 import com.cqebd.student.vo.entity.Attachment
 import com.just.agentweb.AbsAgentWebSettings
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.IAgentWebSettings
-import com.orhanobut.logger.Logger
 import gorden.lib.anko.static.logError
 import gorden.lib.anko.static.startActivityForResult
 import kotlinx.android.synthetic.main.fragment_answer_content.*
@@ -63,7 +63,7 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun bindEvents() {
-        refreshLayout.setOnRefreshListener { previewTask(url) }
+//        refreshLayout.setOnRefreshListener { previewTask(url) }
         btn_media.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -240,28 +240,28 @@ class AnswerFragment : BaseFragment(), View.OnClickListener {
         this.url = url
 //        webView.loadUrl(url)
         inner_web_container.removeAllViews()
-        AgentWeb.with(this)
-                .setAgentWebParent(inner_web_container, FrameLayout.LayoutParams(-1,-1))
+        val agentWeb = AgentWeb.with(this)
+                .setAgentWebParent(inner_web_container, FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .setAgentWebWebSettings(getSettings())
                 .setWebChromeClient(
                         object : WebChromeClient() {
-
                             override fun onReceivedTitle(view: WebView, title: String?) {
                                 super.onReceivedTitle(view, title)
+
                             }
                         }
                 )
                 // 兼容低版本
-                .setWebViewClient(object : WebViewClient(){
+                .setWebViewClient(object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
-
                     }
                 })
                 .createAgentWeb()
                 .ready()
                 .go(url)
+        agentWeb.jsInterfaceHolder.addJavaObject("audioPlay", AudioJs(activity))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

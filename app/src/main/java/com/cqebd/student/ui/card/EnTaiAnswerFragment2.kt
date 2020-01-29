@@ -3,6 +3,8 @@ package com.cqebd.student.ui.card
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
@@ -12,7 +14,6 @@ import android.view.ViewGroup
 import com.cqebd.student.R
 import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.tai.PrivateInfo
-import com.cqebd.student.tai.TAIAudioPlayer
 import com.cqebd.student.tools.toast
 import com.cqebd.student.ui.AnswerActivity
 import com.cqebd.student.vo.DataChangeListener
@@ -23,9 +24,11 @@ import com.cqebd.student.widget.AnswerCardView1
 import com.google.gson.Gson
 import com.tencent.taisdk.*
 import com.xiaofu.lib_base_xiaofu.cache.ACache
+import gorden.lib.video.ExAudioPlayer
 import kotlinx.android.synthetic.main.fragment_en_tai_answer_fragment2.*
 import org.jetbrains.anko.support.v4.onUiThread
 import org.jetbrains.anko.textColor
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -38,7 +41,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
     private val suggestScore = "%.2f"
 
     private lateinit var oral: TAIOralEvaluation
-    private val audioPlayer = TAIAudioPlayer()
+    private lateinit var exoPlayer: ExAudioPlayer
     private lateinit var mCache: ACache// 获取评分苛刻程度
     private var currentAudioUrl = ""// 当前存在的学生录制过的音频
     private var changeListener: DataChangeListener? = null
@@ -58,8 +61,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
     override fun onDestroyView() {
         oral.setListener(null)
         oral.stopRecordAndEvaluation {}
-        audioPlayer.release()
-
+        exoPlayer.release()
         super.onDestroyView()
     }
 
@@ -68,6 +70,8 @@ class EnTaiAnswerFragment2 : BaseFragment() {
     }
 
     fun build(type: AnswerType, mode: Int, studentAnswer: StudentAnswer?, subject: String, attachments: ArrayList<Attachment>?) {
+        exoPlayer = ExAudioPlayer(requireActivity())
+
         mType = type
         mMode = mode
         mSubject = subject
@@ -112,7 +116,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
 
         btn_record.setOnClickListener {
             // 录音按钮
-            audioPlayer.release()
+            exoPlayer.release()
             startRecord()
         }
 
@@ -120,7 +124,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
             val drawable: Drawable?
             if (isPlaying) {
                 drawable = ContextCompat.getDrawable(requireContext(), R.drawable.tai_origin_voice)
-                audioPlayer.release()
+                exoPlayer.release()
 
                 // 主动停止恢复按钮可用
                 btn_record.isEnabled = true
@@ -129,7 +133,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
                 }
             } else {
                 drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_origin_voice_stop)
-                audioPlayer.openAudio(mOriginVoiceUrl)
+                exoPlayer.openAudio(mOriginVoiceUrl)
 
                 // 播放音频时应禁用另外按钮
                 btn_record.isEnabled = false
@@ -147,7 +151,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
             val drawable: Drawable?
             if (isPlaying) {
                 drawable = ContextCompat.getDrawable(requireContext(), R.drawable.tai_student_record)
-                audioPlayer.release()
+                exoPlayer.release()
 
                 // 主动停止恢复按钮可用
                 btn_record.isEnabled = true
@@ -156,7 +160,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
                 }
             } else {
                 drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_student_record_stop)
-                audioPlayer.openAudio(currentAudioUrl)
+                exoPlayer.openAudio(currentAudioUrl)
 
                 // 播放音频时应禁用另外按钮
                 btn_record.isEnabled = false
@@ -170,8 +174,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
             isPlaying = !isPlaying
         }
 
-        audioPlayer.setOnCompleteListener {
-            audioPlayer.release()
+        exoPlayer.setOnCompletionListener {
             isPlaying = false
 
             val drawableOrigin = ContextCompat.getDrawable(requireContext(), R.drawable.tai_origin_voice)
@@ -207,7 +210,12 @@ class EnTaiAnswerFragment2 : BaseFragment() {
         progress_completion.progress = (data.pronCompletion * 100).toInt()
         progress_fluency.progress = (data.pronFluency * 100).toInt()
         progress_accuracy.progress = data.pronAccuracy.toInt()
-//        progress_suggest_score.progress = data.suggestedScore.toFloat()
+        progress_suggest_score.progress = data.suggestedScore.toFloat()
+
+        val msg = Message()
+        msg.what = PLAY_RAW
+        msg.arg1 = data.suggestedScore.toInt()
+        handler.sendMessageDelayed(msg, 50)
     }
 
     /**
@@ -337,17 +345,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
                     btn_record.textColor = ContextCompat.getColor(requireContext(), R.color.tv33)
                 }
             }
-
             if (data.bEnd && result != null) {
-                if (result.suggestedScore < 60) {
-                    audioPlayer.openRaw(requireContext(), R.raw.scorebackcopper)
-                } else if (result.suggestedScore >= 60 && result.suggestedScore < 80) {
-                    audioPlayer.openRaw(requireContext(), R.raw.youcandobetter)
-                } else if (result.suggestedScore >= 80 && result.suggestedScore < 90) {
-                    audioPlayer.openRaw(requireContext(), R.raw.good)
-                } else if (result.suggestedScore >= 90) {
-                    audioPlayer.openRaw(requireContext(), R.raw.excellent)
-                }
                 onUiThread {
                     updateScoreView(result)
                 }
@@ -373,8 +371,34 @@ class EnTaiAnswerFragment2 : BaseFragment() {
             }
         }
 
-        override fun onEndOfSpeech() {}
+        override fun onEndOfSpeech() {
+        }
+    }
+    private val handler: Handler = SafeHandler(this)
 
+    private fun playRaw(it: Int) {
+        when {
+            it < 60 -> exoPlayer.openRaw(requireContext(), R.raw.scorebackcopper)
+            it in 60..79 -> exoPlayer.openRaw(requireContext(), R.raw.youcandobetter)
+            it in 80..89 -> exoPlayer.openRaw(requireContext(), R.raw.good)
+            it >= 90 -> exoPlayer.openRaw(requireContext(), R.raw.excellent)
+        }
     }
 
+    companion object {
+        const val PLAY_RAW = 1314
+
+        private class SafeHandler(val frag: EnTaiAnswerFragment2) : Handler() {
+            private var mFragment: WeakReference<EnTaiAnswerFragment2> = WeakReference(frag)
+            override fun handleMessage(msg: Message?) {
+                super.handleMessage(msg)
+                when (msg?.what) {
+                    PLAY_RAW -> {
+                        Log.e("xiaofu", "收到消息")
+                        frag.playRaw(msg.arg1)
+                    }
+                }
+            }
+        }
+    }
 }
