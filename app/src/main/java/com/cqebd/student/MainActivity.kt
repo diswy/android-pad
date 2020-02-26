@@ -1,5 +1,8 @@
 package com.cqebd.student
 
+import android.content.Context
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
@@ -27,16 +30,29 @@ import com.cqebd.student.vo.entity.FilterData
 import com.cqebd.student.vo.entity.UserAccount
 import com.netease.nimlib.sdk.AbortableFuture
 import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.auth.AuthService
+import com.netease.nimlib.sdk.auth.AuthServiceObserver
 import com.netease.nimlib.sdk.auth.LoginInfo
+import com.netease.nimlib.sdk.auth.OnlineClient
 import com.orhanobut.logger.Logger
 import com.xiaofu.lib_base_xiaofu.cache.ACache
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import gorden.rxbus.RxBus
+import gorden.util.PackageUtils
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_drawerlayout.*
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.net.*
 
 class MainActivity : BaseActivity() {
     private var currentFragment: Fragment? = null
@@ -94,6 +110,8 @@ class MainActivity : BaseActivity() {
         }
         navigation.selectTab(if (mGuidePosition != -1) mGuidePosition else 0)
 //        switchFragment(if (mGuidePosition != -1) mGuidePosition else 0)
+
+        log()
     }
 
     private fun switchFragment(position: Int) {
@@ -448,6 +466,120 @@ class MainActivity : BaseActivity() {
 
                     }
                 })
+    }
+
+
+
+    private fun loginLog(ip: String) {
+        val user = UserAccount.load() ?: return
+        // 类型1:老师,2:学生
+        // 类型,1:登录,2:退出
+        val param = HashMap<String, String>()
+        param["UserType"] = "2"
+        param["LoginName"] = user.Account
+        param["UserId"] = user.ID.toString()
+        param["Name"] = user.Name
+        param["Version"] = PackageUtils.getVersionName(this)
+        param["DevTypeName"] = Build.MODEL
+        param["IP"] = ip
+        param["Type"] = "1"
+        param["Common"] = "学生登录"
+        param["ClientType"] = "STUDENT_ANDROID"
+        val disposable = NetClient.workService().loginLog(param)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, {})
+    }
+
+    private fun log() {
+        // 获取WiFi服务
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        // 判断WiFi是否开启
+        if (wifiManager.isWifiEnabled) {
+            getNetIp()
+        } else {
+            getIpAddress()
+        }
+    }
+
+    /**
+     * 获取本机IPv4地址
+     *
+     * @return 本机IPv4地址；null：无网络连接
+     */
+    private fun getIpAddress() {
+        try {
+            var networkInterface: NetworkInterface
+            var inetAddress: InetAddress
+            val en = NetworkInterface.getNetworkInterfaces()
+            while (en.hasMoreElements()) {
+                networkInterface = en.nextElement()
+                val enumIpAddr = networkInterface.inetAddresses
+                while (enumIpAddr.hasMoreElements()) {
+                    inetAddress = enumIpAddr.nextElement()
+                    if (!inetAddress.isLoopbackAddress && !inetAddress.isLinkLocalAddress) {
+                        loginLog(inetAddress.hostAddress)
+                    }
+                }
+            }
+        } catch (ex: SocketException) {
+            ex.printStackTrace()
+            loginLog("未知IP")
+        }
+
+    }
+
+    /**
+     * 获取外网IP地址
+     * @return
+     */
+    private fun getNetIp() {
+        object : Thread() {
+            override fun run() {
+                val line: String
+                val infoUrl: URL
+                val inStream: InputStream
+                try {
+                    infoUrl = URL("http://pv.sohu.com/cityjson?ie=utf-8")
+                    val connection = infoUrl.openConnection()
+                    val httpConnection = connection as HttpURLConnection
+                    val responseCode = httpConnection.responseCode
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        inStream = httpConnection.inputStream
+                        val reader = BufferedReader(InputStreamReader(inStream, "utf-8"))
+                        val strber = StringBuilder()
+                        reader.lineSequence().forEach {
+                            strber.append(it + "\n")
+                        }
+
+                        inStream.close()
+                        // 从反馈的结果中提取出IP地址
+                        val start = strber.indexOf("{")
+                        val end = strber.indexOf("}")
+                        val json = strber.substring(start, end + 1)
+                        if (json != null) {
+                            try {
+                                val jsonObject = JSONObject(json)
+                                line = jsonObject.optString("cip")
+                                loginLog(line)
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                                loginLog("未知IP")
+                            }
+
+                        }
+
+                    }
+                } catch (e: MalformedURLException) {
+                    e.printStackTrace()
+                    loginLog("未知IP")
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    loginLog("未知IP")
+                }
+
+            }
+        }.start()
     }
 
 }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/mToolbar"
@@ -25,90 +26,156 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <android.support.constraint.ConstraintLayout
-            android:layout_weight="1"
             android:id="@+id/mVideoContainer"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <gorden.lib.video.ExVideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.netease.neliveplayer.playerkit.sdk.view.AdvanceTextureView
+                android:id="@+id/live_texture"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <FrameLayout
                 android:id="@+id/mCreatorView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="160dp"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <FrameLayout
-                    android:id="@+id/mMyself"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <FrameLayout
                     android:id="@+id/mStudent1"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:visibility="gone" />
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <FrameLayout
                     android:id="@+id/mStudent2"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:visibility="gone" />
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/mStudent3"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
-
-            <ImageButton
+            <LinearLayout
                 android:id="@+id/mBtnApplyVideo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/transparent"
-                android:src="@drawable/ic_hand_up"
+                android:layout_width="110dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_arc_trans"
+                android:gravity="center"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
 
-            <CheckBox
-                android:id="@+id/btnExpand"
+                <TextView
+                    android:id="@+id/tv_mic_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_video_capture"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:text="申请连麦"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/hintView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/select_expand"
-                android:button="@null"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            
-            <!--<Button-->
-            <!--android:id="@+id/mTestBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="直接上墙"/>-->
-            <!--<Button-->
-            <!--android:id="@+id/mTestBtn2"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/mTestBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="直接下墙"/>-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前老师未开播"
+                    android:textColor="#3AB96E"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="或者点击右上角按钮刷新"
+                    android:textColor="#787878" />
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/switchScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:button="@drawable/sel_live_video"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/hover"
-            android:orientation="vertical"
-            android:layout_width="500px"
-            android:layout_height="match_parent">
+            android:layout_width="620px"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/mLiveIndicator"

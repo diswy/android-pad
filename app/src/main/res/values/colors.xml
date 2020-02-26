@@ -99,12 +99,14 @@
     <color name="color_new_divider">#efefef</color>
     <color name="color_price">#e3065f</color>
     <color name="color_bg_fa">#fafafa</color>
+    <color name="color_bg_ea">#eaeaea</color>
     <color name="color_mine_item">#2d3336</color>
     <color name="color_bg_d1">#d1d1d1</color>
     <color name="color_333a42">#333a42</color>
     <color name="color_616161">#616161</color>
     <color name="bg_theme">#f2f6f9</color>
     <color name="color_716f6f">#716f6f</color>
+    <color name="color_cd">#cdcdcd</color>
     <color name="tv33">#333333</color>
 
     <color name="sub_math">#df2272</color>

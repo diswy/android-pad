@@ -30,6 +30,10 @@ interface WorkService {
             @Query("pwd") pwd: String)
             : LiveData<ApiResponse<UserAccount>>
 
+    @POST("api/Account/LoginLog")
+    @FormUrlEncoded
+    fun loginLog(@FieldMap param: Map<String, String>): Flowable<BaseResponse<Unit>>
+
     /**
      * 获取作业列表
      */

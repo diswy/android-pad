@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,45 +14,129 @@
         android:layout_weight="1"
         android:background="#f1f2f7"
         android:overScrollMode="never"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/color_bg_fa"
+        android:background="@color/color_bg_ea"
         android:gravity="center_vertical"
+        android:paddingStart="15dp"
         android:paddingEnd="15dp"
-        android:paddingStart="15dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ToggleButton
             android:id="@+id/mSwitchInputType"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:background="@color/color_price"
+            android:background="@drawable/ic_btn_mic"
             android:textOff=""
-            android:textOn=""
-            android:visibility="gone" />
+            android:textOn="" />
 
-        <EditText
-            android:id="@+id/mChatRoomEdit"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:imeOptions="actionSend" />
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/mChatRoomEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSend" />
+
+            <TextView
+                android:id="@+id/btnSpeak"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="按住 说话"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
         <ToggleButton
             android:id="@+id/mBtnSend"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:background="@drawable/ic_chat_room_extra"
+            android:background="@drawable/ic_btn_pic"
             android:textColor="@color/white"
             android:textOff=""
             android:textOn="发送" />
 
     </LinearLayout>
 
-</LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ic_mic"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/bg_mic"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_record_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="手指上滑，取消发送"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/iv_mic_recording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mic_recording" />
+
+            <ImageView
+                android:id="@+id/iv_recording_animation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/animation_voice" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_mic_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mic_cancel"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

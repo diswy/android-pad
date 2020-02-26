@@ -12,6 +12,7 @@ data class PeriodResponse(
 		var Type: Int,
 		var Status: Int,
 		var PlanStartDate: String,
+		var CanPlayDateTime: String?,
 		var Day: String,
 		var CourseId: Int,
 		var GradeId: Int,

@@ -31,7 +31,7 @@ class ExAudioPlayer constructor(val context: Context) {
         player!!.prepare(mediaSource)
     }
 
-    fun openRaw(context: Context,@RawRes resId: Int) {
+    fun openRaw(context: Context, @RawRes resId: Int) {
         //构建Raw文件播放源--RawResourceDataSource
         val dataSpec = DataSpec(RawResourceDataSource.buildRawResourceUri(resId))
         val rawResourceDataSource = RawResourceDataSource(context)
@@ -73,11 +73,14 @@ class ExAudioPlayer constructor(val context: Context) {
 
     fun release() {
         player?.release()
+        player = null
     }
 
     private var mListener: (() -> Unit)? = null
 
-    fun setOnCompletionListener(listener: () -> Unit) {
+    fun setOnCompletionListener(listener: (() -> Unit)?) {
         this.mListener = listener
     }
+
+    fun isPlaying() = player?.playWhenReady ?: false
 }

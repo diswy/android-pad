@@ -23,7 +23,7 @@ class AgentWebActivity : BaseActivity() {
 
         val url = intent.getStringExtra("url")
 
-        AgentWeb.with(this)
+        val a = AgentWeb.with(this)
                 .setAgentWebParent(container,FrameLayout.LayoutParams(-1,-1))
                 .useDefaultIndicator()
                 .setWebChromeClient(
@@ -32,7 +32,11 @@ class AgentWebActivity : BaseActivity() {
                             override fun onReceivedTitle(view: WebView, title: String?) {
                                 super.onReceivedTitle(view, title)
                                 if (title != null) {
-                                    toolbar_title.text = title
+                                    if (title.contains("?id")) {
+                                        toolbar_title.text = "网页"
+                                    } else {
+                                        toolbar_title.text = title
+                                    }
                                 }
                             }
                         }
@@ -44,7 +48,11 @@ class AgentWebActivity : BaseActivity() {
                         view?.let {
                             val title = it.title
                             if (!TextUtils.isEmpty(title)) {
-                                toolbar_title.text = title
+                                if (title.contains("?id")) {
+                                    toolbar_title.text = "网页"
+                                } else {
+                                    toolbar_title.text = title
+                                }
                             }
                         }
 

@@ -217,6 +217,19 @@ class LiveVideoActivity : BaseActivity() {
                 }
             }
         }
+
+        if (definitionList.isEmpty()){
+            for (vodPlay in vodPlays) {
+                if (vodPlay.Url.substring(vodPlay.Url.lastIndexOf(".")).contains("mp4")) {
+                    when {
+                        definitionList.size == 0 -> definitionList.add(ExDefinition(vodPlay.Definition, "原画", vodPlay.Url))
+                        definitionList.size == 1 -> definitionList.add(ExDefinition(vodPlay.Definition, "高清", vodPlay.Url))
+                        definitionList.size == 2 -> definitionList.add(ExDefinition(vodPlay.Definition, "标清", vodPlay.Url))
+                    }
+                }
+            }
+        }
+
         return definitionList
     }
 }

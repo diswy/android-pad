@@ -280,7 +280,7 @@ class ChatRoomFragment : BaseLazyFragment() {
         // 1、根据sessionId判断是否是自己的消息
         // 2、更改内存中消息的状态
         // 3、刷新界面
-        toast("回调成功")
+//        toast("回调成功")
         if (msg.attachment is ImageAttachment) {
 //            GlideApp.with(this@TestChatRoomActivity)
 //                    .load((msg.attachment as ImageAttachment).path)

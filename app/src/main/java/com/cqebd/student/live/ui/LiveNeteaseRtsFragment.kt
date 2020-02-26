@@ -18,6 +18,7 @@ import com.cqebd.student.app.BaseFragment
 import com.cqebd.student.live.custom.NormalAttachment
 import com.cqebd.student.live.entity.EbdCustomNotification
 import com.cqebd.student.live.helper.IWB_CANCEL
+import com.cqebd.student.live.helper.IWB_CLEAR
 import com.cqebd.student.live.helper.IWB_IN
 import com.cqebd.student.live.helper.MsgManager
 import com.cqebd.student.netease.doodle.ActionTypeEnum
@@ -76,6 +77,10 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                     mBtnApply.isEnabled = false
                 }
             } else {
+                mDoodleView.setEnableView(false)
+                mBtnApply.isEnabled = true
+                hasRtsPermission = false
+                mBtnApply.text = "申请白板"
                 mCreator?.let {
                     val mData = EbdCustomNotification("live", "1", IWB_CANCEL, "STUDENT", loginId,
                             "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
@@ -86,6 +91,13 @@ class LiveNeteaseRtsFragment : BaseFragment() {
 
         mBtnClear.setOnClickListener {
             mDoodleView.clear()
+            if (hasRtsPermission){// 有权限 通知老师
+                mCreator?.let {
+                    val mData = EbdCustomNotification("live", "1", IWB_CLEAR, "STUDENT", loginId,
+                            "TEACHER", 0, UserAccount.load()?.Name ?: "")// P2P自定义通知
+                    MsgManager.instance().sendP2PCustomNotification(it, mData)
+                }
+            }
         }
 
         //paintback()
@@ -96,7 +108,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
         super.onDestroy()
     }
 
-    private fun loginRts(){
+    private fun loginRts() {
         RTSManager2.getInstance().joinSession(mSessionId, false, object : RTSCallback<RTSData> {
             override fun onSuccess(rtsData: RTSData) {
                 isOpenRts = true
@@ -111,7 +123,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                 isOpenRts = false
                 count++
                 Logger.e("这是${this@LiveNeteaseRtsFragment.count}次登录失败")
-                if (count < 5){
+                if (count < 5) {
                     loginRts()
                 }
                 Logger.i("join rts session failed, code:$i")
@@ -145,7 +157,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
             Log.i("Doodle", "doodleView marginLeft =$marginLeft")
 
             val offsetX = marginLeft.toFloat()
-            val offsetY = statusBarHeight + dip(285)
+            val offsetY = statusBarHeight + dip(40)
             mDoodleView.setPaintOffset(offsetX, offsetY.toFloat())
         }, 50)
     }
@@ -162,7 +174,7 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                 if (mMsgSingle.attachment is NormalAttachment) {
                     val attachment = mMsgSingle.attachment as NormalAttachment
                     if (attachment.mCustomMsg?.name == "ppt") {
-                        if (!isOpenRts){
+                        if (!isOpenRts) {
                             loginRts()
                         }
                         Logger.d(attachment.mCustomMsg?.content)
@@ -174,9 +186,8 @@ class LiveNeteaseRtsFragment : BaseFragment() {
                                         mDoodleView.setImageView(resource)
                                     }
                                 })
-                    }else if (attachment.mCustomMsg?.name == "iwb"){
-                        toast("收到iwb")
-                        if (!isOpenRts){
+                    } else if (attachment.mCustomMsg?.name == "iwb") {
+                        if (!isOpenRts) {
                             println("执行登录")
                             loginRts()
                         }
@@ -207,14 +218,16 @@ class LiveNeteaseRtsFragment : BaseFragment() {
     fun setRtsEnable(isEnable: Boolean) {
         mDoodleView.setEnableView(isEnable)
         mBtnApply.isEnabled = true
-    }
-
-    fun setBtnChecked(isChecked: Boolean) {
-        mBtnApply.isEnabled = isChecked
+        hasRtsPermission = isEnable
+        mBtnApply.text = if (isEnable) "白板下线" else "申请白板"
     }
 
     fun setCreator(creator: String) {
         mCreator = creator
+    }
+
+    fun clear(){
+        mDoodleView.clear()
     }
 
 }

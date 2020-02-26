@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".live.ui.LiveNeteaseRtsFragment">
+    tools:context=".live.ui.LiveNeteaseRtsFragment"
+    tools:ignore="HardcodedText">
 
     <com.cqebd.student.netease.doodle.DoodleView
         android:id="@+id/mDoodleView"
@@ -14,33 +15,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="wrap_content">
 
-        <!--<ToggleButton-->
-            <!--android:background="@drawable/ic_rts_apply"-->
-            <!--android:id="@+id/mBtnApply"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textOff=""-->
-            <!--android:textOn="" />-->
-
-        <ImageButton
+        <TextView
             android:id="@+id/mBtnApply"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:src="@drawable/ic_rts_apply"
-            android:background="@color/transparent"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:drawableTop="@drawable/ic_rts_apply"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="申请白板"
+            android:textSize="12sp" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/mBtnClear"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:src="@drawable/ic_rts_clear"
-            android:background="@color/transparent"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:drawableTop="@drawable/ic_rts_clear"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:text="清除笔迹"
+            android:textSize="12sp" />
 
 
     </LinearLayout>

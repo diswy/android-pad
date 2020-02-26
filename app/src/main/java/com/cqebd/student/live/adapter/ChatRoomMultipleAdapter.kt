@@ -1,5 +1,7 @@
 package com.cqebd.student.live.adapter
 
+import android.graphics.drawable.AnimationDrawable
+import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -10,6 +12,7 @@ import com.cqebd.student.vo.entity.UserAccount
 import com.xiaofu.lib_base_xiaofu.img.GlideApp
 import kotlinx.android.synthetic.main.item_chat_room_img.view.*
 import kotlinx.android.synthetic.main.item_chat_room_text.view.*
+import kotlinx.android.synthetic.main.item_chat_room_audio.view.*
 import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.textColor
 
@@ -18,6 +21,19 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
     init {
         addItemType(ChatRoomEntity.TEXT, R.layout.item_chat_room_text)
         addItemType(ChatRoomEntity.IMG, R.layout.item_chat_room_img)
+        addItemType(ChatRoomEntity.AUDIO, R.layout.item_chat_room_audio)
+    }
+
+    private var mAudioCallback: ((path: String, animator: AnimationDrawable) -> Unit)? = null
+
+    fun setAudioCallback(listener: (path: String, animator: AnimationDrawable) -> Unit) {
+        this.mAudioCallback = listener
+    }
+
+    private var mPicCallback: ((view: View, path: String) -> Unit)? = null
+
+    fun setPicListener(listener: (view: View, path: String) -> Unit) {
+        this.mPicCallback = listener
     }
 
     override fun convert(helper: BaseViewHolder?, item: ChatRoomEntity) {
@@ -70,7 +86,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
 
                         GlideApp.with(mContext)
                                 .load(item.imgSrc)
-                                .centerCrop()
+                                .fitCenter()
                                 .into(mImgIv)
 
                         GlideApp.with(mContext)
@@ -87,7 +103,7 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
 
                         GlideApp.with(mContext)
                                 .load(item.imgSrc)
-                                .centerCrop()
+                                .fitCenter()
                                 .into(mImgIv)
 
                         GlideApp.with(mContext)
@@ -96,6 +112,41 @@ class ChatRoomMultipleAdapter(data: List<ChatRoomEntity>?) : BaseMultiItemQuickA
                                 .placeholder(R.drawable.ic_avatar)
                                 .load(if (item.isMyself) UserAccount.load()?.Avatar else item.avatar)
                                 .into(if (item.isMyself) mImgMyAvatar else mImgOtherAvatar)
+                    }
+
+                    mImgIv.setOnClickListener {
+                        mPicCallback?.invoke(it, item.imgSrc)
+                    }
+                }
+            }
+            ChatRoomEntity.AUDIO -> {
+                helper.itemView.apply {
+                    mAudioOtherAvatar.visibility = if (item.isMyself) View.GONE else View.VISIBLE
+                    mAudioMyAvatar.visibility = if (item.isMyself) View.VISIBLE else View.GONE
+                    mAudioStartSpace.visibility = if (item.isMyself) View.VISIBLE else View.GONE
+                    mAudioEndSpace.visibility = if (item.isMyself) View.GONE else View.VISIBLE
+                    mAudioChatRoomNick.text = item.nick
+                    mAudioChatRoomNick.gravity = if (item.isMyself) Gravity.END else Gravity.START
+
+                    mAudioPlay.setBackgroundResource(if (item.isMyself) R.drawable.chat_bg_me else R.drawable.chat_bg_others)
+                    tv_duration.setTextColor(if (item.isMyself) ContextCompat.getColor(mContext, R.color.colorWhite)
+                    else ContextCompat.getColor(mContext, R.color.colorPrimary))
+                    iv_voice.setImageDrawable(if (item.isMyself) ContextCompat.getDrawable(mContext, R.drawable.animation_inner_voice)
+                    else ContextCompat.getDrawable(mContext, R.drawable.animation_inner_other_voice))
+
+                    GlideApp.with(mContext)
+                            .asBitmap()
+                            .circleCrop()
+                            .placeholder(R.drawable.ic_avatar)
+                            .load(if (item.isMyself) UserAccount.load()?.Avatar else item.avatar)
+                            .into(if (item.isMyself) mAudioMyAvatar else mAudioOtherAvatar)
+
+                    tv_duration.text = "${(item.audioDuration / 1000).toInt()}“"
+
+                    val animator = iv_voice.drawable as AnimationDrawable
+
+                    mAudioPlay.setOnClickListener {
+                        mAudioCallback?.invoke(item.fileUrl, animator)
                     }
                 }
             }

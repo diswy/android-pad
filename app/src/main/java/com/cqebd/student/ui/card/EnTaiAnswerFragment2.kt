@@ -59,6 +59,7 @@ class EnTaiAnswerFragment2 : BaseFragment() {
     }
 
     override fun onDestroyView() {
+        exoPlayer.setOnCompletionListener(null)
         oral.setListener(null)
         oral.stopRecordAndEvaluation {}
         exoPlayer.release()
